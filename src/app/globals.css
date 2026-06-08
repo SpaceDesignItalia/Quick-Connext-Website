@@ -1,0 +1,354 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f4f6f7; /* cool light */
+  --foreground: #14201f; /* cool graphite */
+  --brand-dark: #0b2a2b; /* deep petrol */
+  --brand-radial: #103a3a;
+  --brand-teal: #0e7c82; /* verde benzina */
+  --brand-teal-light: #38c5c0; /* logo turquoise */
+  --brand-ivory-deep: #eceff1;
+  --brand-line: #dce3e4;
+  --brand-stone: #5b6b6a;
+  --grid-line: rgba(14, 124, 130, 0.1);
+  --grid-line-dark: rgba(56, 197, 192, 0.08);
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--brand-ivory-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--brand-teal);
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-dark);
+}
+
+::selection {
+  background: rgba(14, 124, 130, 0.16);
+  color: var(--foreground);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ─── TECHNICAL GRID ─── */
+@layer utilities {
+  .tech-grid {
+    background-image: linear-gradient(
+        to right,
+        var(--grid-line) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .tech-grid-dark {
+    background-image: linear-gradient(
+        to right,
+        var(--grid-line-dark) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, var(--grid-line-dark) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  /* radial fade so the grid dissolves toward the edges */
+  .grid-fade::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(
+      ellipse 70% 60% at 50% 40%,
+      transparent 0%,
+      var(--background) 85%
+    );
+  }
+
+  /* legacy no-ops kept so old markup stays clean */
+  .noise-texture::before,
+  .dot-grid-dark::after,
+  .dot-grid-light::after {
+    content: none;
+  }
+}
+
+/* ─── SECTION BACKGROUNDS ─── */
+@layer components {
+  .section-dark {
+    @apply relative overflow-hidden text-white;
+    background: radial-gradient(
+      ellipse 90% 80% at 50% 0%,
+      var(--brand-radial) 0%,
+      var(--brand-dark) 72%
+    );
+  }
+  .section-light {
+    @apply relative overflow-hidden;
+    background: var(--background);
+  }
+  .section-muted {
+    @apply relative overflow-hidden;
+    background: var(--brand-ivory-deep);
+  }
+}
+
+/* ─── TYPOGRAPHY ─── */
+@layer components {
+  .mono-label,
+  .section-label {
+    @apply inline-flex items-center gap-2.5 text-[11px] font-medium uppercase text-brand-teal;
+    font-family: var(--font-mono), monospace;
+    letter-spacing: 0.18em;
+  }
+  .mono-label::before,
+  .section-label::before {
+    content: "";
+    display: block;
+    width: 22px;
+    height: 1px;
+    background-color: var(--brand-teal);
+    flex-shrink: 0;
+  }
+
+  .heading-display,
+  .heading-h1,
+  .heading-h2 {
+    font-family: var(--font-fraunces), Georgia, serif;
+  }
+  .heading-display {
+    @apply font-semibold;
+    letter-spacing: -0.02em;
+  }
+  .heading-h1 {
+    @apply text-[44px] md:text-[62px] font-semibold leading-[1.02] text-brand-navy;
+    letter-spacing: -0.025em;
+  }
+  .heading-h2 {
+    @apply text-[32px] md:text-[50px] font-semibold leading-[1.05];
+    letter-spacing: -0.02em;
+  }
+  .heading-h2-light {
+    @apply heading-h2 text-brand-navy;
+  }
+  .heading-h2-dark {
+    @apply heading-h2 text-white;
+  }
+
+  .body-text {
+    @apply text-[16px] md:text-[17px] font-normal leading-relaxed text-brand-stone;
+  }
+
+  .cta-button {
+    @apply inline-flex items-center gap-2 text-[12px] font-semibold uppercase transition-all duration-300;
+    font-family: var(--font-mono), monospace;
+    letter-spacing: 0.1em;
+  }
+  .cta-button-primary {
+    @apply cta-button bg-brand-teal text-white px-7 py-3.5 rounded-sm hover:bg-brand-navy-dark;
+  }
+  .cta-button-outline {
+    @apply cta-button border border-brand-navy/25 text-brand-navy px-6 py-3 rounded-sm hover:border-brand-teal hover:text-brand-teal;
+  }
+  .cta-link {
+    @apply cta-button text-brand-teal hover:text-brand-navy;
+  }
+
+  .teal-rule {
+    @apply w-full h-px bg-brand-line;
+  }
+  .brass-rule {
+    @apply w-full h-px;
+    background: linear-gradient(to right, var(--brand-teal), transparent);
+  }
+  .teal-accent-left {
+    border-left: 2px solid var(--brand-teal);
+  }
+}
+
+/* ─── NAVIGATION ─── */
+@layer components {
+  .glass-nav {
+    background: rgba(244, 246, 247, 0.82);
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    border-bottom: 1px solid var(--brand-line);
+  }
+  .glass-nav-transparent {
+    background: transparent;
+    border-bottom: 1px solid transparent;
+  }
+}
+
+/* ─── CARDS ─── */
+@layer components {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+  .glass-card-light {
+    background: var(--brand-ivory-deep);
+    border: 1px solid var(--brand-line);
+    border-radius: 3px;
+  }
+  .glass-panel-bottom {
+    background: linear-gradient(
+      to top,
+      rgba(11, 42, 43, 0.92),
+      rgba(11, 42, 43, 0.5) 60%,
+      rgba(11, 42, 43, 0)
+    );
+  }
+
+  /* Floating product card (architecture diagram) */
+  .product-card {
+    @apply flex items-center gap-3 bg-brand-ivory-card border border-brand-line rounded-lg px-3.5 py-2.5 shadow-float;
+  }
+  .product-card-icon {
+    @apply flex items-center justify-center w-9 h-9 rounded-sm bg-brand-teal/10 text-brand-teal flex-shrink-0;
+  }
+}
+
+/* ─── STAT ITEM ─── */
+@layer components {
+  .stat-number {
+    @apply text-[60px] md:text-[84px] font-semibold text-brand-navy leading-none;
+    font-family: var(--font-fraunces), Georgia, serif;
+    letter-spacing: -0.03em;
+  }
+  .stat-bar {
+    @apply w-[2px] h-10 bg-brand-teal flex-shrink-0;
+  }
+}
+
+/* ─── BENEFIT ROW ─── */
+@layer components {
+  .benefit-row {
+    @apply flex items-center justify-between py-6 border-b border-white/10 cursor-default transition-all duration-300;
+  }
+  .benefit-row:hover .benefit-arrow {
+    transform: translateX(0.5rem);
+  }
+}
+
+/* ─── HERO PILLAR ─── */
+@layer components {
+  .hero-panel-icon {
+    @apply w-10 h-10 flex items-center justify-center border border-white/30 text-white;
+    border-radius: 3px;
+  }
+}
+
+/* ─── FOOTER WATERMARK ─── */
+@layer components {
+  .footer-watermark {
+    @apply absolute pointer-events-none select-none font-semibold text-white;
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-size: 200px;
+    line-height: 1;
+    opacity: 0.04;
+    letter-spacing: -0.04em;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+  }
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+
+@keyframes heroRise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero-rise {
+  animation: heroRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+.float-card {
+  animation: floatY 5s ease-in-out infinite;
+}
+
+/* ─── KEN BURNS (living images in hero pillars) ─── */
+@keyframes kenburns {
+  0% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+.kenburns {
+  animation: kenburns 22s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.group:hover .kenburns {
+  animation-duration: 10s;
+}
+.kenburns-soft {
+  animation: kenburns 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kenburns,
+  .kenburns-soft,
+  .float-card,
+  .hero-rise {
+    animation: none !important;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
