@@ -11,39 +11,48 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        surface: "var(--brand-surface)",
+        border: "var(--brand-line)",
+        muted: {
+          foreground: "var(--brand-stone)",
+        },
+        navy: {
+          DEFAULT: "#0A1628",
+          foreground: "#FFFFFF",
+          muted: "rgba(255,255,255,0.65)",
+        },
         brand: {
-          /* Cool light surfaces (token name kept as `ivory` for compatibility) */
+          DEFAULT: "#00C4CC",
+          bright: "#00C4CC",
+          /* Light surfaces */
           ivory: {
-            DEFAULT: "#F4F6F7", // base page / light sections
-            deep: "#ECEFF1", // alternate / muted sections
-            card: "#FFFFFF", // raised cards
+            DEFAULT: "#F7F9FA",
+            deep: "#EEF1F4",
+            card: "#FFFFFF",
           },
-          /* Ink — cool graphite + deep petrol for dark sections */
+          /* Navy — headings & dark sections */
           navy: {
-            DEFAULT: "#14201F", // primary text / light-section headings
-            dark: "#0B2A2B", // deep petrol — dark sections
-            light: "#103A3A", // dark-section radial highlight
-            muted: "#1B2C2B",
+            DEFAULT: "#0A1628",
+            dark: "#0A1628",
+            light: "#1E2D4A",
+            muted: "#374151",
           },
-          /* Accent — verde benzina / petrolio (from the logo) */
+          /* Teal accent */
           teal: {
-            DEFAULT: "#0E7C82",
-            dark: "#0A5E63",
-            light: "#38C5C0", // logo turquoise — highlights / glow
-            glow: "rgba(56, 197, 192, 0.18)",
+            DEFAULT: "#00C4CC",
+            dark: "#009BA3",
+            light: "#33D9E0",
+            glow: "rgba(0,196,204,0.10)",
           },
-          brass: {
-            DEFAULT: "#B0894F",
-            soft: "#C9A877",
-          },
-          stone: "#5B6B6A", // muted text on light
-          line: "#DCE3E4", // hairlines on light surfaces
-          grid: "rgba(14, 124, 130, 0.10)", // technical grid lines
+          stone: "#374151",
+          line: "#E5E7EB",
+          grid: "rgba(0,196,204,0.06)",
         },
       },
       fontFamily: {
         sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
         serif: ["var(--font-fraunces)", "Georgia", "Cambria", "serif"],
+        display: ["var(--font-fraunces)", "Georgia", "Cambria", "serif"],
         mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       letterSpacing: {
@@ -56,10 +65,10 @@ const config: Config = {
         lg: "6px",
       },
       boxShadow: {
-        soft: "0 4px 24px rgba(11, 42, 43, 0.06)",
-        card: "0 18px 50px -18px rgba(11, 42, 43, 0.22)",
-        float: "0 12px 36px -12px rgba(11, 42, 43, 0.28)",
-        nav: "0 1px 0 rgba(220, 227, 228, 0.9), 0 8px 30px -18px rgba(11, 42, 43, 0.22)",
+        soft: "0 4px 24px rgba(10,22,40,0.06)",
+        card: "0 18px 50px -18px rgba(10,22,40,0.14)",
+        float: "0 12px 36px -12px rgba(10,22,40,0.18)",
+        nav: "0 1px 0 rgba(229,231,235,0.9), 0 8px 30px -18px rgba(10,22,40,0.10)",
       },
       transitionDuration: {
         hero: "500ms",

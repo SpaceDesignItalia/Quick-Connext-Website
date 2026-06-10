@@ -10,23 +10,14 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-16 border-b border-white/5">
           <div className="flex flex-col gap-5">
-            <Link href="/" className="flex items-center gap-3 group w-fit">
-              <div className="relative w-9 h-9 overflow-hidden bg-transparent flex items-center justify-center border border-white/10 group-hover:border-brand-teal transition-colors">
-                <Image
-                  src="/logo.png"
-                  alt="QuickConnext Logo"
-                  fill
-                  className="object-contain p-0.5"
-                />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-white font-bold tracking-wider leading-none text-lg">
-                  QuickConnext
-                </span>
-                <span className="text-[10px] text-brand-teal uppercase tracking-widest font-semibold mt-0.5">
-                  Building
-                </span>
-              </div>
+            <Link href="/" className="group block w-fit transition-opacity hover:opacity-90">
+              <Image
+                src="/logo-lungo.png"
+                alt="QuickConnext Building"
+                width={180}
+                height={220}
+                className="h-[88px] w-auto object-contain"
+              />
             </Link>
 
             <p className="text-sm text-slate-400 leading-relaxed font-sans opacity-80">
@@ -74,6 +65,16 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/progetti" className="hover:text-brand-teal transition-colors">
+                  Progetti
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="hover:text-brand-teal transition-colors">
+                  Blog
+                </Link>
+              </li>
+              <li>
                 <Link href="/chi-siamo" className="hover:text-brand-teal transition-colors">
                   Chi Siamo
                 </Link>
@@ -81,11 +82,6 @@ export default function Footer() {
               <li>
                 <Link href="/contatti" className="hover:text-brand-teal transition-colors">
                   Contatti & Supporto
-                </Link>
-              </li>
-              <li>
-                <Link href="/contatti" className="hover:text-brand-teal transition-colors">
-                  Prenota una Demo
                 </Link>
               </li>
             </ul>

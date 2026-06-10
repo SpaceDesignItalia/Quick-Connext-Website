@@ -2,73 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── DESIGN TOKENS ─────────────────────────────────────────────────────────
+   Philosophy: White & light gray = 80% of page.
+   Navy #0A1628 = dark sections only (max 2-3 per page).
+   Teal #00C4CC = accent only — lines, icons, stats, one CTA button per section.
+──────────────────────────────────────────────────────────────────────────── */
 :root {
-  --background: #f4f6f7; /* cool light */
-  --foreground: #14201f; /* cool graphite */
-  --brand-dark: #0b2a2b; /* deep petrol */
-  --brand-radial: #103a3a;
-  --brand-teal: #0e7c82; /* verde benzina */
-  --brand-teal-light: #38c5c0; /* logo turquoise */
-  --brand-ivory-deep: #eceff1;
-  --brand-line: #dce3e4;
-  --brand-stone: #5b6b6a;
-  --grid-line: rgba(14, 124, 130, 0.1);
-  --grid-line-dark: rgba(56, 197, 192, 0.08);
+  --background: #ffffff;
+  --foreground: #0A1628;
+
+  /* Navy */
+  --brand-dark: #0A1628;
+  --brand-navy: #0A1628;
+  --brand-navy-light: #1E2D4A;
+  --brand-radial: #0E1F3A;       /* radial highlight in dark sections */
+
+  /* Teal accent — NOT a background color */
+  --brand-teal: #00C4CC;
+  --brand-teal-dark: #009BA3;
+  --brand-teal-light: #33D9E0;
+  --brand-teal-glow: rgba(0, 196, 204, 0.10);
+
+  /* Surfaces */
+  --brand-surface: #F7F9FA;       /* light section bg */
+  --brand-surface-deep: #EEF1F4; /* muted / card bg */
+  --brand-ivory-deep: #F7F9FA;   /* kept for legacy class names */
+  --brand-line: #E5E7EB;          /* hairlines */
+  --brand-stone: #374151;         /* body text */
+
+  /* Grid */
+  --grid-line: rgba(0, 196, 204, 0.06);
+  --grid-line-dark: rgba(0, 196, 204, 0.08);
+  --brand-soft: rgba(0, 196, 204, 0.08);
 }
 
 body {
-  color: var(--foreground);
+  color: var(--brand-stone);
   background: var(--background);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: var(--brand-ivory-deep);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--brand-teal);
-  border-radius: 0;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--brand-dark);
-}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--brand-surface); }
+::-webkit-scrollbar-thumb { background: var(--brand-teal); border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: var(--brand-navy); }
 
 ::selection {
-  background: rgba(14, 124, 130, 0.16);
-  color: var(--foreground);
+  background: rgba(0, 196, 204, 0.14);
+  color: var(--brand-navy);
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
-/* ─── TECHNICAL GRID ─── */
+/* ─── TECHNICAL GRID ─────────────────────────────────────────────────────── */
 @layer utilities {
   .tech-grid {
-    background-image: linear-gradient(
-        to right,
-        var(--grid-line) 1px,
-        transparent 1px
-      ),
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
       linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
     background-size: 56px 56px;
   }
   .tech-grid-dark {
-    background-image: linear-gradient(
-        to right,
-        var(--grid-line-dark) 1px,
-        transparent 1px
-      ),
+    background-image:
+      linear-gradient(to right, var(--grid-line-dark) 1px, transparent 1px),
       linear-gradient(to bottom, var(--grid-line-dark) 1px, transparent 1px);
     background-size: 56px 56px;
   }
-  /* radial fade so the grid dissolves toward the edges */
   .grid-fade::before {
     content: "";
     position: absolute;
@@ -82,39 +83,38 @@ html {
     );
   }
 
-  /* legacy no-ops kept so old markup stays clean */
+  /* Legacy no-ops — kept for markup compatibility */
   .noise-texture::before,
   .dot-grid-dark::after,
-  .dot-grid-light::after {
-    content: none;
-  }
+  .dot-grid-light::after { content: none; }
 }
 
-/* ─── SECTION BACKGROUNDS ─── */
+/* ─── SECTION BACKGROUNDS ────────────────────────────────────────────────── */
 @layer components {
+  /* Dark sections: navy, max 2-3 per page (hero overlay, Finanza, Final CTA, Footer) */
   .section-dark {
     @apply relative overflow-hidden text-white;
-    background: radial-gradient(
-      ellipse 90% 80% at 50% 0%,
-      var(--brand-radial) 0%,
-      var(--brand-dark) 72%
-    );
+    background: var(--brand-dark);
   }
+  /* Default light section */
   .section-light {
     @apply relative overflow-hidden;
     background: var(--background);
   }
+  /* Alternate light section (slightly off-white) */
   .section-muted {
     @apply relative overflow-hidden;
-    background: var(--brand-ivory-deep);
+    background: var(--brand-surface);
   }
 }
 
-/* ─── TYPOGRAPHY ─── */
+/* ─── TYPOGRAPHY ─────────────────────────────────────────────────────────── */
 @layer components {
+  /* Section labels — teal, mono, 11px uppercase */
   .mono-label,
   .section-label {
-    @apply inline-flex items-center gap-2.5 text-[11px] font-medium uppercase text-brand-teal;
+    @apply inline-flex items-center gap-2.5 text-[11px] font-medium uppercase;
+    color: var(--brand-teal);
     font-family: var(--font-mono), monospace;
     letter-spacing: 0.18em;
   }
@@ -128,65 +128,79 @@ html {
     flex-shrink: 0;
   }
 
+  /* Headings — always navy on light, always white on dark */
   .heading-display,
   .heading-h1,
   .heading-h2 {
     font-family: var(--font-fraunces), Georgia, serif;
   }
-  .heading-display {
-    @apply font-semibold;
-    letter-spacing: -0.02em;
-  }
+  .heading-display { @apply font-semibold; letter-spacing: -0.02em; }
   .heading-h1 {
-    @apply text-[44px] md:text-[62px] font-semibold leading-[1.02] text-brand-navy;
+    @apply text-[44px] md:text-[62px] font-semibold leading-[1.02];
+    color: var(--brand-navy);
     letter-spacing: -0.025em;
   }
   .heading-h2 {
     @apply text-[32px] md:text-[50px] font-semibold leading-[1.05];
     letter-spacing: -0.02em;
   }
+  /* On light backgrounds → navy */
   .heading-h2-light {
-    @apply heading-h2 text-brand-navy;
+    @apply heading-h2;
+    color: var(--brand-navy);
   }
+  /* On dark backgrounds → white */
   .heading-h2-dark {
     @apply heading-h2 text-white;
   }
 
+  /* Body text — #374151 dark gray, NOT navy, NOT teal */
   .body-text {
-    @apply text-[16px] md:text-[17px] font-normal leading-relaxed text-brand-stone;
+    @apply text-[16px] md:text-[17px] font-normal leading-relaxed;
+    color: var(--brand-stone);
   }
 
+  /* CTA buttons */
   .cta-button {
     @apply inline-flex items-center gap-2 text-[12px] font-semibold uppercase transition-all duration-300;
     font-family: var(--font-mono), monospace;
     letter-spacing: 0.1em;
   }
   .cta-button-primary {
-    @apply cta-button bg-brand-teal text-white px-7 py-3.5 rounded-sm hover:bg-brand-navy-dark;
+    @apply cta-button text-white px-7 py-3.5 rounded-sm;
+    background: var(--brand-teal);
+  }
+  .cta-button-primary:hover {
+    background: var(--brand-navy);
   }
   .cta-button-outline {
-    @apply cta-button border border-brand-navy/25 text-brand-navy px-6 py-3 rounded-sm hover:border-brand-teal hover:text-brand-teal;
+    @apply cta-button px-6 py-3 rounded-sm;
+    border: 1px solid rgba(10, 22, 40, 0.2);
+    color: var(--brand-navy);
+  }
+  .cta-button-outline:hover {
+    border-color: var(--brand-teal);
+    color: var(--brand-teal);
   }
   .cta-link {
-    @apply cta-button text-brand-teal hover:text-brand-navy;
+    @apply cta-button;
+    color: var(--brand-teal);
   }
+  .cta-link:hover { color: var(--brand-navy); }
 
-  .teal-rule {
-    @apply w-full h-px bg-brand-line;
-  }
+  /* Decorative rules */
+  .teal-rule { @apply w-full h-px bg-brand-line; }
   .brass-rule {
     @apply w-full h-px;
     background: linear-gradient(to right, var(--brand-teal), transparent);
   }
-  .teal-accent-left {
-    border-left: 2px solid var(--brand-teal);
-  }
+  .teal-accent-left { border-left: 2px solid var(--brand-teal); }
 }
 
-/* ─── NAVIGATION ─── */
+/* ─── NAVIGATION ─────────────────────────────────────────────────────────── */
 @layer components {
   .glass-nav {
-    background: rgba(244, 246, 247, 0.82);
+    background: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(16px) saturate(120%);
     -webkit-backdrop-filter: blur(16px) saturate(120%);
     border-bottom: 1px solid var(--brand-line);
@@ -197,61 +211,85 @@ html {
   }
 }
 
-/* ─── CARDS ─── */
+/* ─── CARDS ──────────────────────────────────────────────────────────────── */
 @layer components {
+  /* Dark card (on dark section) */
   .glass-card {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(10, 22, 40, 0.08);
+    box-shadow: 0 8px 32px rgba(10, 22, 40, 0.1);
+    border-radius: 1rem;
+  }
+  .glass-card-dark {
+    background: rgba(10, 22, 40, 0.78);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 196, 204, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    border-radius: 1rem;
+  }
+  .glass-card-legacy {
+    background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 3px;
   }
+  /* Light card (on white/light section) */
   .glass-card-light {
-    background: var(--brand-ivory-deep);
+    background: var(--brand-surface);
     border: 1px solid var(--brand-line);
     border-radius: 3px;
   }
   .glass-panel-bottom {
     background: linear-gradient(
       to top,
-      rgba(11, 42, 43, 0.92),
-      rgba(11, 42, 43, 0.5) 60%,
-      rgba(11, 42, 43, 0)
+      rgba(10, 22, 40, 0.92),
+      rgba(10, 22, 40, 0.5) 60%,
+      rgba(10, 22, 40, 0)
     );
   }
-
-  /* Floating product card (architecture diagram) */
   .product-card {
-    @apply flex items-center gap-3 bg-brand-ivory-card border border-brand-line rounded-lg px-3.5 py-2.5 shadow-float;
+    @apply flex items-center gap-3 bg-white border border-brand-line rounded-lg px-3.5 py-2.5 shadow-float;
   }
   .product-card-icon {
-    @apply flex items-center justify-center w-9 h-9 rounded-sm bg-brand-teal/10 text-brand-teal flex-shrink-0;
+    @apply flex items-center justify-center w-9 h-9 rounded-sm flex-shrink-0;
+    background: rgba(0, 196, 204, 0.1);
+    color: var(--brand-teal);
   }
 }
 
-/* ─── STAT ITEM ─── */
+/* ─── STAT ITEM ──────────────────────────────────────────────────────────── */
 @layer components {
+  /* Stat numbers: teal on light bg, white on dark bg */
   .stat-number {
-    @apply text-[60px] md:text-[84px] font-semibold text-brand-navy leading-none;
+    @apply text-[60px] md:text-[84px] font-semibold leading-none;
     font-family: var(--font-fraunces), Georgia, serif;
+    color: var(--brand-teal);
     letter-spacing: -0.03em;
   }
+  .stat-number-dark {
+    @apply stat-number text-white;
+  }
   .stat-bar {
-    @apply w-[2px] h-10 bg-brand-teal flex-shrink-0;
+    @apply w-[2px] h-10 flex-shrink-0;
+    background: var(--brand-teal);
   }
 }
 
-/* ─── BENEFIT ROW ─── */
+/* ─── BENEFIT ROW ────────────────────────────────────────────────────────── */
 @layer components {
   .benefit-row {
-    @apply flex items-center justify-between py-6 border-b border-white/10 cursor-default transition-all duration-300;
+    @apply flex items-center justify-between py-6 border-b border-brand-line cursor-default transition-all duration-300;
   }
   .benefit-row:hover .benefit-arrow {
     transform: translateX(0.5rem);
   }
 }
 
-/* ─── HERO PILLAR ─── */
+/* ─── HERO PILLAR ────────────────────────────────────────────────────────── */
 @layer components {
   .hero-panel-icon {
     @apply w-10 h-10 flex items-center justify-center border border-white/30 text-white;
@@ -259,7 +297,7 @@ html {
   }
 }
 
-/* ─── FOOTER WATERMARK ─── */
+/* ─── FOOTER WATERMARK ───────────────────────────────────────────────────── */
 @layer components {
   .footer-watermark {
     @apply absolute pointer-events-none select-none font-semibold text-white;
@@ -268,87 +306,139 @@ html {
     line-height: 1;
     opacity: 0.04;
     letter-spacing: -0.04em;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     white-space: nowrap;
   }
 }
 
-/* ─── ANIMATIONS ─── */
+/* ─── ANIMATIONS ─────────────────────────────────────────────────────────── */
 @keyframes marquee {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
 }
-.animate-marquee {
-  animation: marquee 32s linear infinite;
-}
+.animate-marquee { animation: marquee 32s linear infinite; }
 
 @keyframes heroRise {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.hero-rise {
-  animation: heroRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
+.hero-rise { animation: heroRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
 @keyframes floatY {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-7px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-7px); }
 }
-.float-card {
-  animation: floatY 5s ease-in-out infinite;
-}
+.float-card { animation: floatY 5s ease-in-out infinite; }
 
-/* ─── KEN BURNS (living images in hero pillars) ─── */
 @keyframes kenburns {
-  0% {
-    transform: scale(1.06);
-  }
-  100% {
-    transform: scale(1.2);
-  }
+  0%   { transform: scale(1.06); }
+  100% { transform: scale(1.2); }
 }
 .kenburns {
   animation: kenburns 22s ease-in-out infinite alternate;
   will-change: transform;
 }
-.group:hover .kenburns {
-  animation-duration: 10s;
-}
+.group:hover .kenburns { animation-duration: 10s; }
 .kenburns-soft {
   animation: kenburns 26s ease-in-out infinite alternate;
   will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .kenburns,
-  .kenburns-soft,
-  .float-card,
-  .hero-rise {
-    animation: none !important;
-  }
+  .kenburns, .kenburns-soft, .float-card, .hero-rise { animation: none !important; }
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─── QUICKCONNEXT HOME OVERRIDES ────────────────────────────────────────── */
+:root {
+  --qc-petrol: oklch(0.46 0.062 197);
+  --qc-petrol-deep: oklch(0.34 0.05 199);
+  --qc-petrol-soft: oklch(0.6 0.07 192);
+  --qc-ink: #0A1628;
+  --qc-paper: oklch(0.995 0.004 185);
+  --qc-paper-2: oklch(0.97 0.012 188);
+  --qc-line: #E5E7EB;
+  --qc-muted: #374151;
+  --qc-accent: var(--brand-teal);
+  --qc-accent-strong: var(--brand-teal-dark);
 }
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+@layer components {
+  .home-page .section-light {
+    color: var(--qc-ink);
+    background: transparent;
+  }
+  .home-page .section-dark {
+    background-color: var(--brand-navy);
+    color: var(--qc-paper);
+    background-image: none;
+  }
+  .home-page .heading-h2-light {
+    color: var(--qc-ink);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    font-family: var(--font-inter), system-ui, sans-serif;
+  }
+  .home-page .heading-h2-dark {
+    color: var(--qc-paper);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    font-family: var(--font-inter), system-ui, sans-serif;
+  }
+  .home-page .body-text {
+    color: var(--qc-muted);
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+  .eyebrow {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--brand-teal);
+  }
+  .qc-card {
+    background-color: var(--qc-paper);
+    border: 1px solid var(--qc-line);
+    border-radius: 1rem;
+    box-shadow:
+      0 1px 2px oklch(0.46 0.062 197 / 0.04),
+      0 12px 32px oklch(0.46 0.062 197 / 0.06);
+  }
+  .qc-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: white;
+    background-color: var(--brand-teal);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+  .qc-btn:hover {
+    background-color: var(--brand-teal-dark);
+    transform: translateY(-1px);
+  }
+  .home-page .cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: var(--brand-teal);
+    transition: gap 0.2s ease, color 0.2s ease;
+    font-family: inherit;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+  .home-page .cta-link:hover {
+    gap: 0.85rem;
+    color: var(--brand-teal-dark);
+  }
 }
