@@ -5,8 +5,6 @@ import { Shield, Mail, Phone, MapPin } from "lucide-react";
 export default function Footer() {
   return (
     <footer className="bg-brand-navy-dark text-slate-400 pt-20 pb-10 border-t border-brand-teal relative overflow-hidden noise-texture dot-grid-dark">
-      <span className="footer-watermark" aria-hidden="true">QCB</span>
-
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-16 border-b border-white/5">
           <div className="flex flex-col gap-5">
@@ -81,7 +79,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/contatti" className="hover:text-brand-teal transition-colors">
-                  Contatti & Supporto
+                  Contattaci
                 </Link>
               </li>
             </ul>

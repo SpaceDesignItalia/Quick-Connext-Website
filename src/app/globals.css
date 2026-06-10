@@ -297,21 +297,6 @@ html { scroll-behavior: smooth; }
   }
 }
 
-/* ─── FOOTER WATERMARK ───────────────────────────────────────────────────── */
-@layer components {
-  .footer-watermark {
-    @apply absolute pointer-events-none select-none font-semibold text-white;
-    font-family: var(--font-fraunces), Georgia, serif;
-    font-size: 200px;
-    line-height: 1;
-    opacity: 0.04;
-    letter-spacing: -0.04em;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    white-space: nowrap;
-  }
-}
-
 /* ─── ANIMATIONS ─────────────────────────────────────────────────────────── */
 @keyframes marquee {
   0% { transform: translateX(0%); }

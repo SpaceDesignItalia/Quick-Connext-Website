@@ -26,7 +26,7 @@ import { RoiCalculator } from "./RoiCalculator";
 import type { SceneCard, SectorConfig, StatPause } from "./types";
 
 /* Animated numeric value: "−45%" counts up from 0 when scrolled into view. */
-function CountUp({ value, className }: { value: string; className?: string }) {
+export function CountUp({ value, className }: { value: string; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-40px" });
   const match = value.match(/^([+\-−]?)(\d+)(.*)$/);
@@ -651,6 +651,35 @@ function CinematicHero({ config }: { config: SectorConfig }) {
   );
 }
 
+function GridSection({ grid }: { grid: NonNullable<SectorConfig["grid"]> }) {
+  return (
+    <section className={cn("mx-auto max-w-7xl px-5 sm:px-8", SECTION_PY)}>
+      <Reveal className="max-w-2xl">
+        {grid.label && <SectionLabel>{grid.label}</SectionLabel>}
+        <h2 className="mt-6 font-display text-3xl font-extrabold leading-[1.1] text-foreground sm:text-4xl">
+          {grid.title}
+        </h2>
+        {grid.subtitle && (
+          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{grid.subtitle}</p>
+        )}
+      </Reveal>
+      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {grid.features.map((f, i) => (
+          <Reveal key={f.title} delay={i}>
+            <div className="h-full rounded-2xl border border-border bg-background p-6 transition-shadow hover:shadow-card">
+              <span className="flex size-11 items-center justify-center rounded-xl bg-brand/10 text-brand">
+                {createElement(f.icon, { className: "size-5" })}
+              </span>
+              <h3 className="mt-4 text-base font-semibold text-foreground">{f.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function CtaBand({
   label = "Prenota una demo",
   title,
@@ -704,6 +733,21 @@ export function SectorPage({ config }: { config: SectorConfig }) {
       ? [{ id: "demo", label: "La regia, live", live: true }]
       : []),
   ];
+  const statsHeading = config.statsSection ?? {
+    label: "Risultati misurabili",
+    title: "L'impatto, in numeri.",
+  };
+  const comparisonHeading = config.comparisonSection ?? {
+    label: "Il confronto",
+    title: "QuickConnext vs system integrator tradizionale",
+  };
+  const assistanceHeading = config.assistanceSection ?? {
+    label: "Assistenza",
+    title: "Non sei mai solo.",
+    subtitle:
+      "Un partner unico per progetto, installazione e supporto. Plug & play, senza fermare la tua attività.",
+  };
+  const gridBeforeScenes = config.grid && config.gridPosition === "before";
 
   return (
     <main className="bg-background">
@@ -775,6 +819,19 @@ export function SectorPage({ config }: { config: SectorConfig }) {
           </Reveal>
         </section>
       )}
+
+      {config.marketStats && config.marketStats.length > 0 && (
+        <section className="bg-surface">
+          <div className={cn("mx-auto max-w-7xl px-5 sm:px-8", SECTION_PY)}>
+            <StatGrid stats={config.marketStats} columns="grid-cols-1 sm:grid-cols-3" />
+            {config.marketStatsSource && (
+              <p className="mt-6 text-center text-sm text-muted-foreground">{config.marketStatsSource}</p>
+            )}
+          </div>
+        </section>
+      )}
+
+      {gridBeforeScenes && config.grid && <GridSection grid={config.grid} />}
 
       {/* Scene features */}
       {config.scenes.map((scene, i) => {
@@ -852,29 +909,7 @@ export function SectorPage({ config }: { config: SectorConfig }) {
       })}
 
       {/* Grid features */}
-      {config.grid && (
-        <section className={cn("mx-auto max-w-7xl px-5 sm:px-8", SECTION_PY)}>
-          <Reveal className="max-w-2xl">
-            <SectionLabel>Ancora di più</SectionLabel>
-            <h2 className="mt-6 font-display text-3xl font-extrabold leading-[1.1] text-foreground sm:text-4xl">
-              {config.grid.title}
-            </h2>
-          </Reveal>
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {config.grid.features.map((f, i) => (
-              <Reveal key={f.title} delay={i}>
-                <div className="h-full rounded-2xl border border-border bg-background p-6 transition-shadow hover:shadow-card">
-                  <span className="flex size-11 items-center justify-center rounded-xl bg-brand/10 text-brand">
-                    {createElement(f.icon, { className: "size-5" })}
-                  </span>
-                  <h3 className="mt-4 text-base font-semibold text-foreground">{f.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-      )}
+      {!gridBeforeScenes && config.grid && <GridSection grid={config.grid} />}
 
       {/* Interactive live demo — the synthesis of all chapters */}
       {config.interactive?.commandCenter && (
@@ -885,10 +920,13 @@ export function SectorPage({ config }: { config: SectorConfig }) {
       <section className="bg-navy">
         <div className={cn("mx-auto max-w-7xl px-5 sm:px-8", SECTION_PY)}>
           <Reveal className="max-w-2xl">
-            <SectionLabel tone="dark">Risultati misurabili</SectionLabel>
+            <SectionLabel tone="dark">{statsHeading.label}</SectionLabel>
             <h2 className="mt-6 text-balance font-display text-4xl font-extrabold leading-[1.05] text-navy-foreground sm:text-5xl">
-              L&apos;impatto, in numeri.
+              {statsHeading.title}
             </h2>
+            {statsHeading.subtitle && (
+              <p className="mt-5 text-lg leading-relaxed text-navy-muted">{statsHeading.subtitle}</p>
+            )}
           </Reveal>
           <div className="mt-12">
             <StatGrid stats={config.stats} tone="dark" />
@@ -902,10 +940,15 @@ export function SectorPage({ config }: { config: SectorConfig }) {
       {/* Comparison */}
       <section className={cn("mx-auto max-w-6xl px-5 sm:px-8", SECTION_PY)}>
         <Reveal className="max-w-2xl">
-          <SectionLabel>Il confronto</SectionLabel>
+          <SectionLabel>{comparisonHeading.label}</SectionLabel>
           <h2 className="mt-6 font-display text-3xl font-extrabold leading-[1.1] text-foreground sm:text-4xl">
-            QuickConnext vs system integrator tradizionale
+            {comparisonHeading.title}
           </h2>
+          {comparisonHeading.subtitle && (
+            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+              {comparisonHeading.subtitle}
+            </p>
+          )}
         </Reveal>
         <Reveal delay={1} className="mt-10 overflow-x-auto overflow-y-hidden rounded-3xl border border-border">
           <div className="min-w-[640px]">
@@ -915,7 +958,9 @@ export function SectorPage({ config }: { config: SectorConfig }) {
                 <span className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-brand to-brand-bright" />
                 <Sparkles className="size-4" /> QuickConnext
               </div>
-              <div className="p-4 sm:p-5 text-muted-foreground">Integratore tradizionale</div>
+              <div className="p-4 sm:p-5 text-muted-foreground">
+                {config.comparisonTraditionalLabel ?? "Integratore tradizionale"}
+              </div>
             </div>
             {config.comparison.map((row, i) => (
               <div
@@ -977,14 +1022,15 @@ export function SectorPage({ config }: { config: SectorConfig }) {
       {/* Assistance */}
       <section className={cn("mx-auto max-w-7xl px-5 sm:px-8", SECTION_PY)}>
         <Reveal className="max-w-2xl">
-          <SectionLabel>Assistenza</SectionLabel>
+          <SectionLabel>{assistanceHeading.label}</SectionLabel>
           <h2 className="mt-6 font-display text-3xl font-extrabold leading-[1.1] text-foreground sm:text-4xl">
-            Non sei mai solo.
+            {assistanceHeading.title}
           </h2>
-          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-            Un partner unico per progetto, installazione e supporto. Plug &amp; play, senza fermare la
-            tua attività.
-          </p>
+          {assistanceHeading.subtitle && (
+            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+              {assistanceHeading.subtitle}
+            </p>
+          )}
         </Reveal>
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {config.assistance.map((a, i) => (
@@ -1002,6 +1048,7 @@ export function SectorPage({ config }: { config: SectorConfig }) {
       </section>
 
       <CtaBand
+        label={config.ctaLabel}
         title={config.ctaTitle}
         subtitle={config.ctaSubtitle}
         image={config.ctaImage}

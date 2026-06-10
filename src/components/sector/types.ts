@@ -60,6 +60,12 @@ export interface HeroKpi {
   label: string;
 }
 
+export interface SectionHeading {
+  label: string;
+  title: string;
+  subtitle?: string;
+}
+
 export interface SectorConfig {
   slug: string;
   metaTitle: string;
@@ -80,11 +86,19 @@ export interface SectorConfig {
   introLabel: string;
   introTitle: string;
   introText: string;
+  /** Optional market stats shown after the intro block. */
+  marketStats?: Array<{ value: string; label: string }>;
+  marketStatsSource?: string;
   scenes: SceneFeature[];
   statPause?: StatPause;
-  grid?: { title: string; features: GridFeature[] };
+  grid?: { label?: string; title: string; subtitle?: string; features: GridFeature[] };
+  /** When "before", the grid renders before scene features (default: after). */
+  gridPosition?: "before" | "after";
   stats: Array<{ value: string; label: string }>;
+  statsSection?: SectionHeading;
   comparison: ComparisonRow[];
+  comparisonSection?: SectionHeading;
+  comparisonTraditionalLabel?: string;
   finance: {
     label: string;
     title: string;
@@ -92,7 +106,9 @@ export interface SectorConfig {
     points: { title: string; desc: string }[];
   };
   assistance: GridFeature[];
+  assistanceSection?: SectionHeading;
   ctaTitle: string;
   ctaSubtitle: string;
+  ctaLabel?: string;
   ctaImage?: string;
 }

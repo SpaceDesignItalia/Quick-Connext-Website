@@ -6,8 +6,14 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ButtonLink } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { motion, type Variants } from "framer-motion";
-import { useState, type ReactNode } from "react";
+import { animate, motion, useInView, type Variants } from "framer-motion";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import {
   type LucideIcon,
   ArrowRight,
@@ -16,13 +22,15 @@ import {
   KeyRound,
   ShieldCheck,
   Gauge,
-  Plug,
   Network,
   Wrench,
   ArrowUpRight,
   Calendar,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { blogPosts } from "@/data/blog-posts";
+import { CountUp } from "@/components/sector/SectorPage";
 
 // ─── Images (Unsplash) ────────────────────────────────────────────────────────
 
@@ -176,64 +184,204 @@ function NotificationCard({
   );
 }
 
-// ─── SceneImage ───────────────────────────────────────────────────────────────
+// ─── PlatformCompare — prima (sistemi separati) ↔ con QuickConnext ───────────
 
-function SceneImage({
-  src,
-  alt,
-  cards = [],
-  className,
-  imageClassName,
-  priority = false,
-  rounded = "rounded-3xl",
-}: {
-  src: string;
-  alt: string;
-  cards?: Array<{
-    icon: LucideIcon;
-    title: string;
-    detail: string;
-    status?: string;
-    tone?: "light" | "dark";
-    delay?: number;
-    position: string;
-    float?: boolean;
-  }>;
-  className?: string;
-  imageClassName?: string;
-  priority?: boolean;
-  rounded?: string;
-}) {
+const compareNodes = [
+  { icon: Thermometer, label: "Clima", x: 18, y: 22, vendor: "Fornitore A" },
+  { icon: Lightbulb, label: "Luci", x: 74, y: 16, vendor: "Fornitore B" },
+  { icon: KeyRound, label: "Accessi", x: 84, y: 50, vendor: "Fornitore C" },
+  { icon: ShieldCheck, label: "Sicurezza", x: 13, y: 58, vendor: "Fornitore D" },
+  { icon: Gauge, label: "Energia", x: 33, y: 78, vendor: "Fornitore E" },
+  { icon: Wrench, label: "Manutenzione", x: 72, y: 76, vendor: "Fornitore F" },
+];
+
+function PlatformCompare() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-60px" });
+  const hasAnimated = useRef(false);
+  const isDragging = useRef(false);
+  const isHovering = useRef(false);
+  const [position, setPosition] = useState(88);
+  const [scrubEnabled, setScrubEnabled] = useState(false);
+
+  useEffect(() => {
+    if (!isInView || hasAnimated.current) return;
+    hasAnimated.current = true;
+    const timeout = setTimeout(() => {
+      animate(88, 32, {
+        duration: 1.8,
+        ease: [0.22, 1, 0.36, 1],
+        onUpdate: (v) => setPosition(v),
+        onComplete: () => setScrubEnabled(true),
+      });
+    }, 350);
+    return () => clearTimeout(timeout);
+  }, [isInView]);
+
+  const updateFromClientX = useCallback((clientX: number) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = ((clientX - rect.left) / rect.width) * 100;
+    setPosition(Math.min(96, Math.max(4, x)));
+  }, []);
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (!scrubEnabled) return;
+    isDragging.current = true;
+    containerRef.current?.setPointerCapture(e.pointerId);
+    updateFromClientX(e.clientX);
+  };
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!scrubEnabled || !isDragging.current) return;
+    updateFromClientX(e.clientX);
+  };
+  const handlePointerUp = (e: React.PointerEvent) => {
+    isDragging.current = false;
+    containerRef.current?.releasePointerCapture(e.pointerId);
+  };
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!scrubEnabled || isDragging.current || !isHovering.current) return;
+    updateFromClientX(e.clientX);
+  };
+
   return (
-    <div className={cn("relative", className)}>
-      <div className={cn("relative aspect-[16/11] overflow-hidden", rounded)}>
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          priority={priority}
-          className={cn("object-cover", imageClassName)}
-          sizes="(max-width: 1024px) 100vw, 50vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy/30 via-transparent to-transparent" />
-      </div>
-      {cards.map((card, i) => {
-        const { position, float = true, ...cardProps } = card;
-        return (
-          <motion.div
-            key={i}
-            className={cn("absolute z-10", position)}
-            animate={float ? { y: [0, -8, 0] } : undefined}
-            transition={
-              float
-                ? { duration: 5 + i, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }
-                : undefined
-            }
+    <div
+      ref={containerRef}
+      className={cn(
+        "relative aspect-[16/13] touch-none select-none overflow-hidden rounded-3xl border border-border bg-background shadow-soft sm:aspect-[16/11]",
+        scrubEnabled && "cursor-col-resize",
+      )}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
+      onMouseEnter={() => {
+        isHovering.current = true;
+      }}
+      onMouseLeave={() => {
+        isHovering.current = false;
+      }}
+      onMouseMove={handleMouseMove}
+    >
+      {/* CON QUICKCONNEXT — everything talks to one platform */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_45%,rgba(0,196,204,0.08),transparent)]" />
+        <svg
+          className="absolute inset-0 h-full w-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          aria-hidden
+        >
+          {compareNodes.map((n) => (
+            <line
+              key={n.label}
+              x1="50"
+              y1="46"
+              x2={n.x}
+              y2={n.y}
+              stroke="rgba(0,196,204,0.35)"
+              strokeWidth="0.45"
+            />
+          ))}
+        </svg>
+        {compareNodes.map((n) => (
+          <div
+            key={n.label}
+            className="absolute -translate-x-1/2 -translate-y-1/2"
+            style={{ left: `${n.x}%`, top: `${n.y}%` }}
           >
-            <NotificationCard {...cardProps} delay={cardProps.delay ?? i * 0.15} />
-          </motion.div>
-        );
-      })}
+            <div className="flex items-center gap-1.5 rounded-xl border border-brand/25 bg-white px-2 py-1.5 shadow-soft sm:gap-2 sm:px-2.5 sm:py-2">
+              <span className="flex size-6 items-center justify-center rounded-lg bg-brand/10 text-brand sm:size-7">
+                <n.icon className="size-3.5" />
+              </span>
+              <span className="text-[10px] font-semibold text-foreground sm:text-[11.5px]">
+                {n.label}
+              </span>
+              <span className="relative ml-0.5 flex size-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-60" />
+                <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
+              </span>
+            </div>
+          </div>
+        ))}
+        <div
+          className="absolute -translate-x-1/2 -translate-y-1/2"
+          style={{ left: "50%", top: "46%" }}
+        >
+          <div className="flex items-center gap-2.5 rounded-2xl border-2 border-brand/40 bg-white px-3 py-2 shadow-card sm:px-4 sm:py-2.5">
+            <Image
+              src="/logo.png"
+              alt=""
+              width={28}
+              height={28}
+              draggable={false}
+              className="size-6 object-contain sm:size-7"
+            />
+            <div className="leading-none">
+              <p className="text-[11px] font-bold text-foreground sm:text-[13px]">QuickConnext</p>
+              <p className="mt-1 font-mono text-[8px] font-semibold uppercase tracking-[0.18em] text-brand sm:text-[9px]">
+                Una piattaforma
+              </p>
+            </div>
+          </div>
+        </div>
+        <span className="pointer-events-none absolute right-3 top-3 flex items-center gap-1.5 rounded-full bg-navy/60 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-brand-bright backdrop-blur-sm sm:right-4 sm:top-4">
+          <span className="relative flex size-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-70" />
+            <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
+          </span>
+          Con QuickConnext
+        </span>
+        <span className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-brand/25 bg-brand/[0.07] px-3 py-1 text-[10px] font-semibold text-brand sm:text-[11px]">
+          Un partner unico · Protocolli aperti
+        </span>
+      </div>
+
+      {/* PRIMA — separate systems that don't talk to each other */}
+      <div
+        className="absolute inset-0"
+        style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
+      >
+        <div className="absolute inset-0 bg-[#ECEDEB]" />
+        {compareNodes.map((n) => (
+          <div
+            key={n.label}
+            className="absolute -translate-x-1/2 -translate-y-1/2"
+            style={{ left: `${n.x}%`, top: `${n.y}%` }}
+          >
+            <div className="flex items-center gap-1.5 rounded-xl border border-black/10 bg-white/85 px-2 py-1.5 sm:gap-2 sm:px-2.5 sm:py-2">
+              <span className="flex size-6 items-center justify-center rounded-lg bg-black/5 text-stone-500 sm:size-7">
+                <n.icon className="size-3.5" />
+              </span>
+              <span className="leading-none">
+                <span className="block text-[10px] font-semibold text-stone-600 sm:text-[11.5px]">
+                  {n.label}
+                </span>
+                <span className="mt-1 block text-[8px] font-bold uppercase tracking-wide text-amber-700/90 sm:text-[9px]">
+                  {n.vendor}
+                </span>
+              </span>
+            </div>
+          </div>
+        ))}
+        <span className="pointer-events-none absolute left-3 top-3 rounded-full bg-stone-800/60 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-white/85 backdrop-blur-sm sm:left-4 sm:top-4">
+          Prima
+        </span>
+        <span className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-amber-600/25 bg-amber-500/10 px-3 py-1 text-[10px] font-semibold text-amber-700 sm:text-[11px]">
+          Sistemi che non dialogano tra loro
+        </span>
+      </div>
+
+      {/* Divider */}
+      <div
+        className="absolute inset-y-0 z-[3] w-px -translate-x-1/2 bg-navy/30 shadow-[0_0_12px_rgba(0,0,0,0.25)]"
+        style={{ left: `${position}%` }}
+      >
+        <div className="absolute left-1/2 top-1/2 flex size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-0.5 rounded-full border-2 border-white bg-navy/80 shadow-lg backdrop-blur-sm">
+          <ChevronLeft className="size-3 text-white/85" strokeWidth={3} />
+          <ChevronRight className="size-3 text-white/85" strokeWidth={3} />
+        </div>
+      </div>
     </div>
   );
 }
@@ -246,36 +394,54 @@ const sectorPanels = [
     label: "Hotel",
     tagline: "L'hotel che si gestisce da solo",
     img: IMAGES.heroHotel,
-    live: "Camera 412 · 22° · check-in ok",
+    chip: "Accessi · Comfort camera · Energia",
   },
   {
     href: "/industry",
     label: "Industria",
     tagline: "Stabilimenti efficienti e sicuri",
     img: IMAGES.sectorIndustria,
-    live: "Linea 3 · consumo -18% oggi",
+    chip: "Impianti · Consumi · Continuità",
   },
   {
     href: "/rsa",
     label: "RSA / Sanitario",
     tagline: "Ambienti di cura connessi",
     img: IMAGES.sectorRsa,
-    live: "Reparto B · clima ottimale",
+    chip: "Sicurezza · Clima · Qualità dell'aria",
   },
   {
     href: "/building",
     label: "Edifici",
     tagline: "Uffici e direzionali smart",
     img: IMAGES.sectorEdifici,
-    live: "Piano 4 · accessi 142 · ok",
+    chip: "BACS · Termoregolazione · Accessi",
   },
 ] as const;
 
 function SectorPanels() {
   const [active, setActive] = useState(0);
+  const paused = useRef(false);
+
+  /* No sector is privileged: panels take turns until the user points one. */
+  useEffect(() => {
+    const t = setInterval(() => {
+      if (!paused.current) setActive((a) => (a + 1) % sectorPanels.length);
+    }, 3500);
+    return () => clearInterval(t);
+  }, []);
 
   return (
-    <div className="flex h-[380px] gap-2 sm:h-[460px]">
+    <div
+      id="settori"
+      className="flex h-[380px] scroll-mt-24 gap-2 sm:h-[460px]"
+      onMouseEnter={() => {
+        paused.current = true;
+      }}
+      onMouseLeave={() => {
+        paused.current = false;
+      }}
+    >
       {sectorPanels.map((p, i) => {
         const isActive = i === active;
         return (
@@ -331,12 +497,8 @@ function SectorPanels() {
                 </span>
               </div>
               {isActive && (
-                <div className="mt-3 hidden w-max items-center gap-2 rounded-full glass-card-dark px-3 py-1.5 sm:flex">
-                  <span className="relative flex size-1.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-70" />
-                    <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
-                  </span>
-                  <span className="text-[11px] font-medium text-white/85">{p.live}</span>
+                <div className="mt-3 hidden w-max rounded-full glass-card-dark px-3.5 py-1.5 sm:block">
+                  <span className="text-[11px] font-medium text-white/85">{p.chip}</span>
                 </div>
               )}
             </div>
@@ -375,14 +537,13 @@ function StatGrid({
             tone === "light" ? "bg-background" : "bg-navy",
           )}
         >
-          <span
+          <CountUp
+            value={s.value}
             className={cn(
               "font-display text-3xl font-extrabold tracking-tight sm:text-4xl",
               tone === "light" ? "text-brand" : "text-brand-bright",
             )}
-          >
-            {s.value}
-          </span>
+          />
           <span
             className={cn(
               "text-sm leading-snug",
@@ -463,7 +624,7 @@ const domains = [
 
 const stats = [
   { value: "−35%", label: "consumi energetici" },
-  { value: "+30%", label: "soddisfazione ospiti" },
+  { value: "+30%", label: "soddisfazione di ospiti e utenti" },
   { value: "−45%", label: "guasti non pianificati" },
   { value: "−60%", label: "incidenti di sicurezza" },
   { value: "+2", label: "classi energetiche APE" },
@@ -472,7 +633,8 @@ const stats = [
   { value: "95%", label: "tasso approvazione pratiche" },
 ];
 
-const protocols = ["KNX", "Modbus", "BACnet", "MQTT", "API aperte"];
+const protocols = ["KNX", "Modbus", "BACnet", "API aperte"];
+
 
 // ─── HomePage ─────────────────────────────────────────────────────────────────
 
@@ -485,7 +647,7 @@ export default function HomePage() {
       <section className="relative overflow-hidden pt-28 sm:pt-32">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_50%_at_70%_0%,var(--brand-soft),transparent)]" />
         <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-          <div className="grid items-end gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="grid items-center gap-12 lg:grid-cols-[1fr_0.95fr]">
             <Reveal>
               <SectionLabel>Building Automation & Control System</SectionLabel>
               <h1 className="mt-6 text-balance font-display text-[2.7rem] font-extrabold leading-[1.02] tracking-tight text-foreground sm:text-6xl">
@@ -501,26 +663,90 @@ export default function HomePage() {
                 <ButtonLink href="/contatti" size="lg">
                   Richiedi una demo <ArrowRight className="size-4" />
                 </ButtonLink>
-                <ButtonLink href="/hotel" size="lg" variant="outline">
+                <ButtonLink href="#settori" size="lg" variant="outline">
                   Scopri le soluzioni
                 </ButtonLink>
               </div>
-            </Reveal>
-            <Reveal delay={1} className="hidden lg:block">
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pb-2">
-                {protocols.map((p) => (
-                  <span key={p} className="text-sm font-semibold text-muted-foreground">
-                    {p}
-                  </span>
-                ))}
-              </div>
-              <p className="mt-3 text-sm text-muted-foreground">
-                Compatibile con i protocolli e i dispositivi di qualsiasi produttore.
+              <p className="mt-8 text-sm text-muted-foreground">
+                {protocols.join(" · ")} — compatibile con qualsiasi produttore.
               </p>
             </Reveal>
+
+            {/* The building switches itself on — live cards around the 3D render */}
+            <div className="relative">
+              <div className="pointer-events-none absolute -inset-8 bg-[radial-gradient(60%_60%_at_50%_45%,rgba(0,196,204,0.12),transparent)]" />
+              <motion.div
+                initial={{ opacity: 0, scale: 1.04, filter: "grayscale(1) brightness(0.8)" }}
+                animate={{ opacity: 1, scale: 1, filter: "grayscale(0) brightness(1)" }}
+                transition={{ duration: 1.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="relative aspect-[4/3.2] overflow-hidden"
+              >
+                {/* crop to the central building — the side thumbnails baked in the
+                    render are replaced by the live cards floating around it */}
+                <Image
+                  src="/edificio.png"
+                  alt="Edificio in sezione 3D gestito dalla piattaforma QuickConnext"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  className="scale-[1.6] object-contain"
+                  style={{ objectPosition: "center 46%" }}
+                />
+              </motion.div>
+
+              <motion.div
+                className="absolute -left-1 top-6 z-10 sm:-left-4"
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <NotificationCard
+                  icon={Thermometer}
+                  title="Clima per zona"
+                  detail="Si regola sulla presenza reale"
+                  delay={0.9}
+                />
+              </motion.div>
+              <motion.div
+                className="absolute right-0 top-1/4 z-10 hidden md:block sm:-right-3"
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+              >
+                <NotificationCard
+                  icon={KeyRound}
+                  title="Accessi tracciati"
+                  detail="Badge e varchi da un cruscotto"
+                  delay={1.1}
+                />
+              </motion.div>
+              <motion.div
+                className="absolute -bottom-3 left-4 z-10 hidden md:block sm:left-0"
+                animate={{ y: [0, -7, 0] }}
+                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              >
+                <NotificationCard
+                  icon={Gauge}
+                  title="Consumi in tempo reale"
+                  detail="Elettrico, termico e idrico"
+                  delay={1.3}
+                />
+              </motion.div>
+              <motion.div
+                className="absolute -bottom-6 right-2 z-10 sm:-right-2"
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
+              >
+                <NotificationCard
+                  icon={Wrench}
+                  title="Anomalia prevista"
+                  detail="Intervento pianificato in anticipo"
+                  status="Manutenzione preventiva"
+                  delay={1.5}
+                />
+              </motion.div>
+            </div>
           </div>
 
-          <Reveal delay={1} className="mt-12">
+          <Reveal delay={1} className="mt-14 pb-14">
             <SectorPanels />
           </Reveal>
         </div>
@@ -556,28 +782,12 @@ export default function HomePage() {
             </div>
           </Reveal>
           <Reveal delay={1}>
-            <SceneImage
-              src={IMAGES.hotelRoom}
-              alt="Camera d'albergo gestita dalla piattaforma QuickConnext"
-              className="lg:pl-6"
-              cards={[
-                {
-                  icon: Thermometer,
-                  title: "Clima ottimale",
-                  detail: "22°C · umidità 45%",
-                  position: "left-4 top-6 sm:-left-6 sm:top-10",
-                  tone: "light",
-                },
-                {
-                  icon: Plug,
-                  title: "Risparmio attivo",
-                  detail: "Camera libera · stand-by",
-                  status: "−28% consumo",
-                  position: "bottom-6 right-4 sm:-right-6 sm:bottom-12",
-                  tone: "light",
-                },
-              ]}
-            />
+            <div className="lg:pl-6">
+              <PlatformCompare />
+              <p className="mt-4 text-center text-xs text-muted-foreground">
+                Trascina o passa il mouse: prima ↔ con QuickConnext
+              </p>
+            </div>
           </Reveal>
         </div>
       </section>
@@ -619,10 +829,10 @@ export default function HomePage() {
           <Reveal className="max-w-2xl">
             <SectionLabel tone="dark">Risultati misurabili</SectionLabel>
             <h2 className="mt-6 text-balance font-display text-4xl font-extrabold leading-[1.05] text-navy-foreground sm:text-5xl">
-              Numeri che il direttore vuole vedere.
+              L&apos;impatto, in numeri.
             </h2>
             <p className="mt-5 text-lg leading-relaxed text-navy-muted">
-              Dati medi rilevati sui progetti QuickConnext nei primi 12 mesi di esercizio.
+              I risultati medi dei progetti QuickConnext Building.
             </p>
           </Reveal>
           <div className="mt-12">
@@ -642,42 +852,41 @@ export default function HomePage() {
             Normativa, tecnologia e casi d&apos;uso reali per chi gestisce edifici intelligenti.
           </p>
         </Reveal>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2">
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {blogPosts.map((post, i) => (
             <Reveal key={post.slug} delay={i}>
               <Link
                 href={`/blog/${post.slug}`}
-                className="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-background ring-1 ring-black/5 transition-colors hover:border-brand/40"
+                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-background ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:border-brand/40 hover:shadow-card"
               >
-                <div className="relative aspect-[16/9] overflow-hidden">
+                <div className="relative aspect-[16/10] overflow-hidden">
                   <Image
                     src={post.image}
                     alt={post.title}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 640px) 100vw, 50vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   />
                 </div>
-                <div className="flex flex-1 flex-col p-6 sm:p-7">
-                  <div className="mb-4 flex flex-wrap items-center gap-3">
-                    <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-brand">
+                <div className="flex flex-1 flex-col p-5">
+                  <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <span className="font-mono text-[9.5px] font-semibold uppercase tracking-[0.16em] text-brand">
                       {post.category}
                     </span>
-                    <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <Calendar className="size-3.5" />
+                    <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                      <Calendar className="size-3" />
                       {post.date}
                     </span>
-                    <span className="text-xs text-muted-foreground">{post.readTime}</span>
                   </div>
-                  <h3 className="font-display text-xl font-bold leading-snug text-foreground transition-colors group-hover:text-brand">
+                  <h3 className="font-display text-[16px] font-bold leading-snug text-foreground transition-colors group-hover:text-brand">
                     {post.title}
                   </h3>
-                  <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
+                  <p className="mt-2 flex-1 text-[13px] leading-relaxed text-muted-foreground [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3] overflow-hidden">
                     {post.excerpt}
                   </p>
-                  <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand transition-all group-hover:gap-3">
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand transition-all group-hover:gap-2.5">
                     Leggi l&apos;articolo
-                    <ArrowRight className="size-4" />
+                    <ArrowRight className="size-3.5" />
                   </span>
                 </div>
               </Link>
