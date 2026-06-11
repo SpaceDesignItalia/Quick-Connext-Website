@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 
 interface BeforeAfterSliderProps {
   src: string;
+  /** Optional distinct image for the "Prima" side; defaults to src with desaturation. */
+  beforeSrc?: string;
   alt: string;
   className?: string;
   rounded?: string;
@@ -25,6 +27,7 @@ const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 
 export function BeforeAfterSlider({
   src,
+  beforeSrc,
   alt,
   className,
   rounded = "rounded-3xl",
@@ -139,18 +142,19 @@ export function BeforeAfterSlider({
           style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
         >
           <Image
-            src={src}
+            src={beforeSrc ?? src}
             alt=""
             aria-hidden
             fill
             className={cn(
-              "object-cover grayscale brightness-[0.62] contrast-[0.92]",
+              "object-cover",
+              !beforeSrc && "grayscale brightness-[0.62] contrast-[0.92]",
               imageClassName,
             )}
             sizes="(max-width: 1024px) 100vw, 50vw"
             draggable={false}
           />
-          <div className="absolute inset-0 bg-navy/25" />
+          {!beforeSrc && <div className="absolute inset-0 bg-navy/25" />}
           <span className="pointer-events-none absolute left-4 top-4 z-[1] rounded-full bg-black/45 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-white/70 backdrop-blur-sm">
             Prima
           </span>

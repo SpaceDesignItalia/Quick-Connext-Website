@@ -18,6 +18,8 @@ export interface SceneFeature {
   desc: string;
   bullets: string[];
   image: string;
+  /** Optional distinct image for the "Prima" side of the before/after slider. */
+  beforeImage?: string;
   cards: SceneCard[];
   /** Concrete problems shown on the "Prima" side of the slider. */
   before?: string[];

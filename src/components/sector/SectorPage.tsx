@@ -289,6 +289,7 @@ function NotificationCard({
 
 function SceneImage({
   src,
+  beforeSrc,
   alt,
   cards = [],
   before = [],
@@ -300,6 +301,7 @@ function SceneImage({
   size = "default",
 }: {
   src: string;
+  beforeSrc?: string;
   alt: string;
   cards?: Array<SceneCard & { delay?: number; float?: boolean }>;
   before?: string[];
@@ -337,6 +339,7 @@ function SceneImage({
     <div className={cn("relative", size === "dominant" && "h-full min-h-[55vh] lg:min-h-[78vh]", className)}>
       <BeforeAfterSlider
         src={src}
+        beforeSrc={beforeSrc}
         alt={alt}
         priority={priority}
         rounded={rounded}
@@ -897,6 +900,7 @@ export function SectorPage({ config }: { config: SectorConfig }) {
                   <Reveal delay={1} className={cn(reverse && "lg:order-1", isDominant && "h-full")}>
                     <SceneImage
                       src={scene.image}
+                      beforeSrc={scene.beforeImage}
                       alt={scene.title}
                       cards={scene.cards}
                       before={scene.before}
