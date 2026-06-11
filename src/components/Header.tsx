@@ -3,7 +3,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState, useEffect, useRef, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useCallback,
+} from "react";
 import {
   Menu,
   X,
@@ -16,6 +22,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 type NavLink = {
   href: string;
@@ -77,8 +84,43 @@ const navLinks: NavLink[] = [
   },
 ];
 
+const NAV_EASE = [0.22, 1, 0.36, 1] as const;
+
+const navShellTransition = {
+  duration: 0.38,
+  ease: NAV_EASE,
+};
+
 function isServicesActive(pathname: string) {
   return SERVICE_PATHS.some((path) => pathname.startsWith(path));
+}
+
+function LogoMark({ showText }: { showText: boolean }) {
+  return (
+    <Link href="/" className="group flex shrink-0 items-center gap-3">
+      <Image
+        src="/logo.png"
+        alt="QuickConnext"
+        width={40}
+        height={40}
+        className={cn(
+          "object-contain group-hover:scale-105",
+          showText ? "h-9 w-9" : "h-9 w-9 sm:h-10 sm:w-10",
+        )}
+        priority
+      />
+      {showText && (
+        <div className="flex flex-col leading-none">
+          <span className="whitespace-nowrap text-[19px] font-semibold tracking-tight text-brand-navy">
+            QuickConnext
+          </span>
+          <span className="mt-1 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.32em] text-brand-teal">
+            Building
+          </span>
+        </div>
+      )}
+    </Link>
+  );
 }
 
 export default function Header() {
@@ -86,7 +128,15 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [compact, setCompact] = useState(false);
+  const [dropdownTop, setDropdownTop] = useState(72);
+  const headerRef = useRef<HTMLElement>(null);
   const servicesCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const updateDropdownTop = useCallback(() => {
+    if (!headerRef.current) return;
+    setDropdownTop(headerRef.current.getBoundingClientRect().bottom + 10);
+  }, []);
 
   const openServices = useCallback(() => {
     if (servicesCloseTimer.current) {
@@ -97,7 +147,7 @@ export default function Header() {
   }, []);
 
   const scheduleCloseServices = useCallback(() => {
-    servicesCloseTimer.current = setTimeout(() => setServicesOpen(false), 120);
+    servicesCloseTimer.current = setTimeout(() => setServicesOpen(false), 140);
   }, []);
 
   useEffect(() => {
@@ -107,88 +157,123 @@ export default function Header() {
   }, [pathname]);
 
   useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      setCompact((prev) => {
+        if (!prev && y > 56) return true;
+        if (prev && y < 24) return false;
+        return prev;
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useLayoutEffect(() => {
+    updateDropdownTop();
+    window.addEventListener("resize", updateDropdownTop);
+    window.addEventListener("scroll", updateDropdownTop, { passive: true });
+    return () => {
+      window.removeEventListener("resize", updateDropdownTop);
+      window.removeEventListener("scroll", updateDropdownTop);
+    };
+  }, [compact, updateDropdownTop]);
+
+  useLayoutEffect(() => {
+    updateDropdownTop();
+    const t = window.setTimeout(updateDropdownTop, 400);
+    return () => window.clearTimeout(t);
+  }, [servicesOpen, compact, updateDropdownTop]);
+
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
     return () => {
       if (servicesCloseTimer.current) clearTimeout(servicesCloseTimer.current);
     };
   }, []);
 
+  const mobileOverlayTop = compact ? "top-16" : "top-[72px]";
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-brand-line bg-white shadow-nav">
-      <div className="relative mx-auto flex h-[68px] max-w-[1280px] items-center justify-between px-5 md:px-10">
-        <Link href="/" className="relative z-10 flex shrink-0 items-center gap-3 group">
-          <Image
-            src="/logo.png"
-            alt="QuickConnext"
-            width={40}
-            height={40}
-            className="h-9 w-9 object-contain transition-transform duration-500 group-hover:scale-105"
-            priority
-          />
-          <div className="flex flex-col leading-none">
-            <span className="text-[20px] font-semibold tracking-tight text-brand-navy">
-              QuickConnext
-            </span>
-            <span className="mt-1 text-[9.5px] font-semibold uppercase tracking-[0.32em] text-brand-teal">
-              Building
-            </span>
-          </div>
-        </Link>
-
-        <nav className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-1 lg:flex">
-          {navLinks.slice(0, 1).map((link) => (
-            <NavItem key={link.href} link={link} pathname={pathname} />
-          ))}
-
-          <div onMouseEnter={openServices} onMouseLeave={scheduleCloseServices}>
-            <button
-              type="button"
-              className={`flex items-center gap-1 rounded-full px-4 py-2 text-[13px] font-medium transition-colors ${
-                isServicesActive(pathname) || servicesOpen
-                  ? "bg-brand-ivory-deep text-brand-navy"
-                  : "text-brand-stone hover:bg-brand-ivory-deep/70 hover:text-brand-navy"
-              }`}
-              aria-expanded={servicesOpen}
-              aria-haspopup="true"
+    <>
+      <header ref={headerRef} className="fixed inset-x-0 top-0 z-50 min-h-[72px]">
+        <AnimatePresence initial={false}>
+          {compact ? (
+            <motion.div
+              key="nav-compact"
+              initial={{ opacity: 0, y: -10, filter: "blur(4px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+              transition={navShellTransition}
+              className="absolute inset-x-0 top-0 flex justify-center px-3 pt-3 sm:px-4"
             >
-              Servizi
-              <ChevronDown
-                className={`h-3.5 w-3.5 transition-transform duration-200 ${
-                  servicesOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-          </div>
+              <div className="flex max-w-[calc(100vw-1.5rem)] items-center gap-2.5 sm:gap-3">
+                <LogoMark showText={false} />
+                <div className="flex items-center rounded-full border border-brand-line/70 bg-white/95 py-1.5 pl-1.5 pr-2 shadow-[0_10px_40px_-12px_rgba(10,22,40,0.2)] backdrop-blur-xl sm:pl-2 sm:pr-2.5">
+                  <DesktopNav
+                    pathname={pathname}
+                    compact
+                    servicesOpen={servicesOpen}
+                    onOpenServices={openServices}
+                    onCloseServices={scheduleCloseServices}
+                  />
+                  <MobileMenuButton isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
+                </div>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="nav-full"
+              initial={{ opacity: 0, y: -10, filter: "blur(4px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+              transition={navShellTransition}
+              className="absolute inset-x-0 top-0 h-[72px] w-full border-b border-brand-line/80 bg-white shadow-[0_1px_0_rgba(229,231,235,0.6)]"
+            >
+              <div className="absolute left-5 top-1/2 z-10 -translate-y-1/2 sm:left-8">
+                <LogoMark showText />
+              </div>
 
-          {navLinks.slice(1).map((link) => (
-            <NavItem key={link.href} link={link} pathname={pathname} />
-          ))}
-        </nav>
+              <div className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 lg:block">
+                <DesktopNav
+                  pathname={pathname}
+                  compact={false}
+                  servicesOpen={servicesOpen}
+                  onOpenServices={openServices}
+                  onCloseServices={scheduleCloseServices}
+                />
+              </div>
 
-        <div className="relative z-10 flex items-center gap-3">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="p-1 text-brand-navy transition-colors hover:text-brand-teal lg:hidden"
-            aria-label={isOpen ? "Chiudi menu" : "Apri menu"}
-          >
-            {isOpen ? <X size={26} /> : <Menu size={26} />}
-          </button>
-        </div>
-      </div>
+              <div className="absolute right-5 top-1/2 z-10 -translate-y-1/2 sm:right-8 lg:hidden">
+                <MobileMenuButton isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
 
       <AnimatePresence>
         {servicesOpen && (
           <motion.div
             key="services-dropdown"
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
-            className="fixed inset-x-0 top-[68px] z-50 hidden flex-col items-center pt-3 lg:flex"
+            exit={{ opacity: 0, y: 6 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-x-0 z-50 hidden justify-center px-4 lg:flex"
+            style={{ top: dropdownTop }}
             onMouseEnter={openServices}
             onMouseLeave={scheduleCloseServices}
           >
-            <div className="w-[min(92vw,680px)] px-5">
-              <div className="overflow-hidden rounded-2xl border border-brand-line bg-white shadow-card">
+            <div className="w-full max-w-[680px]">
+              <div className="overflow-hidden rounded-2xl border border-brand-line bg-white/95 shadow-card backdrop-blur-xl">
                 <div className="grid grid-cols-2 gap-1 p-3">
                   {SERVICES.map((service) => {
                     const Icon = service.icon;
@@ -197,13 +282,12 @@ export default function Header() {
                       <Link
                         key={service.href}
                         href={service.href}
-                        className={`group flex gap-3 rounded-xl p-4 transition-colors ${
-                          active
-                            ? "bg-brand-ivory-deep"
-                            : "hover:bg-brand-ivory-deep/60"
-                        }`}
+                        className={cn(
+                          "group flex gap-3 rounded-xl p-4 transition-colors",
+                          active ? "bg-brand-ivory-deep" : "hover:bg-brand-ivory-deep/60",
+                        )}
                       >
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-ivory text-brand-stone transition-colors group-hover:text-brand-teal">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-ivory text-brand-stone transition-colors group-hover:bg-brand-teal/10 group-hover:text-brand-teal">
                           <Icon className="h-5 w-5" strokeWidth={1.6} />
                         </div>
                         <div className="min-w-0">
@@ -239,25 +323,32 @@ export default function Header() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 top-[68px] z-40 bg-brand-navy-dark/30 backdrop-blur-sm lg:hidden"
+              className={cn(
+                "fixed inset-0 z-40 bg-brand-navy-dark/30 backdrop-blur-sm lg:hidden",
+                mobileOverlayTop,
+              )}
             />
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", bounce: 0.08, duration: 0.45 }}
-              className="fixed right-0 top-[68px] bottom-0 z-40 flex w-4/5 max-w-sm flex-col overflow-y-auto border-l border-brand-line bg-white p-6 lg:hidden"
+              transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+              className={cn(
+                "fixed right-0 bottom-0 z-40 flex w-[min(88vw,22rem)] flex-col overflow-y-auto border-l border-brand-line bg-white p-5 lg:hidden",
+                mobileOverlayTop,
+              )}
             >
               <div className="flex flex-col gap-1">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`rounded-xl px-3 py-3 text-[15px] font-medium transition-colors ${
+                    className={cn(
+                      "rounded-xl px-4 py-3.5 text-[15px] font-medium transition-colors",
                       link.match?.(pathname)
                         ? "bg-brand-ivory-deep text-brand-navy"
-                        : "text-brand-stone hover:bg-brand-ivory hover:text-brand-navy"
-                    }`}
+                        : "text-brand-stone hover:bg-brand-ivory hover:text-brand-navy",
+                    )}
                   >
                     {link.label}
                   </Link>
@@ -266,17 +357,19 @@ export default function Header() {
                 <button
                   type="button"
                   onClick={() => setMobileServicesOpen((v) => !v)}
-                  className={`flex items-center justify-between rounded-xl px-3 py-3 text-left text-[15px] font-medium transition-colors ${
+                  className={cn(
+                    "flex items-center justify-between rounded-xl px-4 py-3.5 text-left text-[15px] font-medium transition-colors",
                     isServicesActive(pathname) || mobileServicesOpen
                       ? "bg-brand-ivory-deep text-brand-navy"
-                      : "text-brand-stone hover:bg-brand-ivory hover:text-brand-navy"
-                  }`}
+                      : "text-brand-stone hover:bg-brand-ivory hover:text-brand-navy",
+                  )}
                 >
-                  Servizi
+                  Settori
                   <ChevronDown
-                    className={`h-4 w-4 transition-transform ${
-                      mobileServicesOpen ? "rotate-180" : ""
-                    }`}
+                    className={cn(
+                      "h-4 w-4 transition-transform",
+                      mobileServicesOpen && "rotate-180",
+                    )}
                   />
                 </button>
 
@@ -288,16 +381,17 @@ export default function Header() {
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden"
                     >
-                      <div className="flex flex-col gap-1 pb-2 pl-2">
+                      <div className="flex flex-col gap-1 pb-2 pl-3">
                         {SERVICES.map((service) => (
                           <Link
                             key={service.href}
                             href={service.href}
-                            className={`rounded-lg px-3 py-2.5 text-sm transition-colors ${
+                            className={cn(
+                              "rounded-lg px-4 py-2.5 text-sm transition-colors",
                               pathname.startsWith(service.href)
                                 ? "bg-brand-ivory-deep font-medium text-brand-navy"
-                                : "text-brand-stone hover:bg-brand-ivory hover:text-brand-navy"
-                            }`}
+                                : "text-brand-stone hover:bg-brand-ivory hover:text-brand-navy",
+                            )}
                           >
                             {service.title}
                           </Link>
@@ -311,23 +405,106 @@ export default function Header() {
           </>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
 
-function NavItem({ link, pathname }: { link: NavLink; pathname: string }) {
+function MobileMenuButton({
+  isOpen,
+  onToggle,
+}: {
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      onClick={onToggle}
+      className="rounded-full p-2 text-brand-navy transition-colors hover:bg-brand-ivory hover:text-brand-teal lg:hidden"
+      aria-label={isOpen ? "Chiudi menu" : "Apri menu"}
+    >
+      {isOpen ? <X size={22} /> : <Menu size={22} />}
+    </button>
+  );
+}
+
+function DesktopNav({
+  pathname,
+  compact,
+  servicesOpen,
+  onOpenServices,
+  onCloseServices,
+}: {
+  pathname: string;
+  compact: boolean;
+  servicesOpen: boolean;
+  onOpenServices: () => void;
+  onCloseServices: () => void;
+}) {
+  return (
+    <nav className="flex items-center gap-0.5">
+      {navLinks.slice(0, 1).map((link) => (
+        <NavItem key={link.href} link={link} pathname={pathname} compact={compact} />
+      ))}
+
+      <div onMouseEnter={onOpenServices} onMouseLeave={onCloseServices}>
+        <button
+          type="button"
+          className={cn(
+            "relative flex items-center gap-1 rounded-full font-medium transition-colors",
+            compact ? "px-3 py-2 text-[12.5px]" : "px-4 py-2.5 text-[13px]",
+            isServicesActive(pathname) || servicesOpen
+              ? "text-brand-navy"
+              : "text-brand-stone hover:text-brand-navy",
+          )}
+          aria-expanded={servicesOpen}
+          aria-haspopup="true"
+        >
+          {(isServicesActive(pathname) || servicesOpen) && (
+            <span className="absolute inset-0 rounded-full bg-brand-ivory-deep" />
+          )}
+          <span className="relative z-10 flex items-center gap-1">
+            Settori
+            <ChevronDown
+              className={cn(
+                "h-3.5 w-3.5 transition-transform duration-200",
+                servicesOpen && "rotate-180",
+              )}
+            />
+          </span>
+        </button>
+      </div>
+
+      {navLinks.slice(1).map((link) => (
+        <NavItem key={link.href} link={link} pathname={pathname} compact={compact} />
+      ))}
+    </nav>
+  );
+}
+
+function NavItem({
+  link,
+  pathname,
+  compact,
+}: {
+  link: NavLink;
+  pathname: string;
+  compact: boolean;
+}) {
   const isActive = link.match?.(pathname) ?? pathname === link.href;
 
   return (
     <Link
       href={link.href}
-      className={`rounded-full px-4 py-2 text-[13px] font-medium transition-colors ${
-        isActive
-          ? "bg-brand-ivory-deep text-brand-navy"
-          : "text-brand-stone hover:bg-brand-ivory-deep/70 hover:text-brand-navy"
-      }`}
+      className={cn(
+        "relative rounded-full font-medium transition-colors",
+        compact ? "px-3 py-2 text-[12.5px]" : "px-4 py-2.5 text-[13px]",
+        isActive ? "text-brand-navy" : "text-brand-stone hover:text-brand-navy",
+      )}
     >
-      {link.label}
+      {isActive && (
+        <span className="absolute inset-0 rounded-full bg-brand-ivory-deep" />
+      )}
+      <span className="relative z-10">{link.label}</span>
     </Link>
   );
 }

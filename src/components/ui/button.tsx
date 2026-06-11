@@ -15,7 +15,7 @@ type ButtonProps = {
 } & ComponentPropsWithoutRef<"button">;
 
 const base =
-  "inline-flex items-center justify-center gap-2 font-semibold transition-colors rounded-full";
+  "inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 rounded-full active:scale-[0.98]";
 
 function buttonClasses(variant: ButtonVariant, size: ButtonSize, className?: string) {
   return cn(
@@ -23,7 +23,7 @@ function buttonClasses(variant: ButtonVariant, size: ButtonSize, className?: str
     size === "lg" ? "h-12 px-7 text-base" : "h-10 px-5 text-sm",
     variant === "outline"
       ? "border border-brand-line bg-transparent text-brand-navy hover:border-brand-teal hover:text-brand-teal"
-      : "bg-brand-teal text-white hover:bg-brand-navy",
+      : "bg-brand-teal text-white shadow-[0_12px_28px_-12px_rgba(0,196,204,0.55)] hover:bg-brand-navy hover:shadow-[0_12px_28px_-12px_rgba(10,22,40,0.45)] hover:-translate-y-0.5",
     className,
   );
 }

@@ -35,6 +35,8 @@ export interface GridFeature {
   icon: LucideIcon;
   title: string;
   desc: string;
+  /** Big display value (e.g. "24/7") — renders the item as a stat tile. */
+  stat?: string;
 }
 
 export interface ComparisonRow {

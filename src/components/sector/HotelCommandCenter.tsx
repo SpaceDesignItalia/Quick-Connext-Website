@@ -12,13 +12,13 @@ import type { LucideIcon } from "lucide-react";
 import {
   Activity,
   BedDouble,
-  Check,
   Droplets,
   KeyRound,
   Leaf,
   Lightbulb,
   Moon,
   ShieldCheck,
+  Sparkles,
   Thermometer,
   TriangleAlert,
   Wrench,
@@ -91,7 +91,7 @@ const STATE_LABEL: Record<RoomState, string> = {
 
 let eventKey = 1;
 
-export function HotelCommandCenter({ chapters = [] }: { chapters?: string[] }) {
+export function HotelCommandCenter() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const inView = useInView(sectionRef, { margin: "200px 0px" });
   const [rooms, setRooms] = useState<Room[]>(initRooms);
@@ -100,8 +100,30 @@ export function HotelCommandCenter({ chapters = [] }: { chapters?: string[] }) {
   const [savings, setSavings] = useState(247.4);
   const [pulseRoom, setPulseRoom] = useState<string | null>(null);
   const [nightDim, setNightDim] = useState(false);
+  const [story, setStory] = useState<string | null>(null);
+  const storyTimeouts = useRef<Array<ReturnType<typeof setTimeout>>>([]);
   const roomsRef = useRef(rooms);
   roomsRef.current = rooms;
+
+  /* Narrates what's happening, step by step, in plain words. */
+  const tellStory = useCallback(
+    (steps: Array<[number, string]>, clearAfter = 6000) => {
+      storyTimeouts.current.forEach(clearTimeout);
+      storyTimeouts.current = steps.map(([delay, text]) =>
+        setTimeout(() => setStory(text), delay),
+      );
+      const lastDelay = steps[steps.length - 1]?.[0] ?? 0;
+      storyTimeouts.current.push(
+        setTimeout(() => setStory(null), lastDelay + clearAfter),
+      );
+    },
+    [],
+  );
+
+  useEffect(() => {
+    const timeouts = storyTimeouts.current;
+    return () => timeouts.forEach(clearTimeout);
+  }, []);
 
   const pushEvent = useCallback(
     (icon: LucideIcon, text: string, tone: FeedEvent["tone"] = "default") => {
@@ -195,10 +217,15 @@ export function HotelCommandCenter({ chapters = [] }: { chapters?: string[] }) {
     const room = free[Math.floor(Math.random() * free.length)];
     pushEvent(KeyRound, `Camera ${room.id} — Badge attivato alla reception`, "ok");
     setRoomState(room.id, "occupied", 22);
+    tellStory([
+      [0, "Un ospite ritira il badge alla reception…"],
+      [1100, `La camera ${room.id} si prepara da sola: clima a 22°, luci di benvenuto, tende aperte.`],
+      [3000, "Nessuna chiamata, nessun giro ai piani: è successo tutto in automatico."],
+    ]);
     setTimeout(() => {
       pushEvent(Thermometer, `Camera ${room.id} — Clima 22° · luci Benvenuto · tende aperte`, "ok");
     }, 1100);
-  }, [pushEvent, setRoomState]);
+  }, [pushEvent, setRoomState, tellStory]);
 
   /* Scenario: night mode */
   const simulateNight = useCallback(() => {
@@ -207,11 +234,16 @@ export function HotelCommandCenter({ chapters = [] }: { chapters?: string[] }) {
     setRooms((prev) =>
       prev.map((r) => (r.state === "free" ? { ...r, temp: 16 } : r)),
     );
+    tellStory([
+      [0, "È l'una di notte: le aree comuni scendono al minimo."],
+      [1400, "Luci al 20% e clima ridotto dove non c'è nessuno — guarda le camere libere."],
+      [3000, "Potenza giù del 18%: l'hotel risparmia mentre dorme."],
+    ]);
     setTimeout(() => {
       pushEvent(Zap, "Carichi bilanciati — potenza ridotta del 18%", "ok");
       setNightDim(false);
     }, 2600);
-  }, [pushEvent]);
+  }, [pushEvent, tellStory]);
 
   /* Scenario: technical anomaly caught early */
   const simulateAlert = useCallback(() => {
@@ -220,11 +252,16 @@ export function HotelCommandCenter({ chapters = [] }: { chapters?: string[] }) {
     const prev = room.state;
     setRoomState(room.id, "alert");
     pushEvent(TriangleAlert, `Camera ${room.id} — Anomalia prevista: fancoil, trend anomalo`, "warn");
+    tellStory([
+      [0, `Il sistema nota un trend anomalo sul fancoil della camera ${room.id}…`],
+      [1600, "Allarme prima del guasto: l'intervento è già nell'agenda del tecnico."],
+      [3800, "Risolto. L'ospite non si è accorto di nulla."],
+    ]);
     setTimeout(() => {
       setRoomState(room.id, prev === "alert" ? "free" : prev);
       pushEvent(Wrench, `Camera ${room.id} — Intervento pianificato: nessun impatto sugli ospiti`, "ok");
     }, 3800);
-  }, [pushEvent, setRoomState]);
+  }, [pushEvent, setRoomState, tellStory]);
 
   /* Manual toggle on room click */
   const toggleRoom = useCallback(
@@ -233,12 +270,18 @@ export function HotelCommandCenter({ chapters = [] }: { chapters?: string[] }) {
       if (room.state === "occupied") {
         setRoomState(room.id, "eco", 18);
         pushEvent(Leaf, `Camera ${room.id} — Check-out: stand-by intelligente`, "ok");
+        tellStory([
+          [0, `Check-out della ${room.id}: la camera entra in stand-by e i consumi scendono quasi a zero.`],
+        ]);
       } else {
         setRoomState(room.id, "occupied", 22);
         pushEvent(KeyRound, `Camera ${room.id} — Check-in manuale dalla regia`, "ok");
+        tellStory([
+          [0, `Check-in sulla ${room.id}: clima e luci si attivano da soli, prima che l'ospite salga.`],
+        ]);
       }
     },
-    [pushEvent, setRoomState],
+    [pushEvent, setRoomState, tellStory],
   );
 
   const occupied = rooms.filter((r) => r.state === "occupied").length;
@@ -266,26 +309,11 @@ export function HotelCommandCenter({ chapters = [] }: { chapters?: string[] }) {
             <span className="text-brand-bright">un&apos;unica schermata.</span>
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-white/60">
-            Li hai appena visti capitolo per capitolo. Nella realtà lavorano
-            insieme, in una sola regia: quella che il tuo staff guarda ogni
-            giorno.{" "}
+            La schermata che il tuo staff guarda ogni giorno.{" "}
             <span className="font-semibold text-white/85">
-              Provala tu: clicca una camera o lancia uno scenario.
+              Provala: clicca una camera o lancia uno scenario.
             </span>
           </p>
-          {chapters.length > 0 && (
-            <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
-              {chapters.map((c) => (
-                <span
-                  key={c}
-                  className="inline-flex items-center gap-1.5 text-[12px] font-medium text-white/45"
-                >
-                  <Check className="size-3 text-brand-bright" />
-                  {c}
-                </span>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Console */}
@@ -322,7 +350,7 @@ export function HotelCommandCenter({ chapters = [] }: { chapters?: string[] }) {
           <div className="grid gap-px bg-white/[0.06] lg:grid-cols-[1.25fr_0.75fr]">
             {/* Room grid */}
             <div className={cn("bg-[#081020] p-5 transition-opacity duration-700 sm:p-6", nightDim && "opacity-70")}>
-              <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+              <div className="mb-1.5 flex flex-wrap items-center justify-between gap-2">
                 <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-white/45">
                   Camere — Piani 1–3
                 </p>
@@ -333,6 +361,11 @@ export function HotelCommandCenter({ chapters = [] }: { chapters?: string[] }) {
                   <Legend dot="bg-amber-400">Anomalia</Legend>
                 </div>
               </div>
+              <p className="mb-3.5 text-[11.5px] text-white/35">
+                Ogni riquadro è una camera, col suo stato e la sua temperatura.{" "}
+                <span className="text-white/55">Cliccane una</span> per fare
+                check-in o check-out.
+              </p>
               <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-6">
                 {rooms.map((room) => (
                   <button
@@ -363,16 +396,30 @@ export function HotelCommandCenter({ chapters = [] }: { chapters?: string[] }) {
               </div>
 
               {/* Scenario buttons */}
-              <div className="mt-5 flex flex-wrap gap-2.5">
-                <ScenarioButton onClick={simulateCheckIn} icon={KeyRound}>
-                  Simula check-in
-                </ScenarioButton>
-                <ScenarioButton onClick={simulateNight} icon={Moon}>
-                  Scenario notte
-                </ScenarioButton>
-                <ScenarioButton onClick={simulateAlert} icon={TriangleAlert}>
-                  Test anomalia
-                </ScenarioButton>
+              <div className="mt-6">
+                <p className="mb-2.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-white/45">
+                  Prova uno scenario
+                </p>
+                <div className="flex flex-col gap-2.5 sm:flex-row">
+                  <ScenarioButton
+                    onClick={simulateCheckIn}
+                    icon={KeyRound}
+                    title="Arriva un ospite"
+                    sub="La camera si prepara da sola al check-in"
+                  />
+                  <ScenarioButton
+                    onClick={simulateNight}
+                    icon={Moon}
+                    title="Scende la notte"
+                    sub="Le aree vuote riducono i consumi"
+                  />
+                  <ScenarioButton
+                    onClick={simulateAlert}
+                    icon={TriangleAlert}
+                    title="Guasto in arrivo"
+                    sub="Lo vediamo prima che lo veda l'ospite"
+                  />
+                </div>
               </div>
             </div>
 
@@ -384,8 +431,12 @@ export function HotelCommandCenter({ chapters = [] }: { chapters?: string[] }) {
                 <Kpi label="Risparmio oggi" value={`${savings.toFixed(0)} €`} icon={Leaf} />
               </div>
               <div className="flex-1 border-t border-white/10 p-5 sm:p-6">
-                <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.16em] text-white/45">
+                <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-white/45">
                   Eventi in tempo reale
+                </p>
+                <p className="mb-3 mt-1 text-[11.5px] text-white/35">
+                  È quello che vede il tuo staff: l&apos;hotel si racconta da solo,
+                  nessuno insegue gli impianti.
                 </p>
                 <ul className="space-y-2">
                   <AnimatePresence initial={false}>
@@ -427,12 +478,27 @@ export function HotelCommandCenter({ chapters = [] }: { chapters?: string[] }) {
               </div>
             </div>
           </div>
-        </div>
 
-        <p className="mt-5 text-center text-[13px] text-white/35">
-          Simulazione dimostrativa — nella piattaforma reale vedi i tuoi
-          impianti, con i tuoi dati.
-        </p>
+          {story && (
+            <div className="flex items-center gap-3 border-t border-white/10 bg-[#0A1626] px-5 py-3.5 sm:px-6">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand-bright/20 text-brand-bright transition-colors duration-300">
+                <Sparkles className="size-4" />
+              </span>
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={story}
+                  initial={{ opacity: 0, y: 7 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -7 }}
+                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-[13px] font-medium leading-snug text-white/90 sm:text-sm"
+                >
+                  {story}
+                </motion.p>
+              </AnimatePresence>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );
@@ -450,19 +516,26 @@ function Legend({ dot, children }: { dot: string; children: ReactNode }) {
 function ScenarioButton({
   onClick,
   icon: Icon,
-  children,
+  title,
+  sub,
 }: {
   onClick: () => void;
   icon: LucideIcon;
-  children: ReactNode;
+  title: string;
+  sub: string;
 }) {
   return (
     <button
       onClick={onClick}
-      className="inline-flex items-center gap-2 rounded-full border border-brand-bright/30 bg-brand-bright/10 px-4 py-2 text-[13px] font-semibold text-brand-bright transition-all duration-200 hover:bg-brand-bright/20 hover:scale-[1.03] active:scale-95"
+      className="group flex flex-1 items-start gap-3 rounded-2xl border border-brand-bright/25 bg-brand-bright/[0.07] px-4 py-3 text-left transition-all duration-200 hover:border-brand-bright/50 hover:bg-brand-bright/15 active:scale-[0.98]"
     >
-      <Icon className="size-3.5" />
-      {children}
+      <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand-bright/15 text-brand-bright transition-transform duration-200 group-hover:scale-110">
+        <Icon className="size-4" />
+      </span>
+      <span>
+        <span className="block text-[13px] font-bold text-brand-bright">{title}</span>
+        <span className="mt-0.5 block text-[11.5px] leading-snug text-white/55">{sub}</span>
+      </span>
     </button>
   );
 }

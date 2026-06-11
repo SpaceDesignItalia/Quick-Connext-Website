@@ -666,8 +666,8 @@ function GridSection({ grid }: { grid: NonNullable<SectorConfig["grid"]> }) {
       <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {grid.features.map((f, i) => (
           <Reveal key={f.title} delay={i}>
-            <div className="h-full rounded-2xl border border-border bg-background p-6 transition-shadow hover:shadow-card">
-              <span className="flex size-11 items-center justify-center rounded-xl bg-brand/10 text-brand">
+            <div className="group h-full rounded-2xl border border-border bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-card">
+              <span className="flex size-11 items-center justify-center rounded-xl bg-brand/10 text-brand transition-transform duration-300 group-hover:scale-110">
                 {createElement(f.icon, { className: "size-5" })}
               </span>
               <h3 className="mt-4 text-base font-semibold text-foreground">{f.title}</h3>
@@ -748,6 +748,8 @@ export function SectorPage({ config }: { config: SectorConfig }) {
       "Un partner unico per progetto, installazione e supporto. Plug & play, senza fermare la tua attività.",
   };
   const gridBeforeScenes = config.grid && config.gridPosition === "before";
+  const assistStats = config.assistance.filter((a) => a.stat);
+  const assistRest = config.assistance.filter((a) => !a.stat);
 
   return (
     <main className="bg-background">
@@ -876,7 +878,12 @@ export function SectorPage({ config }: { config: SectorConfig }) {
                       {scene.title}
                     </h3>
                     <p className="mt-4 text-lg leading-relaxed text-muted-foreground">{scene.desc}</p>
-                    <ul className="mt-6 space-y-3">
+                    <ul
+                      className={cn(
+                        "mt-6 grid gap-3",
+                        scene.bullets.length > 4 && "lg:grid-cols-2 lg:gap-x-6",
+                      )}
+                    >
                       {scene.bullets.map((b) => (
                         <li key={b} className="flex items-start gap-3">
                           <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
@@ -912,9 +919,7 @@ export function SectorPage({ config }: { config: SectorConfig }) {
       {!gridBeforeScenes && config.grid && <GridSection grid={config.grid} />}
 
       {/* Interactive live demo — the synthesis of all chapters */}
-      {config.interactive?.commandCenter && (
-        <HotelCommandCenter chapters={config.scenes.map((s) => s.label)} />
-      )}
+      {config.interactive?.commandCenter && <HotelCommandCenter />}
 
       {/* Stats */}
       <section className="bg-navy">
@@ -966,7 +971,7 @@ export function SectorPage({ config }: { config: SectorConfig }) {
               <div
                 key={row.aspect}
                 className={cn(
-                  "grid grid-cols-[1.2fr_1fr_1fr] border-t border-border text-sm",
+                  "grid grid-cols-[1.2fr_1fr_1fr] border-t border-border text-sm transition-colors hover:bg-brand/[0.03]",
                   i % 2 === 1 && "bg-surface/40",
                 )}
               >
@@ -1001,7 +1006,7 @@ export function SectorPage({ config }: { config: SectorConfig }) {
               <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{config.finance.text}</p>
             </Reveal>
             <Reveal delay={1}>
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {config.finance.points.map((p) => (
                   <div
                     key={p.title}
@@ -1032,19 +1037,42 @@ export function SectorPage({ config }: { config: SectorConfig }) {
             </p>
           )}
         </Reveal>
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {config.assistance.map((a, i) => (
-            <Reveal key={a.title} delay={i}>
-              <div className="group h-full rounded-2xl border border-border bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-card">
-                <span className="flex size-11 items-center justify-center rounded-xl bg-brand/10 text-brand transition-transform duration-300 group-hover:scale-110">
-                  {createElement(a.icon, { className: "size-5" })}
-                </span>
-                <h3 className="mt-4 text-base font-semibold text-foreground">{a.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{a.desc}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+        {assistStats.length > 0 && (
+          <div className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-border bg-border sm:grid-cols-3">
+            {assistStats.map((a, i) => (
+              <Reveal key={a.title} delay={i} className="bg-background p-7 sm:p-8">
+                <p className="font-display text-4xl font-extrabold tracking-tight text-brand sm:text-5xl">
+                  {a.stat}
+                </p>
+                <h3 className="mt-3 text-base font-semibold text-foreground">{a.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{a.desc}</p>
+              </Reveal>
+            ))}
+          </div>
+        )}
+
+        {assistRest.length > 0 && (
+          <div
+            className={cn(
+              "grid gap-4 sm:grid-cols-2",
+              assistStats.length > 0 ? "mt-5" : "mt-12",
+            )}
+          >
+            {assistRest.map((a, i) => (
+              <Reveal key={a.title} delay={i} className="h-full">
+                <div className="flex h-full items-start gap-3.5 rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-card">
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand">
+                    {createElement(a.icon, { className: "size-5" })}
+                  </span>
+                  <div>
+                    <h3 className="text-base font-semibold text-foreground">{a.title}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{a.desc}</p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        )}
       </section>
 
       <CtaBand

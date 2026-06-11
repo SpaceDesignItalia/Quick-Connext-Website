@@ -22,12 +22,14 @@ import {
   KeyRound,
   ShieldCheck,
   Gauge,
-  Network,
   Wrench,
   ArrowUpRight,
   Calendar,
   ChevronLeft,
   ChevronRight,
+  BadgeCheck,
+  Timer,
+  Headset,
 } from "lucide-react";
 import { blogPosts } from "@/data/blog-posts";
 import { CountUp } from "@/components/sector/SectorPage";
@@ -297,10 +299,7 @@ function PlatformCompare() {
               <span className="text-[10px] font-semibold text-foreground sm:text-[11.5px]">
                 {n.label}
               </span>
-              <span className="relative ml-0.5 flex size-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-60" />
-                <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
-              </span>
+              <span className="ml-0.5 inline-flex size-1.5 rounded-full bg-brand-bright" />
             </div>
           </div>
         ))}
@@ -533,14 +532,16 @@ function StatGrid({
           key={s.label}
           delay={i}
           className={cn(
-            "flex flex-col gap-2 p-6 sm:p-8",
-            tone === "light" ? "bg-background" : "bg-navy",
+            "group flex flex-col gap-2 p-6 transition-colors duration-300 sm:p-8",
+            tone === "light"
+              ? "bg-background hover:bg-surface"
+              : "bg-navy hover:bg-[#0E1F3A]",
           )}
         >
           <CountUp
             value={s.value}
             className={cn(
-              "font-display text-3xl font-extrabold tracking-tight sm:text-4xl",
+              "origin-left font-display text-3xl font-extrabold tracking-tight transition-transform duration-300 group-hover:scale-105 sm:text-4xl",
               tone === "light" ? "text-brand" : "text-brand-bright",
             )}
           />
@@ -633,7 +634,35 @@ const stats = [
   { value: "95%", label: "tasso approvazione pratiche" },
 ];
 
-const protocols = ["KNX", "Modbus", "BACnet", "API aperte"];
+const processSteps = [
+  {
+    n: "01",
+    title: "Sopralluogo e analisi",
+    desc: "Studiamo la tua struttura, gli impianti esistenti e i consumi reali.",
+  },
+  {
+    n: "02",
+    title: "Progetto su misura",
+    desc: "Impianto e interfaccia software disegnati sulle esigenze della tua attività.",
+  },
+  {
+    n: "03",
+    title: "Installazione chiavi in mano",
+    desc: "Personale interno per hardware, cablaggio e configurazione, senza fermare l'attività.",
+  },
+  {
+    n: "04",
+    title: "Gestione e assistenza",
+    desc: "Controllo da remoto, manutenzione preventiva e supporto 24/7 con intervento in 24 ore.",
+  },
+];
+
+const trustChips = [
+  { icon: BadgeCheck, label: "Garanzia 24 mesi" },
+  { icon: Timer, label: "Intervento on-site in 24h" },
+  { icon: Headset, label: "Assistenza 24/7" },
+  { icon: ShieldCheck, label: "ISO 27001 · 27017 · 27018" },
+];
 
 
 // ─── HomePage ─────────────────────────────────────────────────────────────────
@@ -643,59 +672,110 @@ export default function HomePage() {
     <main className="bg-background">
       <Header />
 
-      {/* Hero */}
-      <section className="relative overflow-hidden pt-28 sm:pt-32">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_50%_at_70%_0%,var(--brand-soft),transparent)]" />
-        <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+      {/* Hero — navy stage */}
+      <section className="relative overflow-hidden bg-navy pt-28 sm:pt-32">
+        <div
+          className="tech-grid-dark pointer-events-none absolute inset-0 opacity-70 [mask-image:linear-gradient(to_bottom,black_45%,transparent_95%)]"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_-5%,rgba(0,196,204,0.16),transparent)]"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute -left-32 top-1/4 size-[28rem] rounded-full bg-brand/10 blur-[140px]"
+          aria-hidden
+        />
+
+        <div className="relative mx-auto max-w-7xl px-5 pb-8 sm:px-8 sm:pb-12">
           <div className="grid items-center gap-12 lg:grid-cols-[1fr_0.95fr]">
             <Reveal>
-              <SectionLabel>Building Automation & Control System</SectionLabel>
-              <h1 className="mt-6 text-balance font-display text-[2.7rem] font-extrabold leading-[1.02] tracking-tight text-foreground sm:text-6xl">
+              <SectionLabel tone="dark">Building Automation & Control System</SectionLabel>
+              <h1 className="mt-6 text-balance font-display text-[2.7rem] font-extrabold leading-[1.02] tracking-tight text-white sm:text-6xl xl:text-[4.2rem]">
                 Tutto il tuo edificio.{" "}
-                <span className="text-brand">Una sola piattaforma.</span>
+                <span className="text-brand-bright">Una sola piattaforma.</span>
               </h1>
-              <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
-                Clima, illuminazione, accessi, sicurezza ed energia connessi e controllati da un
-                unico sistema. Funziona con qualsiasi marca grazie ai protocolli aperti. Senza
-                vendor lock-in.
+              <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-white/65">
+                Clima, luci, accessi, sicurezza ed energia in un unico sistema.
+                Con qualsiasi marca, senza vendor lock-in.
               </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8">
                 <ButtonLink href="/contatti" size="lg">
                   Richiedi una demo <ArrowRight className="size-4" />
                 </ButtonLink>
-                <ButtonLink href="#settori" size="lg" variant="outline">
-                  Scopri le soluzioni
-                </ButtonLink>
               </div>
-              <p className="mt-8 text-sm text-muted-foreground">
-                {protocols.join(" · ")} — compatibile con qualsiasi produttore.
-              </p>
+              {/* what we actually do — the company's craft, first screen */}
+              <div className="mt-10 grid grid-cols-3 gap-4 border-t border-white/10 pt-6 sm:gap-6">
+                {[
+                  { n: "01", t: "Progettiamo", d: "l'impianto su misura per la tua struttura" },
+                  { n: "02", t: "Installiamo", d: "chiavi in mano, senza fermare l'attività" },
+                  { n: "03", t: "Gestiamo", d: "assistenza 24/7 e manutenzione" },
+                ].map((s) => (
+                  <div key={s.n}>
+                    <span className="font-mono text-[10px] font-semibold tracking-[0.18em] text-brand-bright/80">
+                      {s.n}
+                    </span>
+                    <p className="mt-1 font-display text-base font-bold text-white sm:text-lg">
+                      {s.t}
+                    </p>
+                    <p className="mt-1 text-xs leading-snug text-white/50 sm:text-[13px]">
+                      {s.d}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </Reveal>
 
-            {/* The building switches itself on — live cards around the 3D render */}
+            {/* Digital twin viewer — the platform shows your building, live */}
             <div className="relative">
-              <div className="pointer-events-none absolute -inset-8 bg-[radial-gradient(60%_60%_at_50%_45%,rgba(0,196,204,0.12),transparent)]" />
+              <div
+                className="pointer-events-none absolute -bottom-10 left-1/2 h-20 w-4/5 -translate-x-1/2 rounded-[50%] bg-brand/25 blur-3xl"
+                aria-hidden
+              />
               <motion.div
-                initial={{ opacity: 0, scale: 1.04, filter: "grayscale(1) brightness(0.8)" }}
-                animate={{ opacity: 1, scale: 1, filter: "grayscale(0) brightness(1)" }}
-                transition={{ duration: 1.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="relative aspect-[4/3.2] overflow-hidden"
+                initial={{ opacity: 0, y: 28, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 1.1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                className="relative overflow-hidden rounded-3xl bg-white shadow-[0_45px_100px_-30px_rgba(0,0,0,0.65)] ring-1 ring-white/15"
               >
-                {/* crop to the central building — the side thumbnails baked in the
-                    render are replaced by the live cards floating around it */}
-                <Image
-                  src="/edificio.png"
-                  alt="Edificio in sezione 3D gestito dalla piattaforma QuickConnext"
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 45vw"
-                  className="scale-[1.6] object-contain"
-                  style={{ objectPosition: "center 46%" }}
-                />
+                {/* viewer toolbar */}
+                <div className="flex items-center justify-between border-b border-border bg-surface px-4 py-2.5">
+                  <span className="flex gap-1.5">
+                    <span className="size-2.5 rounded-full bg-black/10" />
+                    <span className="size-2.5 rounded-full bg-black/10" />
+                    <span className="size-2.5 rounded-full bg-brand/60" />
+                  </span>
+                  <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Digital twin · edificio connesso
+                  </span>
+                  <span className="relative flex size-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-60" />
+                    <span className="relative inline-flex size-2 rounded-full bg-brand-bright" />
+                  </span>
+                </div>
+                {/* render, switch-on */}
+                <motion.div
+                  initial={{ filter: "grayscale(1) brightness(0.97)" }}
+                  animate={{ filter: "grayscale(0) brightness(1)" }}
+                  transition={{ duration: 1.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  className="relative aspect-[4/3] overflow-hidden"
+                >
+                  {/* crop to the central building — the side thumbnails baked in the
+                      render are replaced by the live cards floating around it */}
+                  <Image
+                    src="/edificio.png"
+                    alt="Edificio in sezione 3D gestito dalla piattaforma QuickConnext"
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 45vw"
+                    className="scale-[1.6] object-contain"
+                    style={{ objectPosition: "center 46%" }}
+                  />
+                </motion.div>
               </motion.div>
 
               <motion.div
-                className="absolute -left-1 top-6 z-10 sm:-left-4"
+                className="absolute -left-1 top-10 z-10 sm:-left-5"
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
               >
@@ -703,11 +783,12 @@ export default function HomePage() {
                   icon={Thermometer}
                   title="Clima per zona"
                   detail="Si regola sulla presenza reale"
+                  tone="dark"
                   delay={0.9}
                 />
               </motion.div>
               <motion.div
-                className="absolute right-0 top-1/4 z-10 hidden md:block sm:-right-3"
+                className="absolute right-0 top-1/4 z-10 hidden md:block sm:-right-4"
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
               >
@@ -715,11 +796,12 @@ export default function HomePage() {
                   icon={KeyRound}
                   title="Accessi tracciati"
                   detail="Badge e varchi da un cruscotto"
+                  tone="dark"
                   delay={1.1}
                 />
               </motion.div>
               <motion.div
-                className="absolute -bottom-3 left-4 z-10 hidden md:block sm:left-0"
+                className="absolute -bottom-4 left-4 z-10 hidden md:block sm:left-0"
                 animate={{ y: [0, -7, 0] }}
                 transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
               >
@@ -727,11 +809,12 @@ export default function HomePage() {
                   icon={Gauge}
                   title="Consumi in tempo reale"
                   detail="Elettrico, termico e idrico"
+                  tone="dark"
                   delay={1.3}
                 />
               </motion.div>
               <motion.div
-                className="absolute -bottom-6 right-2 z-10 sm:-right-2"
+                className="absolute -bottom-7 right-2 z-10 sm:-right-3"
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
               >
@@ -740,16 +823,76 @@ export default function HomePage() {
                   title="Anomalia prevista"
                   detail="Intervento pianificato in anticipo"
                   status="Manutenzione preventiva"
+                  tone="dark"
                   delay={1.5}
                 />
               </motion.div>
             </div>
           </div>
+        </div>
 
-          <Reveal delay={1} className="mt-14 pb-14">
+        {/* breathing room before the straddling sector panels */}
+        <div className="h-12 sm:h-16" aria-hidden />
+      </section>
+
+      {/* Sectors — straddling the navy/white seam */}
+      <section className="relative">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[55%] bg-navy" aria-hidden />
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+          <Reveal>
             <SectorPanels />
           </Reveal>
         </div>
+      </section>
+
+      {/* Cosa facciamo — the company's craft, spelled out */}
+      <section className="mx-auto max-w-7xl px-5 pt-24 sm:px-8 sm:pt-28">
+        <Reveal className="max-w-3xl">
+          <SectionLabel>Cosa facciamo</SectionLabel>
+          <h2 className="mt-6 text-balance font-display text-4xl font-extrabold leading-[1.05] text-foreground sm:text-5xl">
+            Un unico partner, dall&apos;inizio alla fine.
+          </h2>
+          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+            Progettiamo, installiamo e gestiamo l&apos;automazione del tuo
+            edificio: personale interno, in tutta Italia. Un progetto{" "}
+            <span className="font-semibold text-foreground">Più Sviluppo</span>.
+          </p>
+        </Reveal>
+
+        <div className="relative mt-14">
+          <div
+            className="absolute left-7 right-7 top-7 hidden h-px bg-gradient-to-r from-brand/60 via-brand/25 to-border lg:block"
+            aria-hidden
+          />
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            {processSteps.map((s, i) => (
+              <Reveal key={s.n} delay={i}>
+                <div className="relative">
+                  <div className="relative flex size-14 items-center justify-center rounded-2xl border border-brand/30 bg-background font-display text-lg font-extrabold text-brand shadow-soft">
+                    {s.n}
+                  </div>
+                  <h3 className="mt-5 font-display text-xl font-bold text-foreground">
+                    {s.title}
+                  </h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+                    {s.desc}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
+        <Reveal className="mt-12 flex flex-wrap items-center gap-3">
+          {trustChips.map((t) => (
+            <span
+              key={t.label}
+              className="flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-[13px] font-semibold text-foreground"
+            >
+              <t.icon className="size-4 text-brand" /> {t.label}
+            </span>
+          ))}
+        </Reveal>
       </section>
 
       {/* Platform intro */}
@@ -761,15 +904,14 @@ export default function HomePage() {
               Una piattaforma. Ogni sistema.
             </h2>
             <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-              QuickConnext mette sotto un unico controllo tutto ciò che oggi vive in sistemi
-              separati. Meno fornitori, meno problemi, una sola interfaccia per chi gestisce
-              l&apos;edificio.
+              Tutto ciò che oggi vive in sistemi separati, sotto un unico
+              controllo: meno fornitori, una sola interfaccia.
             </p>
-            <div className="mt-9 grid gap-x-8 gap-y-7 sm:grid-cols-2">
+            <div className="mt-9 grid gap-4 sm:grid-cols-2">
               {domains.map((d, i) => (
-                <Reveal key={d.title} delay={i}>
-                  <div className="flex gap-3.5">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand">
+                <Reveal key={d.title} delay={i} className="h-full">
+                  <div className="group flex h-full gap-3.5 rounded-2xl border border-border bg-background p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-card">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors duration-300 group-hover:bg-brand-teal group-hover:text-white">
                       <d.icon className="size-5" />
                     </span>
                     <div>
@@ -792,40 +934,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Open protocols band */}
-      <section className="bg-surface">
-        <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
-          <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-            <Reveal>
-              <SectionLabel>Nessun vincolo</SectionLabel>
-              <h2 className="mt-6 font-display text-3xl font-extrabold leading-tight text-foreground sm:text-4xl">
-                Protocolli aperti. Zero vendor lock-in.
-              </h2>
-            </Reveal>
-            <Reveal delay={1}>
-              <p className="text-lg leading-relaxed text-muted-foreground">
-                KNX, Modbus, BACnet e API aperte: QuickConnext dialoga con i dispositivi che hai già
-                e con quelli che sceglierai domani. Resti libero di scegliere marche e fornitori,
-                senza essere legato a un unico produttore.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                {protocols.map((p) => (
-                  <span
-                    key={p}
-                    className="flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-semibold text-foreground"
-                  >
-                    <Network className="size-4 text-brand" /> {p}
-                  </span>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
       {/* Stats — navy */}
-      <section className="bg-navy">
-        <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-28">
+      <section className="relative overflow-hidden bg-navy">
+        <div className="tech-grid-dark pointer-events-none absolute inset-0 opacity-60" aria-hidden />
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_60%_at_50%_0%,rgba(0,196,204,0.10),transparent)]"
+          aria-hidden
+        />
+        <div className="relative mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-28">
           <Reveal className="max-w-2xl">
             <SectionLabel tone="dark">Risultati misurabili</SectionLabel>
             <h2 className="mt-6 text-balance font-display text-4xl font-extrabold leading-[1.05] text-navy-foreground sm:text-5xl">
@@ -849,7 +965,8 @@ export default function HomePage() {
             Dal nostro blog.
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-            Normativa, tecnologia e casi d&apos;uso reali per chi gestisce edifici intelligenti.
+            Normativa, tecnologia e casi reali per chi gestisce edifici
+            intelligenti.
           </p>
         </Reveal>
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -902,7 +1019,7 @@ export default function HomePage() {
 
       <CtaBand
         title="Pronto a vedere il tuo edificio connesso?"
-        subtitle="Prenota una demo gratuita: ti mostriamo QuickConnext applicato alla tua struttura, con numeri e scenari reali."
+        subtitle="Una demo gratuita sulla tua struttura: numeri e scenari reali."
       />
 
       <Footer />
