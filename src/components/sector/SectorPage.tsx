@@ -810,7 +810,7 @@ export function SectorPage({ config }: { config: SectorConfig }) {
       )}
 
       {/* Sticky chapter navigation */}
-      {navItems.length > 1 && <SceneNav items={navItems} />}
+      {!config.hideSceneNav && navItems.length > 1 && <SceneNav items={navItems} />}
 
       {/* Intro */}
       {!config.hideIntro && (

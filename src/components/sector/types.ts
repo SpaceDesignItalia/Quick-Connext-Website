@@ -87,6 +87,7 @@ export interface SectorConfig {
   heroKpis?: HeroKpi[];
   interactive?: { commandCenter?: boolean; roi?: boolean };
   hideIntro?: boolean;
+  hideSceneNav?: boolean;
   introLabel: string;
   introTitle: string;
   introText: string;
