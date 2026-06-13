@@ -90,12 +90,12 @@ export default function Footer() {
             <ul className="flex flex-col gap-4 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-brand-teal shrink-0 mt-0.5" />
-                <span>Via del Lavoro, 12<br />24100 Bergamo (BG) - Italia</span>
+                <span>Via Plava 62<br />10135 Torino (TO), Italia</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-brand-teal shrink-0" />
-                <a href="tel:+39035123456" className="hover:text-brand-teal transition-colors">
-                  +39 035 123 456
+                <a href="tel:+390110360421" className="hover:text-brand-teal transition-colors">
+                  (+39) 011 036 04 21
                 </a>
               </li>
               <li className="flex items-center gap-3">
@@ -108,33 +108,38 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-10 text-xs text-slate-500 font-sans">
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6 text-center md:text-left">
-            <span>
-              &copy; {new Date().getFullYear()} QuickConnext. Tutti i diritti riservati.
-            </span>
-            <span className="hidden md:inline text-slate-700">|</span>
-            <span className="text-slate-400 font-semibold">
-              Un prodotto di{" "}
-              <a
-                href="https://piusviluppo.it"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white hover:text-brand-teal hover:underline transition-colors"
-              >
-                Più Sviluppo S.r.l.
-              </a>
-            </span>
-          </div>
-
-          <div className="flex items-center gap-6">
+        <div className="pt-10 text-xs text-slate-500 font-sans text-center leading-relaxed">
+          <p>
+            &copy; {new Date().getFullYear()} Più Sviluppo s.r.l.{" "}
+            <span className="text-slate-700">|</span>{" "}
+            Sede Legale: Via Plava 62, 10135 Torino (Italy){" "}
+            <span className="text-slate-700">|</span>{" "}
+            <a href="tel:+390110360421" className="hover:text-white transition-colors">
+              (+39) 011 036 04 21
+            </a>{" "}
+            <span className="text-slate-700">|</span>{" "}
+            Sedi Operative: Torino - Genova - Roma - Palermo{" "}
+            <span className="text-slate-700">|</span>{" "}
+            <a href="mailto:company@piusviluppo.it" className="hover:text-white transition-colors">
+              company@piusviluppo.it
+            </a>{" "}
+            <span className="text-slate-700">|</span>{" "}
+            P.Iva 12028010010{" "}
+            <span className="text-slate-700">|</span>{" "}
+            Capitale Sociale € 89.000,00 inter. ver.{" "}
+            <span className="text-slate-700">|</span>{" "}
             <Link href="/privacy-policy" className="hover:text-white transition-colors">
               Privacy Policy
-            </Link>
+            </Link>{" "}
+            <span className="text-slate-700">|</span>{" "}
             <Link href="/cookie-policy" className="hover:text-white transition-colors">
-              Cookie Policy
+              Cookies
+            </Link>{" "}
+            <span className="text-slate-700">|</span>{" "}
+            <Link href="/cookie-policy" className="hover:text-white transition-colors">
+              Gestisci consenso
             </Link>
-          </div>
+          </p>
         </div>
       </div>
     </footer>

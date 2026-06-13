@@ -99,35 +99,11 @@ export const hotelSectorConfig: SectorConfig = {
   heroSubtitle:
     "Una sola piattaforma intelligente per controllo centralizzato, risparmio energetico e un'ospitalità di eccellenza.",
   heroVariant: "cinematic",
-  heroDemoCard: {
-    title: "Camera 412 — Check-in completato",
-    detail: "Temperatura: 22° · Luci: Relax · Tende: Aperte",
-    status: "Attivazione automatica al check-in",
-  },
-  heroLiveEvents: [
-    {
-      title: "Camera 412 — Check-in completato",
-      detail: "Clima 22° · luci Relax · tende aperte",
-    },
-    {
-      title: "Piscina — Parametri regolari",
-      detail: "Temperatura acqua · pH · cloro in automatico",
-    },
-    {
-      title: "Energia — Consumi ottimizzati",
-      detail: "Riduzione media dei costi energetici del 25–40%",
-    },
-    {
-      title: "Manutenzione preventiva",
-      detail: "Analisi predittiva dei guasti prima che impattino gli ospiti",
-    },
-  ],
   heroKpis: [
     { value: "−35%", label: "consumi energetici" },
     { value: "+30%", label: "soddisfazione ospite" },
     { value: "−45%", label: "guasti non pianificati" },
   ],
-  interactive: { commandCenter: true, roi: false },
   hideIntro: false,
   hideSceneNav: true,
   heroCards: [],
@@ -138,9 +114,21 @@ export const hotelSectorConfig: SectorConfig = {
   marketStats: [
     { value: "476 mln", label: "presenze turistiche 2025 (+2,1%)" },
     { value: "108,8 mld€", label: "impatto economico del turismo 2025" },
-    { value: "+100 mln", label: "presenze attese in Q1 2026 · effetto Olimpiadi" },
+    { value: "+100 mln", label: "presenze attese in Q1 2026" },
   ],
   marketStatsSource: "Fonte: Unioncamere–Isnart, 2025",
+  buildingShowcase: {
+    label: "Uno sguardo dentro l'hotel",
+    title: "Tutto l'edificio, sotto un'unica regia.",
+    text: "Dalla copertura agli impianti tecnici, ogni sistema dell'hotel (clima, illuminazione, accessi, sicurezza ed energia) vive su un'unica piattaforma. Una vista d'insieme che mostra come ogni componente dialoga con le altre.",
+    image: "/edificio.png",
+    highlights: [
+      { icon: Thermometer, label: "Clima per zona" },
+      { icon: KeyRound, label: "Accessi e camere" },
+      { icon: ShieldCheck, label: "Sicurezza integrata" },
+      { icon: Gauge, label: "Energia monitorata" },
+    ],
+  },
   gridPosition: "before",
   grid: {
     label: "Cos'è la domotica",
@@ -217,7 +205,8 @@ export const hotelSectorConfig: SectorConfig = {
         "Profilo ospite con preferenze di temperatura e illuminazione memorizzate",
         "Gestione automatica del servizio non disturbare e del servizio in camera",
       ],
-      image: "/images/hotel-reception.png",
+      image: "/images/poster-accessi.jpg",
+      video: "/videos/scene-accessi.mp4",
       beforeImage: "/images/hotel-access-before.png",
       cards: [
         { icon: KeyRound, title: "Check-in / check-out", detail: "Attivazione automatica camera", position: "left-4 top-6 sm:-left-6 sm:top-10" },
@@ -239,7 +228,8 @@ export const hotelSectorConfig: SectorConfig = {
         "Fino al 30% di risparmio energetico per camera",
         "Comfort costante 24/7 per ogni ospite",
       ],
-      image: "/images/hotel-room.png",
+      image: "/images/poster-clima.jpg",
+      video: "/videos/scene-clima.mp4",
       cards: [
         { icon: Thermometer, title: "Clima HVAC", detail: "Presenza e occupazione", position: "left-4 top-6 sm:-left-6 sm:top-12" },
         { icon: Blinds, title: "Tende motorizzate", detail: "Integrate con luce naturale", position: "bottom-8 right-4 sm:-right-6 sm:bottom-10" },
@@ -256,7 +246,8 @@ export const hotelSectorConfig: SectorConfig = {
         "Allarmi intelligenti: notifiche in tempo reale al responsabile a ogni anomalia",
         "Antincendio: rilevazione fumi e gestione integrata della sicurezza attiva",
       ],
-      image: "/images/hotel-corridor.png",
+      image: "/images/poster-sicurezza.jpg",
+      video: "/videos/scene-sicurezza.mp4",
       cards: [
         { icon: Camera, title: "Videosorveglianza", detail: "Registrazione e accesso remoto", position: "left-4 top-8 sm:-left-6 sm:top-12" },
         { icon: Flame, title: "Antincendio", detail: "Rilevazione fumi integrata", position: "bottom-6 right-4 sm:-right-6 sm:bottom-10" },
@@ -293,7 +284,8 @@ export const hotelSectorConfig: SectorConfig = {
         "Consumi energetici e manutenzione impianti",
         "Riduzione media dei costi energetici del 25–40%",
       ],
-      image: "/images/hero-hotel.png",
+      image: "/images/poster-energia.jpg",
+      video: "/videos/scene-energia.mp4",
       cards: [
         { icon: Gauge, title: "Monitoraggio", detail: "Elettrico, termico e idrico", position: "left-4 top-8 sm:-left-6 sm:top-12" },
         { icon: Activity, title: "Reporting", detail: "Per zona, piano o camera", position: "bottom-6 right-4 sm:-right-6 sm:bottom-10" },
@@ -352,7 +344,7 @@ export const hotelSectorConfig: SectorConfig = {
   finance: {
     label: "Finanza di Progetto",
     title: "Azzera il costo del tuo investimento.",
-    text: "Identifichiamo e gestiamo internamente contributi a fondo perduto, crediti d'imposta e finanziamenti agevolati — Industria 4.0 e 5.0, bandi MIMIT, fondi ZES e POR, Conto Termico 3.0, SIMEST e INVITALIA — spesso cumulabili tra loro. E con il modello ESCo finanziamo direttamente l'intervento: l'investimento si ripaga con i risparmi energetici realmente generati.",
+    text: "Identifichiamo e gestiamo internamente contributi a fondo perduto, crediti d'imposta e finanziamenti agevolati (Industria 4.0 e 5.0, bandi MIMIT, fondi ZES e POR, Conto Termico 3.0, SIMEST e INVITALIA), spesso cumulabili tra loro. E con il modello ESCo finanziamo direttamente l'intervento: l'investimento si ripaga con i risparmi energetici realmente generati.",
     points: [
       { title: "+100 mln€", desc: "progetti gestiti" },
       { title: "95%", desc: "tasso di approvazione delle pratiche presentate" },

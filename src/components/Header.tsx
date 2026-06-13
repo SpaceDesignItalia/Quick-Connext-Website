@@ -95,30 +95,22 @@ function isServicesActive(pathname: string) {
   return SERVICE_PATHS.some((path) => pathname.startsWith(path));
 }
 
-function LogoMark({ showText }: { showText: boolean }) {
+function LogoMark({ compact = false }: { compact?: boolean }) {
   return (
-    <Link href="/" className="group flex shrink-0 items-center gap-3">
+    <Link href="/" className="group flex shrink-0 items-center">
       <Image
-        src="/logo.png"
-        alt="QuickConnext"
-        width={40}
-        height={40}
+        src={compact ? "/logo.png" : "/logo-navbar.png"}
+        alt="QuickConnext Building"
+        width={compact ? 40 : 1024}
+        height={compact ? 40 : 180}
         className={cn(
-          "object-contain group-hover:scale-105",
-          showText ? "h-9 w-9" : "h-9 w-9 sm:h-10 sm:w-10",
+          "object-contain transition-transform group-hover:scale-[1.02]",
+          compact
+            ? "h-9 w-9 sm:h-10 sm:w-10"
+            : "h-9 w-auto object-left sm:h-10",
         )}
         priority
       />
-      {showText && (
-        <div className="flex flex-col leading-none">
-          <span className="whitespace-nowrap text-[19px] font-semibold tracking-tight text-brand-navy">
-            QuickConnext
-          </span>
-          <span className="mt-1 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.32em] text-brand-teal">
-            Building
-          </span>
-        </div>
-      )}
     </Link>
   );
 }
@@ -214,9 +206,9 @@ export default function Header() {
               transition={navShellTransition}
               className="absolute inset-x-0 top-0 flex justify-center px-3 pt-3 sm:px-4"
             >
-              <div className="flex max-w-[calc(100vw-1.5rem)] items-center gap-2.5 sm:gap-3">
-                <LogoMark showText={false} />
-                <div className="flex items-center rounded-full border border-brand-line/70 bg-white/95 py-1.5 pl-1.5 pr-2 shadow-[0_10px_40px_-12px_rgba(10,22,40,0.2)] backdrop-blur-xl sm:pl-2 sm:pr-2.5">
+              <div className="flex max-w-[calc(100vw-1.5rem)] items-center justify-center">
+                <div className="flex items-center gap-1 rounded-full border border-brand-line/70 bg-white/95 py-1.5 pl-2 pr-2 shadow-[0_10px_40px_-12px_rgba(10,22,40,0.2)] backdrop-blur-xl sm:gap-1.5 sm:pl-2.5 sm:pr-2.5">
+                  <LogoMark compact />
                   <DesktopNav
                     pathname={pathname}
                     compact
@@ -238,7 +230,7 @@ export default function Header() {
               className="absolute inset-x-0 top-0 h-[72px] w-full border-b border-brand-line/80 bg-white shadow-[0_1px_0_rgba(229,231,235,0.6)]"
             >
               <div className="absolute left-5 top-1/2 z-10 -translate-y-1/2 sm:left-8">
-                <LogoMark showText />
+                <LogoMark />
               </div>
 
               <div className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 lg:block">

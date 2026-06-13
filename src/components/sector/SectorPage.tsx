@@ -353,6 +353,97 @@ function SceneImage({
   );
 }
 
+/* Living scene clip — a looping, muted micro-animation that replaces the
+   before/after slider when a scene provides a `video`. The source photo is the
+   poster, so it degrades to the exact still if the clip can't play. */
+function SceneVideo({
+  src,
+  poster,
+  alt,
+  cards = [],
+  className,
+  rounded = "rounded-3xl",
+  size = "default",
+}: {
+  src: string;
+  poster: string;
+  alt: string;
+  cards?: Array<SceneCard & { delay?: number; float?: boolean }>;
+  className?: string;
+  rounded?: string;
+  size?: "default" | "dominant";
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const inViewRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(inViewRef, { margin: "-10%" });
+
+  // Save the visitor's battery/CPU: only run the clip while it's on screen.
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (isInView) {
+      const p = v.play();
+      if (p) p.catch(() => {});
+    } else {
+      v.pause();
+    }
+  }, [isInView]);
+
+  return (
+    <div ref={inViewRef} className={cn("relative", size === "dominant" && "h-full", className)}>
+      <div
+        className={cn(
+          "relative overflow-hidden bg-navy",
+          rounded,
+          size === "dominant" ? "min-h-[55vh] lg:min-h-[78vh]" : "aspect-[16/11]",
+        )}
+      >
+        <video
+          ref={videoRef}
+          src={src}
+          poster={poster}
+          aria-label={alt}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <span className="pointer-events-none absolute right-4 top-4 z-[1] flex items-center gap-1.5 rounded-full bg-navy/55 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-brand-bright backdrop-blur-sm">
+          <span className="relative flex size-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-70" />
+            <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
+          </span>
+          Con QuickConnext
+        </span>
+        <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-navy/30 via-transparent to-transparent" />
+      </div>
+
+      {cards.length > 0 && (
+        <div className="pointer-events-none absolute inset-0 z-10">
+          {cards.map((card, i) => {
+            const { position, float = true, ...cardProps } = card;
+            return (
+              <motion.div
+                key={i}
+                className={cn("absolute hidden sm:block", position)}
+                animate={float ? { y: [0, -8, 0] } : undefined}
+                transition={
+                  float
+                    ? { duration: 5 + i, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }
+                    : undefined
+                }
+              >
+                <NotificationCard {...cardProps} delay={cardProps.delay ?? i * 0.15} />
+              </motion.div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function StatPauseBand({
   value,
   label,
@@ -386,10 +477,12 @@ function StatGrid({
   stats,
   tone = "light",
   columns,
+  disableHover = false,
 }: {
   stats: Array<{ value: string; label: string }>;
   tone?: "light" | "dark";
   columns?: string;
+  disableHover?: boolean;
 }) {
   return (
     <div
@@ -404,16 +497,18 @@ function StatGrid({
           key={s.label}
           delay={i}
           className={cn(
-            "group flex flex-col gap-2 p-6 transition-colors sm:p-8",
+            "flex flex-col gap-2 p-6 sm:p-8",
+            !disableHover && "group transition-colors",
             tone === "light"
-              ? "bg-background hover:bg-surface"
-              : "bg-navy hover:bg-[#0E1F3A]",
+              ? disableHover ? "bg-background" : "bg-background hover:bg-surface"
+              : disableHover ? "bg-navy" : "bg-navy hover:bg-[#0E1F3A]",
           )}
         >
           <CountUp
             value={s.value}
             className={cn(
-              "font-display text-3xl font-extrabold tracking-tight transition-transform duration-300 group-hover:scale-[1.04] sm:text-4xl origin-left",
+              "font-display text-3xl font-extrabold tracking-tight sm:text-4xl",
+              !disableHover && "origin-left transition-transform duration-300 group-hover:scale-[1.04]",
               tone === "light" ? "text-brand" : "text-brand-bright",
             )}
           />
@@ -683,6 +778,75 @@ function GridSection({ grid }: { grid: NonNullable<SectorConfig["grid"]> }) {
   );
 }
 
+/* Contained 3D-render showcase — the building "opened up", every system in
+   view at once. The render sits in a light viewer frame (no edge crop). */
+function BuildingShowcase({
+  showcase,
+}: {
+  showcase: NonNullable<SectorConfig["buildingShowcase"]>;
+}) {
+  return (
+    <section className="bg-surface">
+      <div className={cn("mx-auto max-w-7xl px-5 sm:px-8", SECTION_PY)}>
+        <div className="grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr]">
+          <Reveal>
+            <SectionLabel>{showcase.label}</SectionLabel>
+            <h2 className="mt-6 text-balance font-display text-3xl font-extrabold leading-[1.1] text-foreground sm:text-4xl">
+              {showcase.title}
+            </h2>
+            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{showcase.text}</p>
+            {showcase.highlights && showcase.highlights.length > 0 && (
+              <ul className="mt-7 flex flex-wrap gap-3">
+                {showcase.highlights.map((h) => (
+                  <li
+                    key={h.label}
+                    className="flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-[13px] font-semibold text-foreground"
+                  >
+                    {createElement(h.icon, { className: "size-4 text-brand" })}
+                    {h.label}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Reveal>
+
+          <Reveal delay={1}>
+            <div className="relative overflow-hidden rounded-3xl bg-white shadow-card ring-1 ring-black/5">
+              {/* viewer toolbar */}
+              <div className="flex items-center justify-between border-b border-border bg-surface px-4 py-2.5">
+                <span className="flex gap-1.5">
+                  <span className="size-2.5 rounded-full bg-black/10" />
+                  <span className="size-2.5 rounded-full bg-black/10" />
+                  <span className="size-2.5 rounded-full bg-brand/60" />
+                </span>
+                <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  Edificio connesso
+                </span>
+                <span className="relative flex size-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-60" />
+                  <span className="relative inline-flex size-2 rounded-full bg-brand-bright" />
+                </span>
+              </div>
+              <div className="tech-grid relative aspect-[4/3] overflow-hidden bg-white">
+                <Image
+                  src={showcase.image}
+                  alt={showcase.title}
+                  fill
+                  className="object-contain p-3 sm:p-5"
+                  sizes="(max-width: 1024px) 100vw, 55vw"
+                />
+              </div>
+            </div>
+            {showcase.caption && (
+              <p className="mt-4 text-center text-sm text-muted-foreground">{showcase.caption}</p>
+            )}
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function CtaBand({
   label = "Prenota una demo",
   title,
@@ -828,13 +992,19 @@ export function SectorPage({ config }: { config: SectorConfig }) {
       {config.marketStats && config.marketStats.length > 0 && (
         <section className="bg-surface">
           <div className={cn("mx-auto max-w-7xl px-5 sm:px-8", SECTION_PY)}>
-            <StatGrid stats={config.marketStats} columns="grid-cols-1 sm:grid-cols-3" />
+            <StatGrid
+              stats={config.marketStats}
+              columns="grid-cols-1 sm:grid-cols-3"
+              disableHover
+            />
             {config.marketStatsSource && (
               <p className="mt-6 text-center text-sm text-muted-foreground">{config.marketStatsSource}</p>
             )}
           </div>
         </section>
       )}
+
+      {config.buildingShowcase && <BuildingShowcase showcase={config.buildingShowcase} />}
 
       {gridBeforeScenes && config.grid && <GridSection grid={config.grid} />}
 
@@ -898,16 +1068,27 @@ export function SectorPage({ config }: { config: SectorConfig }) {
                     </ul>
                   </Reveal>
                   <Reveal delay={1} className={cn(reverse && "lg:order-1", isDominant && "h-full")}>
-                    <SceneImage
-                      src={scene.image}
-                      beforeSrc={scene.beforeImage}
-                      alt={scene.title}
-                      cards={scene.cards}
-                      before={scene.before}
-                      scrollDelay={i}
-                      size={isDominant ? "dominant" : "default"}
-                      className={isDominant ? "lg:-mr-8 xl:-mr-12" : undefined}
-                    />
+                    {scene.video ? (
+                      <SceneVideo
+                        src={scene.video}
+                        poster={scene.image}
+                        alt={scene.title}
+                        cards={scene.cards}
+                        size={isDominant ? "dominant" : "default"}
+                        className={isDominant ? "lg:-mr-8 xl:-mr-12" : undefined}
+                      />
+                    ) : (
+                      <SceneImage
+                        src={scene.image}
+                        beforeSrc={scene.beforeImage}
+                        alt={scene.title}
+                        cards={scene.cards}
+                        before={scene.before}
+                        scrollDelay={i}
+                        size={isDominant ? "dominant" : "default"}
+                        className={isDominant ? "lg:-mr-8 xl:-mr-12" : undefined}
+                      />
+                    )}
                   </Reveal>
                 </div>
               </div>

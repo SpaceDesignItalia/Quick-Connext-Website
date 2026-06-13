@@ -385,6 +385,189 @@ function PlatformCompare() {
   );
 }
 
+// ─── PlatformDashboard — software mockup shown in the hero viewer ─────────────
+
+/* Live sensor pins laid over the stylised floor plan. Coordinates are % of the
+   plan box; each pulses to read as a live device on the platform. */
+const planPins = [
+  { label: "Clima", x: 26, y: 30 },
+  { label: "Accessi", x: 70, y: 24 },
+  { label: "Energia", x: 50, y: 62 },
+  { label: "Sicurezza", x: 82, y: 66 },
+  { label: "Luci", x: 20, y: 72 },
+];
+
+const railIcons = [Gauge, Thermometer, KeyRound, ShieldCheck, Wrench];
+
+const dashKpis = [
+  { label: "Consumi oggi", value: "412", unit: "kWh", trend: "−18%" },
+  { label: "Comfort medio", value: "97", unit: "%", trend: "+4%" },
+  { label: "Allarmi attivi", value: "0", unit: "", trend: "OK" },
+];
+
+function PlatformDashboard() {
+  return (
+    <div className="relative flex aspect-[4/3] overflow-hidden bg-surface">
+      {/* nav rail */}
+      <div className="hidden w-12 shrink-0 flex-col items-center gap-3 border-r border-border bg-white py-3 sm:flex">
+        <Image src="/logo.png" alt="" width={24} height={24} className="size-6 object-contain" />
+        <span className="h-px w-5 bg-border" />
+        {railIcons.map((Icon, i) => (
+          <span
+            key={i}
+            className={cn(
+              "flex size-7 items-center justify-center rounded-lg",
+              i === 0 ? "bg-brand/10 text-brand" : "text-muted-foreground/55",
+            )}
+          >
+            <Icon className="size-3.5" />
+          </span>
+        ))}
+      </div>
+
+      {/* main */}
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* header strip */}
+        <div className="flex items-center justify-between border-b border-border bg-white px-3 py-2 sm:px-4">
+          <div className="min-w-0">
+            <p className="truncate text-[11px] font-bold text-foreground sm:text-xs">
+              Edificio Centrale
+            </p>
+            <p className="truncate font-mono text-[8.5px] uppercase tracking-[0.14em] text-muted-foreground sm:text-[9px]">
+              12.480 m² · 6 piani · 142 dispositivi
+            </p>
+          </div>
+          <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-brand/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.12em] text-brand">
+            <span className="relative flex size-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-60" />
+              <span className="relative inline-flex size-1.5 rounded-full bg-brand" />
+            </span>
+            Live
+          </span>
+        </div>
+
+        {/* body */}
+        <div className="grid flex-1 grid-cols-[1.5fr_1fr] gap-2 p-2.5 sm:gap-2.5 sm:p-3">
+          {/* floor plan */}
+          <div className="relative overflow-hidden rounded-xl border border-border bg-white p-2.5">
+            <p className="font-mono text-[8.5px] font-semibold uppercase tracking-[0.14em] text-muted-foreground sm:text-[9px]">
+              Planimetria · Piano 3
+            </p>
+            <div className="relative mt-1.5 aspect-[4/3]">
+              <svg viewBox="0 0 200 150" className="h-full w-full" aria-hidden>
+                <rect x="6" y="6" width="188" height="138" rx="4" fill="none" stroke="var(--brand-line)" strokeWidth="1.5" />
+                <line x1="6" y1="86" x2="194" y2="86" stroke="var(--brand-line)" strokeWidth="1.2" />
+                <line x1="78" y1="6" x2="78" y2="86" stroke="var(--brand-line)" strokeWidth="1.2" />
+                <line x1="134" y1="6" x2="134" y2="86" stroke="var(--brand-line)" strokeWidth="1.2" />
+                <line x1="96" y1="86" x2="96" y2="144" stroke="var(--brand-line)" strokeWidth="1.2" />
+                <rect x="6" y="6" width="188" height="138" rx="4" fill="rgba(0,196,204,0.025)" />
+              </svg>
+              {planPins.map((p) => (
+                <span
+                  key={p.label}
+                  className="absolute -translate-x-1/2 -translate-y-1/2"
+                  style={{ left: `${p.x}%`, top: `${p.y}%` }}
+                >
+                  <span className="relative flex size-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-teal opacity-50" />
+                    <span className="relative inline-flex size-2 rounded-full bg-brand-teal ring-2 ring-white" />
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* right column */}
+          <div className="flex min-w-0 flex-col gap-2 sm:gap-2.5">
+            {/* energy sparkline */}
+            <div className="flex-1 rounded-xl border border-border bg-white p-2.5">
+              <div className="flex items-baseline justify-between">
+                <p className="font-mono text-[8.5px] font-semibold uppercase tracking-[0.14em] text-muted-foreground sm:text-[9px]">
+                  Energia
+                </p>
+                <p className="text-[9px] font-bold text-brand">−18%</p>
+              </div>
+              <p className="mt-0.5 font-display text-lg font-extrabold leading-none text-foreground">
+                412<span className="ml-0.5 text-[10px] font-semibold text-muted-foreground">kWh</span>
+              </p>
+              <svg viewBox="0 0 120 40" className="mt-1.5 h-9 w-full" preserveAspectRatio="none" aria-hidden>
+                <defs>
+                  <linearGradient id="dashSpark" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="rgba(0,196,204,0.28)" />
+                    <stop offset="100%" stopColor="rgba(0,196,204,0)" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M0 30 L15 26 L30 28 L45 18 L60 22 L75 12 L90 16 L105 8 L120 11 L120 40 L0 40 Z"
+                  fill="url(#dashSpark)"
+                />
+                <motion.path
+                  d="M0 30 L15 26 L30 28 L45 18 L60 22 L75 12 L90 16 L105 8 L120 11"
+                  fill="none"
+                  stroke="var(--brand-teal)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  initial={{ pathLength: 0 }}
+                  whileInView={{ pathLength: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.4, delay: 0.6, ease: "easeInOut" }}
+                />
+              </svg>
+            </div>
+            {/* status rows */}
+            <div className="rounded-xl border border-border bg-white p-2">
+              {[
+                { Icon: Thermometer, label: "Clima", val: "21,5°" },
+                { Icon: KeyRound, label: "Accessi", val: "Aperti" },
+                { Icon: ShieldCheck, label: "Sicurezza", val: "Armato" },
+              ].map((r, i) => (
+                <div
+                  key={r.label}
+                  className={cn(
+                    "flex items-center gap-2 py-1",
+                    i > 0 && "border-t border-border/70",
+                  )}
+                >
+                  <span className="flex size-5 items-center justify-center rounded-md bg-brand/10 text-brand">
+                    <r.Icon className="size-3" />
+                  </span>
+                  <span className="flex-1 truncate text-[10px] font-medium text-foreground">
+                    {r.label}
+                  </span>
+                  <span className="text-[10px] font-semibold text-muted-foreground">{r.val}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* KPI footer */}
+        <div className="grid grid-cols-3 gap-px border-t border-border bg-border">
+          {dashKpis.map((k) => (
+            <div key={k.label} className="bg-white px-2.5 py-2">
+              <p className="truncate font-mono text-[7.5px] uppercase tracking-[0.12em] text-muted-foreground sm:text-[8px]">
+                {k.label}
+              </p>
+              <p className="mt-0.5 flex items-baseline gap-1">
+                <span className="font-display text-sm font-extrabold leading-none text-foreground">
+                  {k.value}
+                  {k.unit && (
+                    <span className="ml-0.5 text-[8px] font-semibold text-muted-foreground">
+                      {k.unit}
+                    </span>
+                  )}
+                </span>
+                <span className="text-[8px] font-bold text-brand">{k.trend}</span>
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── SectorPanels ─────────────────────────────────────────────────────────────
 
 const sectorPanels = [
@@ -697,7 +880,7 @@ export default function HomePage() {
               </h1>
               <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-white/65">
                 Clima, luci, accessi, sicurezza ed energia in un unico sistema.
-                Con qualsiasi marca, senza vendor lock-in.
+                Con le migliori marche, senza vendor lock-in.
               </p>
               <div className="mt-8">
                 <ButtonLink href="/contatti" size="lg">
@@ -746,78 +929,48 @@ export default function HomePage() {
                     <span className="size-2.5 rounded-full bg-brand/60" />
                   </span>
                   <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    Digital twin · edificio connesso
+                    QuickConnext · Cruscotto edificio
                   </span>
                   <span className="relative flex size-2">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-60" />
                     <span className="relative inline-flex size-2 rounded-full bg-brand-bright" />
                   </span>
                 </div>
-                {/* render, switch-on */}
+                {/* software mockup — the platform's control room, on brand */}
                 <motion.div
-                  initial={{ filter: "grayscale(1) brightness(0.97)" }}
-                  animate={{ filter: "grayscale(0) brightness(1)" }}
-                  transition={{ duration: 1.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative aspect-[4/3] overflow-hidden"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 1, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  {/* crop to the central building — the side thumbnails baked in the
-                      render are replaced by the live cards floating around it */}
-                  <Image
-                    src="/edificio.png"
-                    alt="Edificio in sezione 3D gestito dalla piattaforma QuickConnext"
-                    fill
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 45vw"
-                    className="scale-[1.6] object-contain"
-                    style={{ objectPosition: "center 46%" }}
-                  />
+                  <PlatformDashboard />
                 </motion.div>
               </motion.div>
 
-              <motion.div
-                className="absolute -left-1 top-10 z-10 sm:-left-5"
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              >
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <NotificationCard
                   icon={Thermometer}
                   title="Clima per zona"
                   detail="Si regola sulla presenza reale"
                   tone="dark"
                   delay={0.9}
+                  className="max-w-none w-full"
                 />
-              </motion.div>
-              <motion.div
-                className="absolute right-0 top-1/4 z-10 hidden md:block sm:-right-4"
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              >
                 <NotificationCard
                   icon={KeyRound}
                   title="Accessi tracciati"
                   detail="Badge e varchi da un cruscotto"
                   tone="dark"
                   delay={1.1}
+                  className="max-w-none w-full"
                 />
-              </motion.div>
-              <motion.div
-                className="absolute -bottom-4 left-4 z-10 hidden md:block sm:left-0"
-                animate={{ y: [0, -7, 0] }}
-                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              >
                 <NotificationCard
                   icon={Gauge}
                   title="Consumi in tempo reale"
                   detail="Elettrico, termico e idrico"
                   tone="dark"
                   delay={1.3}
+                  className="max-w-none w-full"
                 />
-              </motion.div>
-              <motion.div
-                className="absolute -bottom-7 right-2 z-10 sm:-right-3"
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
-              >
                 <NotificationCard
                   icon={Wrench}
                   title="Anomalia prevista"
@@ -825,8 +978,9 @@ export default function HomePage() {
                   status="Manutenzione preventiva"
                   tone="dark"
                   delay={1.5}
+                  className="max-w-none w-full"
                 />
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
@@ -854,8 +1008,7 @@ export default function HomePage() {
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
             Progettiamo, installiamo e gestiamo l&apos;automazione del tuo
-            edificio: personale interno, in tutta Italia. Un progetto{" "}
-            <span className="font-semibold text-foreground">Più Sviluppo</span>.
+            edificio: personale interno, in tutta Italia.
           </p>
         </Reveal>
 

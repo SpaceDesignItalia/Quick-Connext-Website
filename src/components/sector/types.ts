@@ -18,6 +18,9 @@ export interface SceneFeature {
   desc: string;
   bullets: string[];
   image: string;
+  /** Optional looping micro-animation clip. When set, the scene shows this
+   *  living video (with `image` as poster) instead of the before/after slider. */
+  video?: string;
   /** Optional distinct image for the "Prima" side of the before/after slider. */
   beforeImage?: string;
   cards: SceneCard[];
@@ -94,6 +97,15 @@ export interface SectorConfig {
   /** Optional market stats shown after the intro block. */
   marketStats?: Array<{ value: string; label: string }>;
   marketStatsSource?: string;
+  /** Optional contained 3D-render showcase ("look inside the building"). */
+  buildingShowcase?: {
+    label: string;
+    title: string;
+    text: string;
+    image: string;
+    caption?: string;
+    highlights?: { icon: LucideIcon; label: string }[];
+  };
   scenes: SceneFeature[];
   statPause?: StatPause;
   grid?: { label?: string; title: string; subtitle?: string; features: GridFeature[] };

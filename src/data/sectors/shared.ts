@@ -9,7 +9,7 @@ export const sharedComparison: ComparisonRow[] = [
   },
   {
     aspect: "Protocolli",
-    quick: "Aperti: KNX, Modbus, BACnet, qualsiasi marca",
+    quick: "Aperti: KNX, Modbus, BACnet, le migliori marche",
     traditional: "Proprietari, con vincolo al produttore",
   },
   {
