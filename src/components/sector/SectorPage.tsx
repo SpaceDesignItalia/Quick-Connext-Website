@@ -20,10 +20,19 @@ import type { LucideIcon } from "lucide-react";
 import { ArrowRight, Check, Minus, Sparkles, X } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { LiveArchitecture } from "@/components/LiveArchitecture";
+import { SystemSchema } from "@/components/SystemSchema";
+import { RoomExplorer } from "@/components/RoomExplorer";
 import { BeforeAfterSlider } from "./BeforeAfterSlider";
 import { HotelCommandCenter } from "./HotelCommandCenter";
 import { RoiCalculator } from "./RoiCalculator";
-import type { SceneCard, SectorConfig, StatPause } from "./types";
+import type {
+  RoomExplorerSection,
+  SceneCard,
+  SectorConfig,
+  StatPause,
+  SystemSchemaSection,
+} from "./types";
 
 /* Animated numeric value: "−45%" counts up from 0 when scrolled into view. */
 export function CountUp({ value, className }: { value: string; className?: string }) {
@@ -467,6 +476,52 @@ function StatPauseBand({
           <p className="mx-auto mt-6 max-w-lg text-base leading-relaxed text-white/45 sm:text-lg">
             {explanation}
           </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* KNX system-topology band — the real connection schema, made alive. The navy
+   diagram panel stays contained on a light section (navy used sparingly). */
+function SystemSchemaBand({ schema }: { schema: SystemSchemaSection }) {
+  return (
+    <section className="bg-surface">
+      <div className={cn("mx-auto max-w-5xl px-5 sm:px-8", SECTION_PY)}>
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <SectionLabel className="justify-center">{schema.label}</SectionLabel>
+          <h2 className="mt-6 text-balance font-display text-3xl font-extrabold leading-[1.1] text-foreground sm:text-4xl">
+            {schema.title}
+          </h2>
+          {schema.subtitle && (
+            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{schema.subtitle}</p>
+          )}
+        </Reveal>
+        <Reveal delay={1} className="mt-10">
+          <SystemSchema />
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* Interactive "explore the room" band — a clean photo with cinematic zoom and
+   code-rendered text callouts (no baked-in labels). Navy stage on light bg. */
+function RoomExplorerBand({ section }: { section: RoomExplorerSection }) {
+  return (
+    <section className="bg-surface">
+      <div className={cn("mx-auto max-w-5xl px-5 sm:px-8", SECTION_PY)}>
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <SectionLabel className="justify-center">{section.label}</SectionLabel>
+          <h2 className="mt-6 text-balance font-display text-3xl font-extrabold leading-[1.1] text-foreground sm:text-4xl">
+            {section.title}
+          </h2>
+          {section.subtitle && (
+            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{section.subtitle}</p>
+          )}
+        </Reveal>
+        <Reveal delay={1} className="mt-10">
+          <RoomExplorer image={section.image} />
         </Reveal>
       </div>
     </section>
@@ -1068,7 +1123,9 @@ export function SectorPage({ config }: { config: SectorConfig }) {
                     </ul>
                   </Reveal>
                   <Reveal delay={1} className={cn(reverse && "lg:order-1", isDominant && "h-full")}>
-                    {scene.video ? (
+                    {scene.visual === "live-architecture" ? (
+                      <LiveArchitecture />
+                    ) : scene.video ? (
                       <SceneVideo
                         src={scene.video}
                         poster={scene.image}
@@ -1095,6 +1152,12 @@ export function SectorPage({ config }: { config: SectorConfig }) {
             </section>
             {showStatPause && config.statPause && (
               <StatPauseBand {...config.statPause} />
+            )}
+            {config.systemSchema?.afterSceneIndex === i && (
+              <SystemSchemaBand schema={config.systemSchema} />
+            )}
+            {config.roomExplorer?.afterSceneIndex === i && (
+              <RoomExplorerBand section={config.roomExplorer} />
             )}
           </div>
         );

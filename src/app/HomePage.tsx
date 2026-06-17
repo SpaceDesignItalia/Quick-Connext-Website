@@ -5,6 +5,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ButtonLink } from "@/components/ui/button";
+import { LiveArchitecture } from "@/components/LiveArchitecture";
 import { cn } from "@/lib/utils";
 import { animate, motion, useInView, type Variants } from "framer-motion";
 import {
@@ -15,7 +16,6 @@ import {
   type ReactNode,
 } from "react";
 import {
-  type LucideIcon,
   ArrowRight,
   Thermometer,
   Lightbulb,
@@ -30,6 +30,20 @@ import {
   BadgeCheck,
   Timer,
   Headset,
+  Hotel,
+  Factory,
+  HeartPulse,
+  Building2,
+  ChevronDown,
+  Network,
+  Boxes,
+  RefreshCw,
+  Cable,
+  Unlock,
+  Check,
+  BadgeEuro,
+  PiggyBank,
+  TrendingUp,
 } from "lucide-react";
 import type { BlogPost } from "@/types/blog";
 import { CountUp } from "@/components/sector/SectorPage";
@@ -39,6 +53,7 @@ import { CountUp } from "@/components/sector/SectorPage";
 const IMAGES = {
   hotelRoom: "/images/hotel-room.png",
   heroHotel: "/images/hero-hotel.png",
+  sectorHotel: "/images/hero-hotel.png",
   sectorIndustria: "/images/sector-industria.png",
   sectorRsa: "/images/sector-rsa.png",
   sectorEdifici: "/images/sector-edifici.png",
@@ -111,78 +126,6 @@ function SectionLabel({
       <span className={cn("h-px w-6", tone === "light" ? "bg-brand" : "bg-brand-bright")} />
       {children}
     </span>
-  );
-}
-
-// ─── NotificationCard ─────────────────────────────────────────────────────────
-
-function NotificationCard({
-  icon: Icon,
-  title,
-  detail,
-  status,
-  tone = "light",
-  delay = 0,
-  className,
-}: {
-  icon: LucideIcon;
-  title: string;
-  detail: string;
-  status?: string;
-  tone?: "light" | "dark";
-  delay?: number;
-  className?: string;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 14, scale: 0.96 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={cn(
-        "pointer-events-none flex w-max max-w-[16rem] items-start gap-3 rounded-2xl p-3 pr-4",
-        tone === "light" ? "glass-card" : "glass-card-dark",
-        className,
-      )}
-    >
-      <span
-        className={cn(
-          "flex size-9 shrink-0 items-center justify-center rounded-xl",
-          tone === "light" ? "bg-brand/10 text-brand" : "bg-brand-bright/15 text-brand-bright",
-        )}
-      >
-        <Icon className="size-4" />
-      </span>
-      <div className="min-w-0">
-        <div className="flex items-center gap-2">
-          <span className="relative flex size-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-60" />
-            <span className="relative inline-flex size-2 rounded-full bg-brand-bright" />
-          </span>
-          <p
-            className={cn(
-              "truncate text-[13px] font-semibold",
-              tone === "light" ? "text-foreground" : "text-navy-foreground",
-            )}
-          >
-            {title}
-          </p>
-        </div>
-        <p
-          className={cn(
-            "mt-0.5 text-xs leading-snug",
-            tone === "light" ? "text-muted-foreground" : "text-navy-muted",
-          )}
-        >
-          {detail}
-        </p>
-        {status && (
-          <p className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-brand-bright">
-            {status}
-          </p>
-        )}
-      </div>
-    </motion.div>
   );
 }
 
@@ -392,8 +335,9 @@ const sectorPanels = [
     href: "/hotel",
     label: "Hotel",
     tagline: "L'hotel che si gestisce da solo",
-    img: IMAGES.heroHotel,
+    img: IMAGES.sectorHotel,
     chip: "Accessi · Comfort camera · Energia",
+    icon: Hotel,
   },
   {
     href: "/industry",
@@ -401,6 +345,7 @@ const sectorPanels = [
     tagline: "Stabilimenti efficienti e sicuri",
     img: IMAGES.sectorIndustria,
     chip: "Impianti · Consumi · Continuità",
+    icon: Factory,
   },
   {
     href: "/rsa",
@@ -408,6 +353,7 @@ const sectorPanels = [
     tagline: "Ambienti di cura connessi",
     img: IMAGES.sectorRsa,
     chip: "Sicurezza · Clima · Qualità dell'aria",
+    icon: HeartPulse,
   },
   {
     href: "/building",
@@ -415,25 +361,28 @@ const sectorPanels = [
     tagline: "Uffici e direzionali smart",
     img: IMAGES.sectorEdifici,
     chip: "BACS · Termoregolazione · Accessi",
+    icon: Building2,
   },
 ] as const;
 
-function SectorPanels() {
+/* The hero itself: the four sectors, full-bleed. 2×2 grid on mobile,
+   expanding panels on desktop. No sector is privileged — they take turns
+   until the visitor points one. */
+function SectorHero() {
   const [active, setActive] = useState(0);
   const paused = useRef(false);
 
-  /* No sector is privileged: panels take turns until the user points one. */
   useEffect(() => {
     const t = setInterval(() => {
       if (!paused.current) setActive((a) => (a + 1) % sectorPanels.length);
-    }, 3500);
+    }, 4500);
     return () => clearInterval(t);
   }, []);
 
   return (
     <div
       id="settori"
-      className="flex h-[380px] scroll-mt-24 gap-2 sm:h-[460px]"
+      className="grid h-full scroll-mt-24 grid-cols-2 grid-rows-2 gap-2.5 lg:flex lg:grid-rows-1"
       onMouseEnter={() => {
         paused.current = true;
       }}
@@ -443,44 +392,55 @@ function SectorPanels() {
     >
       {sectorPanels.map((p, i) => {
         const isActive = i === active;
+        const Icon = p.icon;
         return (
           <Link
             key={p.href}
             href={p.href}
             onMouseEnter={() => setActive(i)}
             onFocus={() => setActive(i)}
+            aria-label={`${p.label} — ${p.tagline}`}
             className={cn(
-              "group relative block overflow-hidden rounded-2xl ring-1 ring-black/5 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-              isActive ? "flex-[3]" : "flex-[1]",
+              "group relative block overflow-hidden rounded-2xl ring-1 ring-white/10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] lg:rounded-3xl",
+              isActive ? "lg:flex-[2.6]" : "lg:flex-[1]",
             )}
           >
             <Image
               src={p.img}
               alt={p.label}
               fill
-              priority={i === 0}
+              priority={i < 2}
               className={cn(
-                "object-cover transition-transform duration-700",
-                isActive ? "scale-105" : "scale-100",
+                "object-cover transition-transform duration-[1200ms] ease-out",
+                isActive ? "scale-100" : "scale-105",
               )}
-              sizes="(max-width: 1024px) 100vw, 70vw"
+              sizes="(max-width: 1024px) 50vw, 60vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/30 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 transition-opacity duration-300">
-              <div
-                className={cn(
-                  "flex items-end justify-between gap-2",
-                  isActive ? "opacity-100" : "opacity-0 lg:opacity-100",
-                )}
-              >
+            <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/35 to-navy/5" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-brand/25 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
+            {/* top — index + sector icon */}
+            <div className="absolute inset-x-0 top-0 flex items-center justify-between p-3 sm:p-5">
+              <span className="font-mono text-[10px] font-semibold tracking-[0.22em] text-white/55 sm:text-[11px]">
+                0{i + 1}
+              </span>
+              <span className="flex size-8 items-center justify-center rounded-full border border-white/15 bg-white/10 text-brand-bright backdrop-blur-sm sm:size-10">
+                <Icon className="size-4 sm:size-5" />
+              </span>
+            </div>
+
+            {/* bottom — label, tagline, cta */}
+            <div className="absolute inset-x-0 bottom-0 p-3 sm:p-6">
+              <div className="flex items-end justify-between gap-2">
                 <div className={cn(!isActive && "lg:[writing-mode:vertical-rl] lg:rotate-180")}>
-                  <h3 className="font-display text-lg font-bold text-navy-foreground sm:text-xl">
+                  <h3 className="font-display text-lg font-extrabold leading-tight text-white sm:text-2xl">
                     {p.label}
                   </h3>
                   <p
                     className={cn(
-                      "text-xs text-white/70 transition-all duration-300",
-                      isActive ? "opacity-100" : "hidden",
+                      "mt-1 max-w-[15rem] text-[13px] leading-snug text-white/70 sm:text-sm",
+                      isActive ? "block" : "hidden",
+                      "max-lg:block",
                     )}
                   >
                     {p.tagline}
@@ -488,15 +448,16 @@ function SectorPanels() {
                 </div>
                 <span
                   className={cn(
-                    "flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-bright text-navy transition-all",
+                    "flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-bright text-navy shadow-lg transition-all",
                     isActive ? "opacity-100" : "opacity-0",
+                    "max-lg:opacity-100",
                   )}
                 >
-                  <ArrowUpRight className="size-4" />
+                  <ArrowUpRight className="size-4 sm:size-5" />
                 </span>
               </div>
               {isActive && (
-                <div className="mt-3 hidden w-max rounded-full glass-card-dark px-3.5 py-1.5 sm:block">
+                <div className="mt-3 hidden w-max rounded-full glass-card-dark px-3.5 py-1.5 lg:block">
                   <span className="text-[11px] font-medium text-white/85">{p.chip}</span>
                 </div>
               )}
@@ -612,7 +573,170 @@ function CtaBand({
   );
 }
 
+// ─── RegulationPanel — la normativa, con un conto alla rovescia vivo ──────────
+
+const COUNTDOWN_TARGET = "2029-12-31T00:00:00";
+
+const timelineSteps = [
+  { date: "3 giu 2026", title: "Classe B obbligatoria", note: "impianti > 290 kW", status: "active" as const },
+  { date: "lug 2027", title: "Indicatore SRI", note: "smart readiness", status: "upcoming" as const },
+  { date: "31 dic 2029", title: "Soglia a 70 kW", note: "platea ×4–5", status: "upcoming" as const },
+];
+
+function useCountdown(targetIso: string) {
+  const [t, setT] = useState<{ d: number; h: number; m: number; s: number } | null>(null);
+  useEffect(() => {
+    const target = new Date(targetIso).getTime();
+    const tick = () => {
+      const diff = Math.max(0, target - Date.now());
+      setT({
+        d: Math.floor(diff / 86400000),
+        h: Math.floor((diff % 86400000) / 3600000),
+        m: Math.floor((diff % 3600000) / 60000),
+        s: Math.floor((diff % 60000) / 1000),
+      });
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [targetIso]);
+  return t;
+}
+
+function RegulationPanel() {
+  const cd = useCountdown(COUNTDOWN_TARGET);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const units = cd
+    ? [
+        { v: String(cd.d), l: "giorni" },
+        { v: pad(cd.h), l: "ore" },
+        { v: pad(cd.m), l: "min" },
+        { v: pad(cd.s), l: "sec" },
+      ]
+    : ["giorni", "ore", "min", "sec"].map((l) => ({ v: "––", l }));
+
+  return (
+    <div className="relative overflow-hidden rounded-3xl bg-navy p-6 shadow-card sm:p-9">
+      <div className="tech-grid-dark pointer-events-none absolute inset-0 opacity-50" aria-hidden />
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_70%_at_50%_0%,rgba(0,196,204,0.13),transparent)]"
+        aria-hidden
+      />
+      <div className="relative">
+        {/* Live countdown */}
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-bright">
+              Conto alla rovescia normativo
+            </p>
+            <p className="mt-2 max-w-sm text-lg leading-snug text-white/70">
+              All&apos;estensione dell&apos;obbligo BACS agli impianti{" "}
+              <span className="font-semibold text-white">oltre 70 kW</span>.
+            </p>
+          </div>
+          <div className="flex gap-2.5 sm:gap-3">
+            {units.map((u) => (
+              <div
+                key={u.l}
+                className="flex min-w-[60px] flex-col items-center rounded-xl border border-white/10 bg-white/[0.04] px-2.5 py-2.5 sm:min-w-[70px]"
+              >
+                <span className="font-mono text-2xl font-extrabold tabular-nums text-brand-bright sm:text-3xl">
+                  {u.v}
+                </span>
+                <span className="mt-1 font-mono text-[9.5px] uppercase tracking-[0.12em] text-navy-muted">
+                  {u.l}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Timeline */}
+        <div className="relative mt-11">
+          <div className="absolute inset-x-1 top-[13px] h-px bg-white/15" aria-hidden />
+          <div className="absolute left-1 top-[13px] h-px w-[6%] bg-brand-bright/80" aria-hidden />
+          <div className="relative grid grid-cols-3">
+            {timelineSteps.map((s, i) => {
+              const align = i === 0 ? "items-start text-left" : i === 1 ? "items-center text-center" : "items-end text-right";
+              const isActive = s.status === "active";
+              return (
+                <div key={s.date} className={cn("flex flex-col", align)}>
+                  <span
+                    className={cn(
+                      "flex size-7 items-center justify-center rounded-full border-2",
+                      isActive
+                        ? "border-brand-bright bg-brand-bright text-navy"
+                        : "border-white/25 bg-navy text-white/40",
+                    )}
+                  >
+                    {isActive ? (
+                      <Check className="size-3.5" strokeWidth={3} />
+                    ) : (
+                      <span className="size-1.5 rounded-full bg-white/40" />
+                    )}
+                  </span>
+                  <div className="mt-3.5">
+                    <span
+                      className={cn(
+                        "inline-block rounded-full px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-[0.1em]",
+                        isActive ? "bg-brand-bright/15 text-brand-bright" : "bg-white/[0.06] text-white/45",
+                      )}
+                    >
+                      {isActive ? "In vigore" : "In arrivo"}
+                    </span>
+                    <p className="mt-2 font-mono text-[12px] font-semibold text-white/75">{s.date}</p>
+                    <p className="mt-0.5 text-[13.5px] font-bold leading-tight text-white">{s.title}</p>
+                    <p className="mt-0.5 text-[11px] text-navy-muted">{s.note}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <p className="mt-8 inline-flex items-center gap-2 rounded-full border border-brand-bright/25 bg-brand-bright/[0.07] px-3 py-1.5 text-[11.5px] font-semibold text-brand-bright">
+          <span className="relative flex size-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-70" />
+            <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
+          </span>
+          Oggi sei qui — la Classe B è già legge
+        </p>
+      </div>
+    </div>
+  );
+}
+
 // ─── Page data ────────────────────────────────────────────────────────────────
+
+const productSpecs = [
+  { icon: Network, label: "KNX-IP nativo", desc: "Supervisione web e accesso remoto sicuro, senza server di terze parti." },
+  { icon: Cable, label: "Bus a 2 fili", desc: "Dati e alimentazione sullo stesso doppino: cablaggio minimo, posa rapida." },
+  { icon: ShieldCheck, label: "Alimentatore ridondabile", desc: "Continuità di servizio garantita anche in caso di guasto." },
+  { icon: Boxes, label: "Plug & play", desc: "Aggiungi nuovi dispositivi in autonomia, con qualunque marchio compatibile." },
+  { icon: RefreshCw, label: "Aggiornamenti OTA", desc: "Nuove funzioni distribuite via rete, senza interventi in cantiere." },
+  { icon: Unlock, label: "Zero vendor lock-in", desc: "KNX, Modbus e BACnet: standard aperti, nessun vincolo di fornitore." },
+] as const;
+
+const incentives = [
+  {
+    icon: BadgeEuro,
+    name: "Transizione 5.0",
+    value: "fino al 45%",
+    desc: "Credito d'imposta per i progetti che riducono i consumi energetici. Cumulabile con altri incentivi.",
+  },
+  {
+    icon: PiggyBank,
+    name: "Conto Termico 3.0",
+    value: "fino al 40%",
+    desc: "Copertura delle spese, max 60 €/m². Include BACS, sensori, software e integrazione con le rinnovabili.",
+  },
+  {
+    icon: TrendingUp,
+    name: "Ecobonus terziario",
+    value: "detrazione",
+    desc: "Riqualificazione energetica di involucro, impianti e BACS, con detrazione fiscale dedicata.",
+  },
+] as const;
 
 const domains = [
   { icon: Thermometer, title: "Clima & HVAC", desc: "Temperatura, umidità e ventilazione ottimizzate stanza per stanza." },
@@ -672,175 +796,44 @@ export default function HomePage({ blogPosts }: { blogPosts: BlogPost[] }) {
     <main className="bg-background">
       <Header />
 
-      {/* Hero — navy stage */}
-      <section className="relative overflow-hidden bg-navy pt-28 sm:pt-32">
-        <div
-          className="tech-grid-dark pointer-events-none absolute inset-0 opacity-70 [mask-image:linear-gradient(to_bottom,black_45%,transparent_95%)]"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_55%_at_50%_-5%,rgba(0,196,204,0.16),transparent)]"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute -left-32 top-1/4 size-[28rem] rounded-full bg-brand/10 blur-[140px]"
-          aria-hidden
-        />
-
-        <div className="relative mx-auto max-w-7xl px-5 pb-8 sm:px-8 sm:pb-12">
-          <div className="grid items-center gap-12 lg:grid-cols-[1fr_0.95fr]">
-            <Reveal>
-              <SectionLabel tone="dark">Building Automation & Control System</SectionLabel>
-              <h1 className="mt-6 text-balance font-display text-[2.7rem] font-extrabold leading-[1.02] tracking-tight text-white sm:text-6xl xl:text-[4.2rem]">
-                Tutto il tuo edificio.{" "}
-                <span className="text-brand-bright">Una sola piattaforma.</span>
-              </h1>
-              <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-white/65">
-                Clima, luci, accessi, sicurezza ed energia in un unico sistema.
-                Con qualsiasi marca, senza vendor lock-in.
-              </p>
-              <div className="mt-8">
-                <ButtonLink href="/contatti" size="lg">
-                  Richiedi una demo <ArrowRight className="size-4" />
-                </ButtonLink>
-              </div>
-              {/* what we actually do — the company's craft, first screen */}
-              <div className="mt-10 grid grid-cols-3 gap-4 border-t border-white/10 pt-6 sm:gap-6">
-                {[
-                  { n: "01", t: "Progettiamo", d: "l'impianto su misura per la tua struttura" },
-                  { n: "02", t: "Installiamo", d: "chiavi in mano, senza fermare l'attività" },
-                  { n: "03", t: "Gestiamo", d: "assistenza 24/7 e manutenzione" },
-                ].map((s) => (
-                  <div key={s.n}>
-                    <span className="font-mono text-[10px] font-semibold tracking-[0.18em] text-brand-bright/80">
-                      {s.n}
-                    </span>
-                    <p className="mt-1 font-display text-base font-bold text-white sm:text-lg">
-                      {s.t}
-                    </p>
-                    <p className="mt-1 text-xs leading-snug text-white/50 sm:text-[13px]">
-                      {s.d}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-
-            {/* Digital twin viewer — the platform shows your building, live */}
-            <div className="relative">
-              <div
-                className="pointer-events-none absolute -bottom-10 left-1/2 h-20 w-4/5 -translate-x-1/2 rounded-[50%] bg-brand/25 blur-3xl"
-                aria-hidden
-              />
-              <motion.div
-                initial={{ opacity: 0, y: 28, scale: 0.97 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 1.1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="relative overflow-hidden rounded-3xl bg-white shadow-[0_45px_100px_-30px_rgba(0,0,0,0.65)] ring-1 ring-white/15"
-              >
-                {/* viewer toolbar */}
-                <div className="flex items-center justify-between border-b border-border bg-surface px-4 py-2.5">
-                  <span className="flex gap-1.5">
-                    <span className="size-2.5 rounded-full bg-black/10" />
-                    <span className="size-2.5 rounded-full bg-black/10" />
-                    <span className="size-2.5 rounded-full bg-brand/60" />
-                  </span>
-                  <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                    Digital twin · edificio connesso
-                  </span>
-                  <span className="relative flex size-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-60" />
-                    <span className="relative inline-flex size-2 rounded-full bg-brand-bright" />
-                  </span>
-                </div>
-                {/* render, switch-on */}
-                <motion.div
-                  initial={{ filter: "grayscale(1) brightness(0.97)" }}
-                  animate={{ filter: "grayscale(0) brightness(1)" }}
-                  transition={{ duration: 1.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative aspect-[4/3] overflow-hidden"
-                >
-                  {/* crop to the central building — the side thumbnails baked in the
-                      render are replaced by the live cards floating around it */}
-                  <Image
-                    src="/edificio.png"
-                    alt="Edificio in sezione 3D gestito dalla piattaforma QuickConnext"
-                    fill
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 45vw"
-                    className="scale-[1.6] object-contain"
-                    style={{ objectPosition: "center 46%" }}
-                  />
-                </motion.div>
-              </motion.div>
-
-              <motion.div
-                className="absolute -left-1 top-10 z-10 sm:-left-5"
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <NotificationCard
-                  icon={Thermometer}
-                  title="Clima per zona"
-                  detail="Si regola sulla presenza reale"
-                  tone="dark"
-                  delay={0.9}
-                />
-              </motion.div>
-              <motion.div
-                className="absolute right-0 top-1/4 z-10 hidden md:block sm:-right-4"
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              >
-                <NotificationCard
-                  icon={KeyRound}
-                  title="Accessi tracciati"
-                  detail="Badge e varchi da un cruscotto"
-                  tone="dark"
-                  delay={1.1}
-                />
-              </motion.div>
-              <motion.div
-                className="absolute -bottom-4 left-4 z-10 hidden md:block sm:left-0"
-                animate={{ y: [0, -7, 0] }}
-                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              >
-                <NotificationCard
-                  icon={Gauge}
-                  title="Consumi in tempo reale"
-                  detail="Elettrico, termico e idrico"
-                  tone="dark"
-                  delay={1.3}
-                />
-              </motion.div>
-              <motion.div
-                className="absolute -bottom-7 right-2 z-10 sm:-right-3"
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
-              >
-                <NotificationCard
-                  icon={Wrench}
-                  title="Anomalia prevista"
-                  detail="Intervento pianificato in anticipo"
-                  status="Manutenzione preventiva"
-                  tone="dark"
-                  delay={1.5}
-                />
-              </motion.div>
-            </div>
-          </div>
+      {/* HERO — the four sectors, full-bleed: the first thing the visitor sees */}
+      <section className="relative h-[100svh] min-h-[34rem] overflow-hidden bg-navy pt-[4.5rem]">
+        <div className="h-full w-full p-3 sm:p-4">
+          <SectorHero />
         </div>
-
-        {/* breathing room before the straddling sector panels */}
-        <div className="h-12 sm:h-16" aria-hidden />
+        <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 hidden justify-center sm:flex">
+          <span className="flex items-center gap-2 rounded-full border border-white/15 bg-navy/50 px-3.5 py-1.5 text-[11px] font-medium tracking-wide text-white/65 backdrop-blur-md">
+            Scorri per scoprire
+            <ChevronDown className="size-3.5 animate-bounce" />
+          </span>
+        </div>
       </section>
 
-      {/* Sectors — straddling the navy/white seam */}
-      <section className="relative">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[55%] bg-navy" aria-hidden />
-        <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+      {/* The text — right after the sectors, as the client asked */}
+      <section className="relative mx-auto max-w-7xl px-5 pt-20 pb-16 sm:px-8 sm:pt-28 sm:pb-20">
+        <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:gap-16">
           <Reveal>
-            <SectorPanels />
+            <SectionLabel>Building Automation & Control System</SectionLabel>
+            <h1 className="mt-6 text-balance font-display text-4xl font-extrabold leading-[1.04] tracking-tight text-foreground sm:text-5xl xl:text-[3.6rem]">
+              Tutto il tuo edificio.{" "}
+              <span className="text-brand">Una sola piattaforma.</span>
+            </h1>
+          </Reveal>
+          <Reveal delay={1}>
+            <p className="text-pretty text-lg leading-relaxed text-muted-foreground">
+              Clima, luci, accessi, sicurezza ed energia in un unico sistema —
+              con qualsiasi marca e senza vendor lock-in. Progettiamo,
+              installiamo e gestiamo l&apos;automazione del tuo edificio con
+              personale interno, in tutta Italia.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <ButtonLink href="/contatti" size="lg">
+                Richiedi una demo <ArrowRight className="size-4" />
+              </ButtonLink>
+              <ButtonLink href="#settori" size="lg" variant="outline">
+                Esplora i settori
+              </ButtonLink>
+            </div>
           </Reveal>
         </div>
       </section>
@@ -932,6 +925,112 @@ export default function HomePage({ blogPosts }: { blogPosts: BlogPost[] }) {
             </div>
           </Reveal>
         </div>
+      </section>
+
+      {/* Il prodotto — Connext Box */}
+      <section className="relative overflow-hidden bg-surface">
+        <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
+          <div className="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-16">
+            <Reveal>
+              <SectionLabel>Il prodotto · Connext Box</SectionLabel>
+              <h2 className="mt-6 text-balance font-display text-4xl font-extrabold leading-[1.05] text-foreground sm:text-5xl">
+                Un solo box.{" "}
+                <span className="text-brand">Tutto l&apos;edificio.</span>
+              </h2>
+              <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+                Connext Box è la piattaforma KNX-IP modulare che riunisce in un
+                unico dispositivo gli otto domini tecnologici dell&apos;edificio:
+                clima, luci, accessi, sicurezza, sensori, schermature, energia e
+                interfacce. Standard aperti, cablaggio minimo, nessun vendor
+                lock-in.
+              </p>
+              <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                {productSpecs.map((s, i) => (
+                  <Reveal key={s.label} delay={i} className="h-full">
+                    <div className="group flex h-full gap-3.5 rounded-2xl border border-border bg-background p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-card">
+                      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors duration-300 group-hover:bg-brand-teal group-hover:text-white">
+                        <s.icon className="size-5" />
+                      </span>
+                      <div>
+                        <h3 className="text-[15px] font-semibold text-foreground">
+                          {s.label}
+                        </h3>
+                        <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
+                          {s.desc}
+                        </p>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            </Reveal>
+            <Reveal delay={1}>
+              <LiveArchitecture />
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Perché ora — normativa + incentivi */}
+      <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
+        <Reveal className="max-w-3xl">
+          <SectionLabel>Perché adesso · Normativa BACS</SectionLabel>
+          <h2 className="mt-6 text-balance font-display text-4xl font-extrabold leading-[1.05] text-foreground sm:text-5xl">
+            La Classe B non è un&apos;opzione. <span className="text-brand">È già legge.</span>
+          </h2>
+          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+            Dal 3 giugno 2026 i sistemi BACS di Classe B sono obbligatori per gli
+            edifici non residenziali sopra i 290 kW — e nel 2029 la soglia scende
+            a 70 kW. Chi si muove oggi arriva pronto, e finanzia l&apos;intervento
+            con gli incentivi in vigore.
+          </p>
+        </Reveal>
+
+        <Reveal className="mt-12">
+          <RegulationPanel />
+        </Reveal>
+
+        {/* Incentivi */}
+        <Reveal className="mt-20 max-w-2xl">
+          <SectionLabel>Finanza di progetto</SectionLabel>
+          <h3 className="mt-5 font-display text-2xl font-bold text-foreground sm:text-3xl">
+            Azzera il costo del tuo investimento.
+          </h3>
+          <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">
+            Identifichiamo e gestiamo internamente gli incentivi, spesso
+            cumulabili. E con il modello ESCo finanziamo l&apos;intervento:
+            l&apos;investimento si ripaga con i risparmi energetici realmente
+            generati.
+          </p>
+        </Reveal>
+        <div className="mt-10 grid gap-5 lg:grid-cols-3">
+          {incentives.map((inc, i) => (
+            <Reveal key={inc.name} delay={i} className="h-full">
+              <div className="group flex h-full flex-col rounded-2xl border border-border bg-surface p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-card">
+                <span className="flex size-11 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors duration-300 group-hover:bg-brand-teal group-hover:text-white">
+                  <inc.icon className="size-5" />
+                </span>
+                <p className="mt-5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  {inc.name}
+                </p>
+                <p className="mt-1 font-display text-3xl font-extrabold tracking-tight text-brand">
+                  {inc.value}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  {inc.desc}
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <ButtonLink href="/contatti" size="lg">
+            Richiedi l&apos;audit di fattibilità <ArrowRight className="size-4" />
+          </ButtonLink>
+          <span className="text-sm text-muted-foreground">
+            Stima del payback e simulazione incentivi entro 10 giorni lavorativi.
+          </span>
+        </Reveal>
       </section>
 
       {/* Stats — navy */}

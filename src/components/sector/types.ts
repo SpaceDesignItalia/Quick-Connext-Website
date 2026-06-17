@@ -27,6 +27,8 @@ export interface SceneFeature {
   /** Concrete problems shown on the "Prima" side of the slider. */
   before?: string[];
   layout?: "default" | "dominant";
+  /** Replaces the image/video with a custom interactive visual. */
+  visual?: "live-architecture";
 }
 
 export interface StatPause {
@@ -34,6 +36,23 @@ export interface StatPause {
   value: string;
   label: string;
   explanation: string;
+}
+
+/** Animated KNX connection-topology diagram, rendered after a given scene. */
+export interface SystemSchemaSection {
+  afterSceneIndex: number;
+  label: string;
+  title: string;
+  subtitle?: string;
+}
+
+/** Interactive "explore the room" image with cinematic zoom + text callouts. */
+export interface RoomExplorerSection {
+  afterSceneIndex: number;
+  label: string;
+  title: string;
+  subtitle?: string;
+  image?: string;
 }
 
 export interface GridFeature {
@@ -108,6 +127,10 @@ export interface SectorConfig {
   };
   scenes: SceneFeature[];
   statPause?: StatPause;
+  /** Optional KNX system-topology diagram shown after a scene. */
+  systemSchema?: SystemSchemaSection;
+  /** Optional interactive "explore the room" visual shown after a scene. */
+  roomExplorer?: RoomExplorerSection;
   grid?: { label?: string; title: string; subtitle?: string; features: GridFeature[] };
   /** When "before", the grid renders before scene features (default: after). */
   gridPosition?: "before" | "after";

@@ -11,10 +11,10 @@ export default function Footer() {
             <Link href="/" className="group block w-fit transition-opacity hover:opacity-90">
               <Image
                 src="/logo-lungo.png"
-                alt="QuickConnext Building"
-                width={180}
-                height={220}
-                className="h-[88px] w-auto object-contain"
+                alt="Quick Connext Building"
+                width={1024}
+                height={903}
+                className="h-20 w-auto object-contain sm:h-24"
               />
             </Link>
 

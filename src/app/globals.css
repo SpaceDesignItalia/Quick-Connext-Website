@@ -330,8 +330,19 @@ html { scroll-behavior: smooth; }
   will-change: transform;
 }
 
+/* Living circuit — marching energy along the Connext Box bus traces */
+@keyframes traceMarch { to { stroke-dashoffset: -14; } }
+.trace-march { animation: traceMarch 0.9s linear infinite; }
+.trace-march-fast { animation: traceMarch 0.4s linear infinite; }
+@keyframes busSheen {
+  0% { background-position: -150% 0; }
+  100% { background-position: 250% 0; }
+}
+.bus-sheen { background-size: 60% 100%; background-repeat: no-repeat; animation: busSheen 2.4s linear infinite; }
+
 @media (prefers-reduced-motion: reduce) {
   .kenburns, .kenburns-soft, .float-card, .hero-rise { animation: none !important; }
+  .trace-march, .trace-march-fast, .bus-sheen { animation: none !important; }
 }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }

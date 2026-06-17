@@ -106,6 +106,7 @@ export const hotelSectorConfig: SectorConfig = {
   ],
   hideIntro: false,
   hideSceneNav: true,
+  interactive: { commandCenter: true, roi: true },
   heroCards: [],
   introLabel: "Il mercato hotel in Italia",
   introTitle: "Una certezza per il prossimo decennio.",
@@ -183,6 +184,7 @@ export const hotelSectorConfig: SectorConfig = {
         "Plug & Play: aggiungi nuovi dispositivi in autonomia, con qualunque marchio compatibile",
         "API aperte: integrazione nativa verso ERP, PMS, BMS e piattaforme cloud di terze parti",
       ],
+      visual: "live-architecture",
       image: "/images/hotel-architecture-after.png",
       beforeImage: "/images/hotel-architecture-before.png",
       cards: [
@@ -311,6 +313,21 @@ export const hotelSectorConfig: SectorConfig = {
       ],
     },
   ],
+  systemSchema: {
+    afterSceneIndex: 0,
+    label: "Schema di connessioni",
+    title: "Dalla supervisione al campo, un solo schema.",
+    subtitle:
+      "App, Web e Connext Box governano l'impianto: dal modulo KNX-IP il bus raggiunge i dispositivi di campo che pilotano clima, luci, accessi, schermature, pompa di calore e telecamere.",
+  },
+  roomExplorer: {
+    afterSceneIndex: 2,
+    label: "Dentro la camera",
+    title: "Ogni dettaglio, una tecnologia.",
+    subtitle:
+      "Esplora la camera connessa: la vista si avvicina a ogni componente e ti racconta cosa fa, dal sensore di presenza alle tende motorizzate.",
+    image: "/images/hotel-room.png",
+  },
   statPause: {
     afterSceneIndex: 3,
     value: "−45%",
