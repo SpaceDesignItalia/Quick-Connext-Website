@@ -86,9 +86,11 @@ export default function ProgettiPage() {
             {projects.map((project) => {
               const Icon = project.icon;
               return (
-                <article
+                <Link
                   key={project.id}
-                  className="group relative overflow-hidden border border-brand-line bg-white hover:border-brand-teal transition-colors duration-300"
+                  href={project.href}
+                  aria-label={`Scopri il progetto: ${project.title}`}
+                  className="group relative block overflow-hidden rounded-2xl border border-brand-line bg-white shadow-sm hover:border-brand-teal hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-[1fr_1.1fr]">
                     <div
@@ -100,7 +102,7 @@ export default function ProgettiPage() {
                         <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-brand-teal">
                           {project.sector}
                         </span>
-                        <span className="w-9 h-9 flex items-center justify-center border border-brand-line text-brand-teal group-hover:border-brand-teal transition-colors">
+                        <span className="w-9 h-9 flex items-center justify-center rounded-xl border border-brand-line text-brand-teal group-hover:border-brand-teal transition-colors">
                           <Icon className="w-4 h-4" />
                         </span>
                       </div>
@@ -117,25 +119,22 @@ export default function ProgettiPage() {
                         {project.stats.map((stat) => (
                           <span
                             key={stat}
-                            className="text-[10px] font-mono uppercase tracking-wider text-brand-stone border border-brand-line px-2.5 py-1"
+                            className="text-[10px] font-mono uppercase tracking-wider text-brand-stone border border-brand-line px-2.5 py-1 rounded-full"
                           >
                             {stat}
                           </span>
                         ))}
                       </div>
-                      <Link
-                        href={project.href}
-                        className="cta-link text-brand-teal mt-6"
-                      >
+                      <span className="cta-link text-brand-teal mt-6">
                         Scopri la soluzione settore
                         <ArrowRight
                           size={14}
                           className="group-hover:translate-x-1 transition-transform"
                         />
-                      </Link>
+                      </span>
                     </div>
                   </div>
-                </article>
+                </Link>
               );
             })}
           </div>

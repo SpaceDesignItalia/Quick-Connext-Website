@@ -54,7 +54,7 @@ export default function ContattiPage() {
           {/* Left Column: Info & Calendly Embed card */}
           <div className="lg:col-span-5 flex flex-col gap-10">
             {/* Contact Details Card */}
-            <div className="section-dark noise-texture dot-grid-dark text-white p-8 border border-brand-teal flex flex-col gap-8 relative overflow-hidden">
+            <div className="section-dark noise-texture dot-grid-dark text-white p-8 border border-brand-teal flex flex-col gap-8 relative overflow-hidden rounded-2xl shadow-card">
               
               <h3 className="text-xl font-bold tracking-tight border-b border-white/10 pb-4">
                 Informazioni di Contatto
@@ -90,13 +90,13 @@ export default function ContattiPage() {
                 </li>
               </ul>
               
-              <div className="bg-white/5 border border-white/10 teal-accent-left pl-4 p-4 text-xs text-slate-400 mt-2 font-sans">
+              <div className="bg-white/5 border border-white/10 teal-accent-left pl-4 p-4 text-xs text-slate-400 mt-2 font-sans rounded-xl">
                 <strong>Nota di brand:</strong> QuickConnext Building è un prodotto esclusivo sviluppato e supportato da Più Sviluppo S.r.l.
               </div>
             </div>
 
             {/* Calendly Promotion Card */}
-            <div className="bg-white border border-slate-200 border-l-brand-teal p-8 flex flex-col gap-5">
+            <div className="bg-white border border-slate-200 p-8 flex flex-col gap-5 rounded-2xl shadow-sm">
               <h3 className="text-xl font-bold text-brand-navy tracking-tight">
                 Vuoi risparmiare tempo?
               </h3>
@@ -106,7 +106,7 @@ export default function ContattiPage() {
               
               <button
                 onClick={() => setActiveCalendly(true)}
-                className="cta-button-primary w-full justify-center py-3 mt-2"
+                className="cta-button-primary w-full justify-center py-3 mt-2 !rounded-full"
               >
                 Apri Calendly
                 <ArrowRight size={16} />
@@ -115,10 +115,10 @@ export default function ContattiPage() {
           </div>
 
           {/* Right Column: Contact Form */}
-          <div className="lg:col-span-7 bg-white border border-slate-200 border-l-brand-teal p-8 md:p-10">
+          <div className="lg:col-span-7 bg-white border border-slate-200 p-8 md:p-10 rounded-2xl shadow-sm">
             {submitted ? (
               <div className="flex flex-col items-center text-center py-12 gap-5">
-                <div className="w-16 h-16 bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-500">
+                <div className="w-16 h-16 bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-500 rounded-full">
                   <CheckCircle className="w-8 h-8" />
                 </div>
                 <h3 className="text-2xl font-bold text-brand-navy tracking-tight">
@@ -154,7 +154,7 @@ export default function ContattiPage() {
                       required
                       value={formData.nome}
                       onChange={handleChange}
-                      className="border border-slate-200 p-3 text-sm focus:border-brand-teal focus:ring-1 focus:ring-brand-teal outline-none transition-colors"
+                      className="border border-slate-200 p-3 text-sm rounded-xl focus:border-brand-teal focus:ring-1 focus:ring-brand-teal outline-none transition-colors"
                       placeholder="Mario Rossi"
                     />
                   </div>
@@ -171,7 +171,7 @@ export default function ContattiPage() {
                       required
                       value={formData.azienda}
                       onChange={handleChange}
-                      className="border border-slate-200 p-3 text-sm focus:border-brand-teal focus:ring-1 focus:ring-brand-teal outline-none transition-colors"
+                      className="border border-slate-200 p-3 text-sm rounded-xl focus:border-brand-teal focus:ring-1 focus:ring-brand-teal outline-none transition-colors"
                       placeholder="Hotel Belvedere"
                     />
                   </div>
@@ -190,7 +190,7 @@ export default function ContattiPage() {
                       required
                       value={formData.email}
                       onChange={handleChange}
-                      className="border border-slate-200 p-3 text-sm focus:border-brand-teal focus:ring-1 focus:ring-brand-teal outline-none transition-colors"
+                      className="border border-slate-200 p-3 text-sm rounded-xl focus:border-brand-teal focus:ring-1 focus:ring-brand-teal outline-none transition-colors"
                       placeholder="mario.rossi@email.com"
                     />
                   </div>
@@ -207,7 +207,7 @@ export default function ContattiPage() {
                       required
                       value={formData.telefono}
                       onChange={handleChange}
-                      className="border border-slate-200 p-3 text-sm focus:border-brand-teal focus:ring-1 focus:ring-brand-teal outline-none transition-colors"
+                      className="border border-slate-200 p-3 text-sm rounded-xl focus:border-brand-teal focus:ring-1 focus:ring-brand-teal outline-none transition-colors"
                       placeholder="+39 333 1234567"
                     />
                   </div>
@@ -224,7 +224,7 @@ export default function ContattiPage() {
                     required
                     value={formData.settore}
                     onChange={handleChange}
-                    className="border border-slate-200 p-3 text-sm focus:border-brand-teal focus:ring-1 focus:ring-brand-teal outline-none bg-white transition-colors"
+                    className="border border-slate-200 p-3 text-sm rounded-xl focus:border-brand-teal focus:ring-1 focus:ring-brand-teal outline-none bg-white transition-colors"
                   >
                     <option value="">Seleziona un settore...</option>
                     <option value="Hotel">Hotel & Hospitality</option>
@@ -247,14 +247,14 @@ export default function ContattiPage() {
                     rows={5}
                     value={formData.messaggio}
                     onChange={handleChange}
-                    className="border border-slate-200 p-3 text-sm focus:border-brand-teal focus:ring-1 focus:ring-brand-teal outline-none transition-colors resize-none"
+                    className="border border-slate-200 p-3 text-sm rounded-xl focus:border-brand-teal focus:ring-1 focus:ring-brand-teal outline-none transition-colors resize-none"
                     placeholder="Descrivi brevemente la tua struttura e le tue esigenze tecnologiche..."
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="cta-button bg-brand-navy text-white hover:bg-brand-teal hover:text-white border border-brand-navy hover:border-brand-teal py-3.5 px-6 mt-2"
+                  className="cta-button bg-brand-navy text-white hover:bg-brand-teal hover:text-white border border-brand-navy hover:border-brand-teal py-3.5 px-6 mt-2 rounded-full"
                 >
                   Invia Messaggio
                 </button>
@@ -267,7 +267,7 @@ export default function ContattiPage() {
       {/* ================= CALENDLY SIMULATION WIDGET MODAL ================= */}
       {activeCalendly && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-[fadeIn_0.2s_ease-out]">
-          <div className="bg-brand-navy border border-brand-teal w-full max-w-3xl overflow-hidden relative">
+          <div className="bg-brand-navy border border-brand-teal w-full max-w-3xl overflow-hidden relative rounded-2xl shadow-card">
             {/* Header bar */}
             <div className="bg-brand-navy-dark border-b border-white/5 p-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
