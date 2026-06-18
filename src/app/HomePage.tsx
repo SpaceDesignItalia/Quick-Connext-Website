@@ -931,7 +931,7 @@ export default function HomePage({ blogPosts }: { blogPosts: BlogPost[] }) {
       <section className="relative overflow-hidden bg-surface">
         <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
           <div className="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-16">
-            <Reveal>
+            <Reveal className="min-w-0">
               <SectionLabel>Il prodotto · Connext Box</SectionLabel>
               <h2 className="mt-6 text-balance font-display text-4xl font-extrabold leading-[1.05] text-foreground sm:text-5xl">
                 Un solo box.{" "}
@@ -964,7 +964,7 @@ export default function HomePage({ blogPosts }: { blogPosts: BlogPost[] }) {
                 ))}
               </div>
             </Reveal>
-            <Reveal delay={1}>
+            <Reveal delay={1} className="min-w-0">
               <LiveArchitecture />
             </Reveal>
           </div>

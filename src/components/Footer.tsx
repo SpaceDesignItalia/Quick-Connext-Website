@@ -8,24 +8,26 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-16 border-b border-white/5">
           <div className="flex flex-col gap-5">
-            <Link
-              href="/"
-              className="group block w-fit transition-opacity hover:opacity-90"
-            >
-              <Image
-                src="/logo-lungo.png"
-                alt="Quick Connext Building"
-                width={1024}
-                height={903}
-                className="h-20 w-auto object-contain sm:h-24"
-              />
-            </Link>
+            <div className="flex items-center gap-5 sm:flex-col sm:items-start sm:gap-5">
+              <Link
+                href="/"
+                className="group block w-fit shrink-0 transition-opacity hover:opacity-90"
+              >
+                <Image
+                  src="/logo-lungo.png"
+                  alt="Quick Connext Building"
+                  width={1024}
+                  height={903}
+                  className="h-20 w-auto object-contain sm:h-24"
+                />
+              </Link>
 
-            <p className="text-sm text-slate-400 leading-relaxed font-sans opacity-80">
-              Piattaforma di building automation integrata e intelligente per
-              ottimizzare consumi, comfort e sicurezza nei settori hospitality,
-              business e sanità.
-            </p>
+              <p className="text-sm text-slate-400 leading-relaxed font-sans opacity-80">
+                Piattaforma di building automation integrata e intelligente per
+                ottimizzare consumi, comfort e sicurezza nei settori hospitality,
+                business e sanità.
+              </p>
+            </div>
 
             <div className="flex items-center gap-2.5 text-xs text-slate-500 font-semibold bg-white/5 border border-white/5 px-3 py-1.5 w-fit teal-accent-left pl-3 rounded-xl">
               <Shield size={14} className="text-brand-teal" />

@@ -40,7 +40,7 @@ const DOMAINS: Domain[] = [
     icon: Thermometer,
     label: "Clima",
     controls: "Climatizzazione e HVAC",
-    x: 15,
+    x: 20,
     y: 15,
     side: "left",
     events: [
@@ -53,7 +53,7 @@ const DOMAINS: Domain[] = [
     icon: Lightbulb,
     label: "Luci",
     controls: "Sistemi di illuminazione",
-    x: 85,
+    x: 80,
     y: 15,
     side: "right",
     events: [
@@ -66,7 +66,7 @@ const DOMAINS: Domain[] = [
     icon: KeyRound,
     label: "Accessi",
     controls: "Controllo accessi",
-    x: 15,
+    x: 20,
     y: 38,
     side: "left",
     events: [
@@ -79,7 +79,7 @@ const DOMAINS: Domain[] = [
     icon: Camera,
     label: "Sicurezza",
     controls: "TVCC e telecamere IP",
-    x: 85,
+    x: 80,
     y: 38,
     side: "right",
     events: [
@@ -92,7 +92,7 @@ const DOMAINS: Domain[] = [
     icon: Radio,
     label: "Sensori",
     controls: "Sensori e qualità aria",
-    x: 15,
+    x: 20,
     y: 61,
     side: "left",
     events: [
@@ -105,7 +105,7 @@ const DOMAINS: Domain[] = [
     icon: Blinds,
     label: "Schermature",
     controls: "Schermature e tapparelle",
-    x: 85,
+    x: 80,
     y: 61,
     side: "right",
     events: [
@@ -117,7 +117,7 @@ const DOMAINS: Domain[] = [
     icon: Sun,
     label: "Rinnovabili",
     controls: "Fonti rinnovabili",
-    x: 15,
+    x: 20,
     y: 84,
     side: "left",
     events: [
@@ -130,7 +130,7 @@ const DOMAINS: Domain[] = [
     icon: SlidersHorizontal,
     label: "Interfacce",
     controls: "Interfacce utente",
-    x: 85,
+    x: 80,
     y: 84,
     side: "right",
     events: [
@@ -176,7 +176,7 @@ export function LiveArchitecture({ className }: { className?: string }) {
     <div
       ref={ref}
       className={cn(
-        "relative overflow-hidden rounded-3xl bg-navy p-5 shadow-card sm:p-6",
+        "relative w-full min-w-0 overflow-hidden rounded-3xl bg-navy p-5 shadow-card sm:p-6",
         className,
       )}
     >

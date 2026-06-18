@@ -191,8 +191,6 @@ export default function Header() {
     };
   }, []);
 
-  const mobileOverlayTop = compact ? "top-16" : "top-[72px]";
-
   return (
     <>
       <header ref={headerRef} className="fixed inset-x-0 top-0 z-50 min-h-[72px]">
@@ -206,16 +204,23 @@ export default function Header() {
               transition={navShellTransition}
               className="absolute inset-x-0 top-0 flex justify-center px-3 pt-3 sm:px-4"
             >
-              <div className="flex max-w-[calc(100vw-1.5rem)] items-center justify-center">
-                <div className="flex items-center gap-1 rounded-full border border-brand-line/70 bg-white/95 py-1.5 pl-2 pr-2 shadow-[0_10px_40px_-12px_rgba(10,22,40,0.2)] backdrop-blur-xl sm:gap-1.5 sm:pl-2.5 sm:pr-2.5">
-                  <LogoMark compact />
-                  <DesktopNav
-                    pathname={pathname}
-                    compact
-                    servicesOpen={servicesOpen}
-                    onOpenServices={openServices}
-                    onCloseServices={scheduleCloseServices}
-                  />
+              <div className="flex w-full max-w-[calc(100vw-1.5rem)] items-center justify-center lg:w-auto">
+                <div className="flex w-full items-center justify-between gap-1 rounded-full border border-brand-line/70 bg-white/95 py-2.5 pl-3 pr-2 shadow-[0_10px_40px_-12px_rgba(10,22,40,0.2)] backdrop-blur-xl sm:gap-1.5 sm:pl-4 lg:w-auto lg:justify-center lg:py-1.5 lg:pl-3 lg:pr-2.5">
+                  <span className="lg:hidden">
+                    <LogoMark />
+                  </span>
+                  <span className="hidden lg:block">
+                    <LogoMark compact />
+                  </span>
+                  <div className="hidden lg:block">
+                    <DesktopNav
+                      pathname={pathname}
+                      compact
+                      servicesOpen={servicesOpen}
+                      onOpenServices={openServices}
+                      onCloseServices={scheduleCloseServices}
+                    />
+                  </div>
                   <MobileMenuButton isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
                 </div>
               </div>
@@ -315,22 +320,27 @@ export default function Header() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className={cn(
-                "fixed inset-0 z-40 bg-brand-navy-dark/30 backdrop-blur-sm lg:hidden",
-                mobileOverlayTop,
-              )}
+              className="fixed inset-0 z-[55] bg-brand-navy-dark/40 backdrop-blur-sm lg:hidden"
             />
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-              className={cn(
-                "fixed right-0 bottom-0 z-40 flex w-[min(88vw,22rem)] flex-col overflow-y-auto border-l border-brand-line bg-white p-5 lg:hidden",
-                mobileOverlayTop,
-              )}
+              className="fixed inset-y-0 right-0 z-[60] flex w-[min(88vw,22rem)] flex-col overflow-y-auto border-l border-brand-line bg-white lg:hidden"
             >
-              <div className="flex flex-col gap-1">
+              <div className="flex items-center justify-between border-b border-brand-line px-4 py-3">
+                <LogoMark compact />
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-full p-2 text-brand-navy transition-colors hover:bg-brand-ivory hover:text-brand-teal"
+                  aria-label="Chiudi menu"
+                >
+                  <X size={22} />
+                </button>
+              </div>
+              <div className="flex flex-col gap-1 p-5">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
