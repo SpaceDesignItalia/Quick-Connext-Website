@@ -135,7 +135,7 @@ export function SystemSchema({ className }: { className?: string }) {
     <div
       ref={ref}
       className={cn(
-        "relative overflow-hidden rounded-3xl bg-navy p-5 shadow-card sm:p-7",
+        "relative w-full min-w-0 overflow-hidden rounded-3xl bg-navy p-5 shadow-card sm:p-7",
         className,
       )}
     >

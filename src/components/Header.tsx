@@ -193,7 +193,10 @@ export default function Header() {
 
   return (
     <>
-      <header ref={headerRef} className="fixed inset-x-0 top-0 z-50 min-h-[72px]">
+      <header
+        ref={headerRef}
+        className="fixed inset-x-0 top-0 z-50 min-h-[72px]"
+      >
         <AnimatePresence initial={false}>
           {compact ? (
             <motion.div
@@ -221,7 +224,10 @@ export default function Header() {
                       onCloseServices={scheduleCloseServices}
                     />
                   </div>
-                  <MobileMenuButton isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
+                  <MobileMenuButton
+                    isOpen={isOpen}
+                    onToggle={() => setIsOpen(!isOpen)}
+                  />
                 </div>
               </div>
             </motion.div>
@@ -249,7 +255,10 @@ export default function Header() {
               </div>
 
               <div className="absolute right-5 top-1/2 z-10 -translate-y-1/2 sm:right-8 lg:hidden">
-                <MobileMenuButton isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
+                <MobileMenuButton
+                  isOpen={isOpen}
+                  onToggle={() => setIsOpen(!isOpen)}
+                />
               </div>
             </motion.div>
           )}
@@ -281,7 +290,9 @@ export default function Header() {
                         href={service.href}
                         className={cn(
                           "group flex gap-3 rounded-xl p-4 transition-colors",
-                          active ? "bg-brand-ivory-deep" : "hover:bg-brand-ivory-deep/60",
+                          active
+                            ? "bg-brand-ivory-deep"
+                            : "hover:bg-brand-ivory-deep/60",
                         )}
                       >
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-ivory text-brand-stone transition-colors group-hover:bg-brand-teal/10 group-hover:text-brand-teal">
@@ -445,7 +456,12 @@ function DesktopNav({
   return (
     <nav className="flex items-center gap-0.5">
       {navLinks.slice(0, 1).map((link) => (
-        <NavItem key={link.href} link={link} pathname={pathname} compact={compact} />
+        <NavItem
+          key={link.href}
+          link={link}
+          pathname={pathname}
+          compact={compact}
+        />
       ))}
 
       <div onMouseEnter={onOpenServices} onMouseLeave={onCloseServices}>
@@ -477,7 +493,12 @@ function DesktopNav({
       </div>
 
       {navLinks.slice(1).map((link) => (
-        <NavItem key={link.href} link={link} pathname={pathname} compact={compact} />
+        <NavItem
+          key={link.href}
+          link={link}
+          pathname={pathname}
+          compact={compact}
+        />
       ))}
     </nav>
   );

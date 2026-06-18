@@ -497,7 +497,7 @@ function SystemSchemaBand({ schema }: { schema: SystemSchemaSection }) {
             <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{schema.subtitle}</p>
           )}
         </Reveal>
-        <Reveal delay={1} className="mt-10">
+        <Reveal delay={1} className="mt-10 min-w-0">
           <SystemSchema />
         </Reveal>
       </div>
@@ -1095,7 +1095,7 @@ export function SectorPage({ config }: { config: SectorConfig }) {
                       : "lg:grid-cols-2",
                   )}
                 >
-                  <Reveal className={cn(reverse && "lg:order-2", isDominant && "lg:py-8")}>
+                  <Reveal className={cn("min-w-0", reverse && "lg:order-2", isDominant && "lg:py-8")}>
                     <SectionLabel>{scene.label}</SectionLabel>
                     <h3
                       className={cn(
@@ -1122,7 +1122,7 @@ export function SectorPage({ config }: { config: SectorConfig }) {
                       ))}
                     </ul>
                   </Reveal>
-                  <Reveal delay={1} className={cn(reverse && "lg:order-1", isDominant && "h-full")}>
+                  <Reveal delay={1} className={cn("min-w-0", reverse && "lg:order-1", isDominant && "h-full")}>
                     {scene.visual === "live-architecture" ? (
                       <LiveArchitecture />
                     ) : scene.video ? (
