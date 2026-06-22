@@ -22,8 +22,8 @@ const config: Config = {
           muted: "rgba(255,255,255,0.65)",
         },
         brand: {
-          DEFAULT: "#00C4CC",
-          bright: "#00C4CC",
+          DEFAULT: "#007E78",
+          bright: "#007E78",
           /* Light surfaces */
           ivory: {
             DEFAULT: "#F7F9FA",
@@ -39,14 +39,14 @@ const config: Config = {
           },
           /* Teal accent */
           teal: {
-            DEFAULT: "#00C4CC",
-            dark: "#009BA3",
-            light: "#33D9E0",
-            glow: "rgba(0,196,204,0.10)",
+            DEFAULT: "#007E78",
+            dark: "#007E78",
+            light: "#007E78",
+            glow: "rgba(0,126,120,0.10)",
           },
           stone: "#374151",
           line: "#E5E7EB",
-          grid: "rgba(0,196,204,0.06)",
+          grid: "rgba(0,126,120,0.06)",
         },
       },
       fontFamily: {

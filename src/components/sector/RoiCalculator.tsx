@@ -151,7 +151,7 @@ export function RoiCalculator() {
           {/* Results */}
           <div className="relative overflow-hidden bg-navy p-7 text-white sm:p-10">
             <div
-              className="absolute inset-0 bg-[radial-gradient(70%_60%_at_80%_0%,rgba(0,196,204,0.16),transparent)]"
+              className="absolute inset-0 bg-[radial-gradient(70%_60%_at_80%_0%,rgba(0,126,120,0.16),transparent)]"
               aria-hidden
             />
             <div className="relative">

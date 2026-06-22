@@ -18,7 +18,7 @@ export function BlogPostCta() {
           href="/contatti"
           className="inline-flex items-center gap-2 mt-10 rounded-full px-8 py-3.5 bg-brand-teal text-brand-navy-dark font-semibold text-sm uppercase tracking-wider hover:bg-white transition-colors duration-300"
         >
-          Richiedi una demo
+          Contattaci
           <ArrowRight size={16} />
         </Link>
       </div>

@@ -89,7 +89,7 @@ const hotelComparison: SectorConfig["comparison"] = [
 
 export const hotelSectorConfig: SectorConfig = {
   slug: "hotel",
-  metaTitle: "Hotel — L'hotel che si gestisce da solo | Quick Connext Building",
+  metaTitle: "Hotel · L'hotel che si gestisce da solo | Quick Connext Building",
   metaDescription:
     "La soluzione completa di Building Automation progettata per l'hotellerie moderna. Controllo centralizzato, risparmio energetico e ospitalità di eccellenza.",
   heroImage: "/images/hero-hotel.png",
@@ -106,12 +106,12 @@ export const hotelSectorConfig: SectorConfig = {
   ],
   hideIntro: false,
   hideSceneNav: true,
-  interactive: { commandCenter: true, roi: true },
+  interactive: { commandCenter: false, roi: false },
   heroCards: [],
   introLabel: "Il mercato hotel in Italia",
   introTitle: "Una certezza per il prossimo decennio.",
   introText:
-    "Il turismo italiano vive il suo decennio d'oro. Chi investe oggi in tecnologia alberghiera moderna intercetta una domanda in crescita strutturale — e arriva preparato alle nuove normative sull'efficienza energetica.",
+    "Il turismo italiano vive il suo decennio d'oro. Chi investe oggi in tecnologia alberghiera moderna intercetta una domanda in crescita strutturale, e arriva preparato alle nuove normative sull'efficienza energetica.",
   marketStats: [
     { value: "476 mln", label: "presenze turistiche 2025 (+2,1%)" },
     { value: "108,8 mld€", label: "impatto economico del turismo 2025" },
@@ -346,7 +346,7 @@ export const hotelSectorConfig: SectorConfig = {
     { value: "−45%", label: "guasti grazie alla manutenzione preventiva" },
     { value: "−60%", label: "incidenti e criticità di sicurezza" },
     { value: "BACS 2026", label: "EPBD e Decreto Requisiti Minimi · Classe B" },
-    { value: "+2", label: "classi APE — salto di classe energetica" },
+    { value: "+2", label: "classi APE: salto di classe energetica" },
     { value: "+15%", label: "incremento del valore dell'immobile" },
     { value: "+100M€", label: "progetti gestiti" },
   ],

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Phone, MapPin, CheckCircle, ArrowRight, X } from "lucide-react";
+import { Mail, Phone, MapPin, CheckCircle } from "lucide-react";
 
 export default function ContattiPage() {
   const [formData, setFormData] = useState({
@@ -14,7 +14,6 @@ export default function ContattiPage() {
   });
 
   const [submitted, setSubmitted] = useState(false);
-  const [activeCalendly, setActiveCalendly] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -93,24 +92,6 @@ export default function ContattiPage() {
               <div className="bg-white/5 border border-white/10 teal-accent-left pl-4 p-4 text-xs text-slate-400 mt-2 font-sans rounded-xl">
                 <strong>Nota di brand:</strong> QuickConnext Building è un prodotto esclusivo sviluppato e supportato da Più Sviluppo S.r.l.
               </div>
-            </div>
-
-            {/* Calendly Promotion Card */}
-            <div className="bg-white border border-slate-200 p-8 flex flex-col gap-5 rounded-2xl shadow-sm">
-              <h3 className="text-xl font-bold text-brand-navy tracking-tight">
-                Vuoi risparmiare tempo?
-              </h3>
-              <p className="text-slate-500 text-sm leading-relaxed font-sans">
-                Prenota direttamente una sessione tecnica di 30 minuti tramite il nostro calendario integrato. Scegli data ed ora per avviare lo studio di fattibilità.
-              </p>
-              
-              <button
-                onClick={() => setActiveCalendly(true)}
-                className="cta-button-primary w-full justify-center py-3 mt-2 !rounded-full"
-              >
-                Apri Calendly
-                <ArrowRight size={16} />
-              </button>
             </div>
           </div>
 
@@ -263,83 +244,6 @@ export default function ContattiPage() {
           </div>
         </div>
       </div>
-
-      {/* ================= CALENDLY SIMULATION WIDGET MODAL ================= */}
-      {activeCalendly && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-[fadeIn_0.2s_ease-out]">
-          <div className="bg-brand-navy border border-brand-teal w-full max-w-3xl overflow-hidden relative rounded-2xl shadow-card">
-            {/* Header bar */}
-            <div className="bg-brand-navy-dark border-b border-white/5 p-4 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-2.5 h-2.5 bg-brand-teal rounded-full animate-pulse" />
-                <span className="text-white text-xs font-bold uppercase tracking-widest font-sans">
-                  Calendly Booking System
-                </span>
-              </div>
-              <button
-                onClick={() => setActiveCalendly(false)}
-                className="text-slate-400 hover:text-white transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            {/* Simulation Widget */}
-            <div className="p-8 md:p-12 flex flex-col md:flex-row gap-8 min-h-[400px]">
-              {/* Left Side */}
-              <div className="md:w-1/3 flex flex-col justify-between text-slate-300 text-sm font-sans gap-6">
-                <div>
-                  <h3 className="text-white font-extrabold text-xl mb-1.5">Demo QuickConnext Building</h3>
-                  <div className="text-xs text-brand-teal font-semibold mb-4">Duration: 30 min</div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Un incontro one-to-one per analizzare le specifiche tecniche della tua struttura e definire un piano di fattibilità e agevolazioni.
-                  </p>
-                </div>
-                <div className="text-xs text-slate-500">
-                  Operato da Più Sviluppo S.r.l.
-                </div>
-              </div>
-
-              {/* Right Side - simulated calendar dates */}
-              <div className="md:w-2/3 flex-1 flex flex-col justify-between">
-                <div>
-                  <h4 className="text-white text-sm font-bold uppercase tracking-wider mb-4">Seleziona una Data e Ora</h4>
-                  <div className="grid grid-cols-5 gap-2 mb-6">
-                    {["Lun 8", "Mar 9", "Mer 10", "Gio 11", "Ven 12"].map((day, idx) => (
-                      <button
-                        key={idx}
-                        className="bg-white/5 border border-white/10 hover:border-brand-teal/50 hover:bg-brand-teal/10 rounded-lg p-2.5 text-center transition-all group"
-                      >
-                        <div className="text-[10px] text-slate-400 font-bold group-hover:text-brand-teal uppercase">{day.split(" ")[0]}</div>
-                        <div className="text-sm font-bold text-white mt-0.5">{day.split(" ")[1]} Giu</div>
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-2">
-                    {["10:00", "11:30", "14:30", "15:00", "16:30", "17:00"].map((time, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => {
-                          alert(`Demo prenotata con successo per le ore ${time}! Riceverai una mail di conferma.`);
-                          setActiveCalendly(false);
-                        }}
-                        className="bg-white/5 border border-white/10 hover:border-brand-teal text-white hover:bg-brand-teal hover:text-brand-navy-dark rounded-lg py-2 text-center text-xs font-bold transition-all"
-                      >
-                        {time}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="text-center text-[10px] text-slate-500 font-sans border-t border-white/5 pt-4 mt-6">
-                  * La simulazione invia una richiesta al team tecnico QuickConnext.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </main>
   );
 }

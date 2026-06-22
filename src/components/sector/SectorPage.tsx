@@ -14,10 +14,11 @@ import {
   motion,
   useInView,
   useScroll,
+  useSpring,
   type Variants,
 } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
-import { ArrowRight, Check, Minus, Sparkles, X } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, Minus, Sparkles, X } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { LiveArchitecture } from "@/components/LiveArchitecture";
@@ -159,7 +160,7 @@ function SceneNav({ items }: { items: SceneNavItem[] }) {
   );
 }
 
-const SECTION_PY = "py-[60px]";
+const SECTION_PY = "py-16 sm:py-20 lg:py-[100px]";
 
 const revealVariants: Variants = {
   hidden: { opacity: 0, y: 24 },
@@ -418,7 +419,7 @@ function SceneVideo({
           preload="metadata"
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <span className="pointer-events-none absolute right-4 top-4 z-[1] flex items-center gap-1.5 rounded-full bg-navy/55 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-brand-bright backdrop-blur-sm">
+        <span className="pointer-events-none absolute right-4 top-4 z-[1] flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-brand shadow-sm backdrop-blur-sm">
           <span className="relative flex size-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-70" />
             <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
@@ -462,7 +463,7 @@ function StatPauseBand({
     <section className="relative overflow-hidden bg-[#040810]">
       <div className="tech-grid-dark absolute inset-0 opacity-60" aria-hidden />
       <div
-        className="absolute inset-0 bg-[radial-gradient(55%_70%_at_50%_50%,rgba(0,196,204,0.10),transparent)]"
+        className="absolute inset-0 bg-[radial-gradient(55%_70%_at_50%_50%,rgba(0,126,120,0.10),transparent)]"
         aria-hidden
       />
       <div className={cn("relative mx-auto max-w-7xl px-5 text-center sm:px-8", SECTION_PY)}>
@@ -552,13 +553,20 @@ function StatGrid({
           key={s.label}
           delay={i}
           className={cn(
-            "flex flex-col gap-2 p-6 sm:p-8",
+            "flex flex-col gap-2.5 p-6 sm:p-8",
             !disableHover && "group transition-colors",
             tone === "light"
               ? disableHover ? "bg-background" : "bg-background hover:bg-surface"
               : disableHover ? "bg-navy" : "bg-navy hover:bg-[#0E1F3A]",
           )}
         >
+          <span
+            className={cn(
+              "h-[3px] w-7 rounded-full transition-all duration-300",
+              !disableHover && "group-hover:w-10",
+              tone === "light" ? "bg-brand/70" : "bg-brand-bright/70",
+            )}
+          />
           <CountUp
             value={s.value}
             className={cn(
@@ -595,7 +603,7 @@ function HeroDemoCard({
       initial={{ opacity: 0, y: 24, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="glass-card min-w-[200px] max-w-[340px] rounded-2xl border-2 border-brand/30 p-5 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.5),0_0_0_1px_rgba(0,196,204,0.15)] sm:min-w-[280px] sm:p-6"
+      className="glass-card min-w-[200px] max-w-[340px] rounded-2xl border-2 border-brand/30 p-5 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.5),0_0_0_1px_rgba(0,126,120,0.15)] sm:min-w-[280px] sm:p-6"
     >
       <div className="flex items-start gap-2.5">
         <span className="relative mt-1 flex size-2 shrink-0">
@@ -634,7 +642,7 @@ function HeroLiveCard({
       initial={{ opacity: 0, y: 24, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="glass-card w-[340px] max-w-[86vw] rounded-2xl border-2 border-brand/30 p-5 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.5),0_0_0_1px_rgba(0,196,204,0.15)]"
+      className="glass-card w-[340px] max-w-[86vw] rounded-2xl border-2 border-brand/30 p-5 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.5),0_0_0_1px_rgba(0,126,120,0.15)]"
     >
       <div className="flex items-center justify-between">
         <span className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-brand">
@@ -642,7 +650,7 @@ function HeroLiveCard({
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-60" />
             <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
           </span>
-          QuickConnext OS · live
+          QuickConnext OS
         </span>
         <span className="flex gap-1">
           {events.map((_, i) => (
@@ -725,7 +733,7 @@ function CinematicHero({ config }: { config: SectorConfig }) {
             "linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.35) 55%, rgba(4,8,16,0.88) 100%)",
         }}
       />
-      <div className="absolute inset-0 bg-[radial-gradient(70%_50%_at_30%_35%,rgba(0,196,204,0.10),transparent)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(70%_50%_at_30%_35%,rgba(0,126,120,0.10),transparent)]" />
 
       <div className="relative mx-auto flex min-h-[88vh] max-w-7xl flex-col px-5 pb-10 pt-36 sm:min-h-[92vh] sm:px-8 sm:pb-14 sm:pt-44">
         <div className="max-w-4xl">
@@ -744,10 +752,39 @@ function CinematicHero({ config }: { config: SectorConfig }) {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <ButtonLink href="/contatti" size="lg">
-                Richiedi una demo <ArrowRight className="size-4" />
+                Contattaci <ArrowRight className="size-4" />
+              </ButtonLink>
+              <ButtonLink
+                href="#scopri"
+                size="lg"
+                variant="outline"
+                className="border-white/30 bg-white/5 text-white backdrop-blur-sm hover:border-white/70 hover:bg-white/10 hover:text-white"
+              >
+                Scopri la soluzione
               </ButtonLink>
             </div>
           </Reveal>
+
+          {/* Proof points — surfaced on mobile/tablet, where the desktop KPI rail is hidden */}
+          {config.heroKpis && config.heroKpis.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-10 grid w-full max-w-md grid-cols-3 divide-x divide-white/15 overflow-hidden rounded-2xl border border-white/15 bg-white/[0.06] backdrop-blur-md lg:hidden"
+            >
+              {config.heroKpis.map((kpi) => (
+                <div key={kpi.label} className="px-3 py-4 text-center">
+                  <p className="font-display text-2xl font-extrabold tracking-tight text-brand-bright">
+                    {kpi.value}
+                  </p>
+                  <p className="mt-1 text-[10px] font-medium uppercase leading-tight tracking-[0.12em] text-white/60">
+                    {kpi.label}
+                  </p>
+                </div>
+              ))}
+            </motion.div>
+          )}
         </div>
 
         {(config.heroLiveEvents?.length || config.heroDemoCard) && (
@@ -799,8 +836,46 @@ function CinematicHero({ config }: { config: SectorConfig }) {
           </div>
         )}
 
+        {/* Scroll cue — invites the descent into the long cinematic page */}
+        <motion.a
+          href="#scopri"
+          aria-label="Scopri la soluzione"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.4, duration: 0.8 }}
+          className="group absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1.5 lg:flex"
+        >
+          <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/45 transition-colors group-hover:text-white/80">
+            Esplora
+          </span>
+          <motion.span
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            className="text-white/55 transition-colors group-hover:text-brand-bright"
+          >
+            <ChevronDown className="size-5" />
+          </motion.span>
+        </motion.a>
       </div>
     </section>
+  );
+}
+
+/* Slim reading-progress bar — wayfinding for the long hotel page, which hides
+   the sticky chapter nav. Sits flush at the very top, above the header. */
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 28,
+    restDelta: 0.001,
+  });
+  return (
+    <motion.div
+      aria-hidden
+      className="fixed inset-x-0 top-0 z-[60] h-[3px] origin-left bg-gradient-to-r from-brand via-brand-bright to-brand"
+      style={{ scaleX }}
+    />
   );
 }
 
@@ -819,12 +894,18 @@ function GridSection({ grid }: { grid: NonNullable<SectorConfig["grid"]> }) {
       <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {grid.features.map((f, i) => (
           <Reveal key={f.title} delay={i}>
-            <div className="group h-full rounded-2xl border border-border bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-card">
-              <span className="flex size-11 items-center justify-center rounded-xl bg-brand/10 text-brand transition-transform duration-300 group-hover:scale-110">
-                {createElement(f.icon, { className: "size-5" })}
+            <div className="group relative h-full overflow-hidden rounded-3xl border border-border bg-background p-7 transition-all duration-500 hover:-translate-y-1.5 hover:border-brand/30 hover:shadow-card">
+              {/* accent line sweeps in on hover */}
+              <span className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-gradient-to-r from-brand to-brand-bright transition-transform duration-500 group-hover:scale-x-100" />
+              {/* chapter index as a serif watermark */}
+              <span className="pointer-events-none absolute -right-1 -top-4 font-display text-[5.5rem] font-black leading-none text-brand/[0.06] transition-colors duration-500 group-hover:text-brand/[0.11]">
+                {String(i + 1).padStart(2, "0")}
               </span>
-              <h3 className="mt-4 text-base font-semibold text-foreground">{f.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
+              <span className="relative flex size-12 items-center justify-center rounded-2xl bg-brand/10 text-brand transition-all duration-500 group-hover:bg-brand group-hover:text-white">
+                {createElement(f.icon, { className: "size-6" })}
+              </span>
+              <h3 className="relative mt-5 font-display text-xl font-bold leading-tight text-foreground">{f.title}</h3>
+              <p className="relative mt-2.5 text-[15px] leading-relaxed text-muted-foreground">{f.desc}</p>
             </div>
           </Reveal>
         ))}
@@ -917,7 +998,7 @@ function CtaBand({
     <section className="relative min-h-[420px] overflow-hidden">
       <Image src={image} alt="" aria-hidden fill className="object-cover" sizes="100vw" />
       <div className="absolute inset-0 bg-navy/85" />
-      <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(0,196,204,0.08),transparent)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(0,126,120,0.08),transparent)]" />
       <div className="relative mx-auto max-w-3xl px-5 py-24 text-center sm:px-8 sm:py-28">
         <Reveal>
           <SectionLabel tone="dark" className="justify-center">
@@ -931,7 +1012,7 @@ function CtaBand({
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <ButtonLink href="/contatti" size="lg">
-              Richiedi una demo gratuita <ArrowRight className="size-4" />
+              Contattaci <ArrowRight className="size-4" />
             </ButtonLink>
             <ButtonLink
               href="/contatti"
@@ -975,6 +1056,7 @@ export function SectorPage({ config }: { config: SectorConfig }) {
 
   return (
     <main className="bg-background">
+      {config.heroVariant === "cinematic" && <ScrollProgress />}
       {/* Hero */}
       {config.heroVariant === "cinematic" ? (
         <CinematicHero config={config} />
@@ -1002,7 +1084,7 @@ export function SectorPage({ config }: { config: SectorConfig }) {
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <ButtonLink href="/contatti" size="lg">
-                    Richiedi una demo <ArrowRight className="size-4" />
+                    Contattaci <ArrowRight className="size-4" />
                   </ButtonLink>
                 </div>
               </Reveal>
@@ -1027,6 +1109,9 @@ export function SectorPage({ config }: { config: SectorConfig }) {
           </div>
         </section>
       )}
+
+      {/* Anchor target for the hero scroll cue / secondary CTA */}
+      <span id="scopri" aria-hidden className="block scroll-mt-24" />
 
       {/* Sticky chapter navigation */}
       {!config.hideSceneNav && navItems.length > 1 && <SceneNav items={navItems} />}
@@ -1096,6 +1181,13 @@ export function SectorPage({ config }: { config: SectorConfig }) {
                   )}
                 >
                   <Reveal className={cn("min-w-0", reverse && "lg:order-2", isDominant && "lg:py-8")}>
+                    <span className="mb-3 block font-mono text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground/45">
+                      Capitolo {String(i + 1).padStart(2, "0")}
+                      <span className="text-muted-foreground/25">
+                        {" "}
+                        / {String(config.scenes.length).padStart(2, "0")}
+                      </span>
+                    </span>
                     <SectionLabel>{scene.label}</SectionLabel>
                     <h3
                       className={cn(
@@ -1203,42 +1295,102 @@ export function SectorPage({ config }: { config: SectorConfig }) {
             </p>
           )}
         </Reveal>
-        <Reveal delay={1} className="mt-10 overflow-x-auto overflow-y-hidden rounded-3xl border border-border">
-          <div className="min-w-[640px]">
-            <div className="grid grid-cols-[1.2fr_1fr_1fr] bg-surface text-sm font-semibold">
-              <div className="p-4 sm:p-5 text-muted-foreground">Aspetto</div>
-              <div className="relative flex items-center gap-2 border-x border-brand/20 bg-brand/[0.10] p-4 sm:p-5 text-brand">
-                <span className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-brand to-brand-bright" />
-                <Sparkles className="size-4" /> QuickConnext
+        {/* Scoreboard — il verdetto in numeri, conta su allo scroll */}
+        <Reveal delay={1} className="mt-10">
+          <div className="relative grid gap-4 sm:grid-cols-2">
+            <div className="relative overflow-hidden rounded-3xl border border-brand/30 bg-brand/[0.06] p-6 sm:p-8">
+              <span className="absolute inset-x-0 top-0 h-[3px] bg-brand" />
+              <div className="flex items-center gap-2 text-brand">
+                <Sparkles className="size-4" />
+                <span className="text-sm font-bold uppercase tracking-wider">QuickConnext</span>
               </div>
-              <div className="p-4 sm:p-5 text-muted-foreground">
-                {config.comparisonTraditionalLabel ?? "Integratore tradizionale"}
+              <div className="mt-4 flex items-baseline gap-2">
+                <CountUp
+                  value={String(config.comparison.length)}
+                  className="font-display text-6xl font-extrabold leading-none text-brand"
+                />
+                <span className="font-display text-2xl font-bold leading-none text-brand/50">
+                  / {config.comparison.length}
+                </span>
+              </div>
+              <p className="mt-2 text-sm text-muted-foreground">aspetti dove è superiore</p>
+              <div className="mt-4 h-2 overflow-hidden rounded-full bg-brand/15">
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.3, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  className="h-full origin-left rounded-full bg-brand"
+                />
               </div>
             </div>
-            {config.comparison.map((row, i) => (
+            <div className="overflow-hidden rounded-3xl border border-border bg-surface p-6 sm:p-8">
+              <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground/70">
+                {config.comparisonTraditionalLabel ?? "Integratore tradizionale"}
+              </span>
+              <div className="mt-4 flex items-baseline gap-2">
+                <span className="font-display text-6xl font-extrabold leading-none text-muted-foreground/50">
+                  0
+                </span>
+                <span className="font-display text-2xl font-bold leading-none text-muted-foreground/40">
+                  / {config.comparison.length}
+                </span>
+              </div>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {config.comparison.length} aree con vincoli
+              </p>
+              <div className="mt-4 h-2 overflow-hidden rounded-full bg-border">
+                <div className="h-full w-[6%] rounded-full bg-muted-foreground/30" />
+              </div>
+            </div>
+            <div className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 sm:block">
+              <span className="flex size-12 items-center justify-center rounded-full border border-border bg-background font-display text-sm font-extrabold text-foreground shadow-card">
+                VS
+              </span>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Verdetto — tabella compatta a tre colonne: scansione rapida, niente muro di card */}
+        <Reveal delay={1} className="mt-6 overflow-hidden rounded-2xl border border-border">
+          <div className="hidden grid-cols-[minmax(0,190px)_1fr_1fr] gap-4 border-b border-border bg-surface px-5 py-3.5 sm:grid">
+            <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground/60">
+              Aspetto
+            </span>
+            <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-brand">
+              <Sparkles className="size-3" /> QuickConnext
+            </span>
+            <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground/60">
+              {config.comparisonTraditionalLabel ?? "Integratore tradizionale"}
+            </span>
+          </div>
+          {config.comparison.map((row) => {
+            const partial = row.traditional.startsWith("~");
+            return (
               <div
                 key={row.aspect}
-                className={cn(
-                  "grid grid-cols-[1.2fr_1fr_1fr] border-t border-border text-sm transition-colors hover:bg-brand/[0.03]",
-                  i % 2 === 1 && "bg-surface/40",
-                )}
+                className="grid grid-cols-1 gap-x-4 gap-y-2.5 border-b border-border px-5 py-4 transition-colors last:border-0 odd:bg-background even:bg-surface/30 hover:bg-brand/[0.04] sm:grid-cols-[minmax(0,190px)_1fr_1fr] sm:items-start sm:gap-y-0"
               >
-                <div className="p-4 sm:p-5 font-medium text-foreground">{row.aspect}</div>
-                <div className="flex items-start gap-2 border-x border-brand/20 bg-brand/[0.06] p-4 sm:p-5 font-medium text-foreground">
-                  <Check className="mt-0.5 size-4 shrink-0 text-brand" />
-                  <span>{row.quick}</span>
+                <span className="font-display text-base font-bold leading-tight text-foreground sm:text-[15px]">
+                  {row.aspect}
+                </span>
+                <div className="flex items-start gap-2">
+                  <Check className="mt-[3px] size-4 shrink-0 text-brand" strokeWidth={2.5} />
+                  <span className="text-[14px] leading-snug text-foreground/85">{row.quick}</span>
                 </div>
-                <div className="flex items-start gap-2 p-4 sm:p-5 text-muted-foreground">
-                  {row.traditional.startsWith("~") ? (
-                    <Minus className="mt-0.5 size-4 shrink-0 text-muted-foreground/60" />
+                <div className="flex items-start gap-2">
+                  {partial ? (
+                    <Minus className="mt-[3px] size-4 shrink-0 text-muted-foreground/50" strokeWidth={2.5} />
                   ) : (
-                    <X className="mt-0.5 size-4 shrink-0 text-muted-foreground/60" />
+                    <X className="mt-[3px] size-4 shrink-0 text-muted-foreground/40" strokeWidth={2.5} />
                   )}
-                  <span>{row.traditional.replace(/^~/, "")}</span>
+                  <span className="text-[14px] leading-snug text-muted-foreground">
+                    {row.traditional.replace(/^~/, "")}
+                  </span>
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </Reveal>
       </section>
 
@@ -1260,7 +1412,8 @@ export function SectorPage({ config }: { config: SectorConfig }) {
                     key={p.title}
                     className="group rounded-2xl border border-border bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-card"
                   >
-                    <h3 className="font-display text-2xl font-extrabold text-brand">
+                    <span className="mb-4 block h-[3px] w-7 rounded-full bg-brand/70 transition-all duration-300 group-hover:w-10" />
+                    <h3 className="font-display text-3xl font-extrabold tracking-tight text-brand">
                       <CountUp value={p.title} />
                     </h3>
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
@@ -1288,7 +1441,8 @@ export function SectorPage({ config }: { config: SectorConfig }) {
         {assistStats.length > 0 && (
           <div className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-border bg-border sm:grid-cols-3">
             {assistStats.map((a, i) => (
-              <Reveal key={a.title} delay={i} className="bg-background p-7 sm:p-8">
+              <Reveal key={a.title} delay={i} className="group bg-background p-7 sm:p-8">
+                <span className="mb-4 block h-[3px] w-7 rounded-full bg-brand/70 transition-all duration-300 group-hover:w-10" />
                 <p className="font-display text-4xl font-extrabold tracking-tight text-brand sm:text-5xl">
                   {a.stat}
                 </p>

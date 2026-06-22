@@ -29,13 +29,13 @@ export const metadata: Metadata = {
   icons: {
     icon: "/logo.png",
   },
-  title: "QuickConnext Building — Una piattaforma per tutto l'edificio",
+  title: "QuickConnext Building · Una piattaforma per tutto l'edificio",
   description:
     "Controlla clima, accessi, energia e sicurezza del tuo edificio da un'unica piattaforma BACS. Per hotel, industria, sanità e uffici. Protocolli aperti, zero vendor lock-in.",
   keywords:
     "building automation, domotica hotel, BACS 2026, efficienza energetica hotel, controllo accessi albergo, Più Sviluppo, smart building",
   openGraph: {
-    title: "QuickConnext Building — Una piattaforma per tutto l'edificio",
+    title: "QuickConnext Building · Una piattaforma per tutto l'edificio",
     description:
       "La piattaforma BACS per hotel, industria, sanità e uffici. Conforme BACS 2026.",
     url: "https://quickconnext.eu",

@@ -16,7 +16,7 @@ import { sharedAssistance, sharedComparison, sharedFinance } from "./shared";
 
 export const industrySectorConfig: SectorConfig = {
   slug: "industry",
-  metaTitle: "Industria — Stabilimenti efficienti e sicuri | QuickConnext Building",
+  metaTitle: "Industria · Stabilimenti efficienti e sicuri | QuickConnext Building",
   metaDescription:
     "Energia, sicurezza, supervisione e manutenzione predittiva per stabilimenti e magazzini. Un'unica piattaforma BACS con protocolli aperti.",
   heroImage: "/images/industria-warehouse.png",

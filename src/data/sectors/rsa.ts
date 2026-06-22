@@ -17,7 +17,7 @@ import { sharedAssistance, sharedComparison, sharedFinance } from "./shared";
 
 export const rsaSectorConfig: SectorConfig = {
   slug: "rsa",
-  metaTitle: "RSA e Sanitario — Ambienti di cura connessi | QuickConnext Building",
+  metaTitle: "RSA e Sanitario · Ambienti di cura connessi | QuickConnext Building",
   metaDescription:
     "Comfort, qualità dell'aria, sicurezza e chiamata infermieri integrati. La piattaforma BACS per RSA, cliniche e strutture sanitarie.",
   heroImage: "/images/sector-rsa.png",

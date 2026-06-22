@@ -34,7 +34,6 @@ import {
   Factory,
   HeartPulse,
   Building2,
-  ChevronDown,
   Network,
   Boxes,
   RefreshCw,
@@ -210,7 +209,7 @@ function PlatformCompare() {
     >
       {/* CON QUICKCONNEXT — everything talks to one platform */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_45%,rgba(0,196,204,0.08),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_45%,rgba(0,126,120,0.08),transparent)]" />
         <svg
           className="absolute inset-0 h-full w-full"
           viewBox="0 0 100 100"
@@ -224,7 +223,7 @@ function PlatformCompare() {
               y1="46"
               x2={n.x}
               y2={n.y}
-              stroke="rgba(0,196,204,0.35)"
+              stroke="rgba(0,126,120,0.35)"
               strokeWidth="0.45"
             />
           ))}
@@ -267,7 +266,7 @@ function PlatformCompare() {
             </div>
           </div>
         </div>
-        <span className="pointer-events-none absolute right-3 top-3 flex items-center gap-1.5 rounded-full bg-navy/60 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-brand-bright backdrop-blur-sm sm:right-4 sm:top-4">
+        <span className="pointer-events-none absolute right-3 top-3 flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-brand shadow-sm backdrop-blur-sm sm:right-4 sm:top-4">
           <span className="relative flex size-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-70" />
             <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
@@ -399,7 +398,7 @@ function SectorHero() {
             href={p.href}
             onMouseEnter={() => setActive(i)}
             onFocus={() => setActive(i)}
-            aria-label={`${p.label} — ${p.tagline}`}
+            aria-label={`${p.label} · ${p.tagline}`}
             className={cn(
               "group relative block overflow-hidden rounded-2xl ring-1 ring-white/10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] lg:rounded-3xl",
               isActive ? "lg:flex-[2.6]" : "lg:flex-[1]",
@@ -542,7 +541,7 @@ function CtaBand({
         sizes="100vw"
       />
       <div className="absolute inset-0 bg-navy/85" />
-      <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(0,196,204,0.08),transparent)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(0,126,120,0.08),transparent)]" />
       <div className="relative mx-auto max-w-3xl px-5 py-24 text-center sm:px-8 sm:py-28">
         <Reveal>
           <SectionLabel tone="dark" className="justify-center">
@@ -556,7 +555,7 @@ function CtaBand({
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <ButtonLink href="/contatti" size="lg">
-              Richiedi una demo gratuita <ArrowRight className="size-4" />
+              Contattaci <ArrowRight className="size-4" />
             </ButtonLink>
             <ButtonLink
               href="/contatti"
@@ -619,7 +618,7 @@ function RegulationPanel() {
     <div className="relative overflow-hidden rounded-3xl bg-navy p-6 shadow-card sm:p-9">
       <div className="tech-grid-dark pointer-events-none absolute inset-0 opacity-50" aria-hidden />
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_70%_at_50%_0%,rgba(0,196,204,0.13),transparent)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_70%_at_50%_0%,rgba(0,126,120,0.13),transparent)]"
         aria-hidden
       />
       <div className="relative">
@@ -699,7 +698,7 @@ function RegulationPanel() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-70" />
             <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
           </span>
-          Oggi sei qui — la Classe B è già legge
+          Oggi sei qui: la Classe B è già legge
         </p>
       </div>
     </div>
@@ -801,12 +800,6 @@ export default function HomePage({ blogPosts }: { blogPosts: BlogPost[] }) {
         <div className="h-full w-full p-3 sm:p-4">
           <SectorHero />
         </div>
-        <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 hidden justify-center sm:flex">
-          <span className="flex items-center gap-2 rounded-full border border-white/15 bg-navy/50 px-3.5 py-1.5 text-[11px] font-medium tracking-wide text-white/65 backdrop-blur-md">
-            Scorri per scoprire
-            <ChevronDown className="size-3.5 animate-bounce" />
-          </span>
-        </div>
       </section>
 
       {/* The text — right after the sectors, as the client asked */}
@@ -821,14 +814,14 @@ export default function HomePage({ blogPosts }: { blogPosts: BlogPost[] }) {
           </Reveal>
           <Reveal delay={1}>
             <p className="text-pretty text-lg leading-relaxed text-muted-foreground">
-              Clima, luci, accessi, sicurezza ed energia in un unico sistema —
+              Clima, luci, accessi, sicurezza ed energia in un unico sistema,
               con qualsiasi marca e senza vendor lock-in. Progettiamo,
               installiamo e gestiamo l&apos;automazione del tuo edificio con
               personale interno, in tutta Italia.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <ButtonLink href="/contatti" size="lg">
-                Richiedi una demo <ArrowRight className="size-4" />
+                Contattaci <ArrowRight className="size-4" />
               </ButtonLink>
               <ButtonLink href="#settori" size="lg" variant="outline">
                 Esplora i settori
@@ -980,7 +973,7 @@ export default function HomePage({ blogPosts }: { blogPosts: BlogPost[] }) {
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
             Dal 3 giugno 2026 i sistemi BACS di Classe B sono obbligatori per gli
-            edifici non residenziali sopra i 290 kW — e nel 2029 la soglia scende
+            edifici non residenziali sopra i 290 kW, e nel 2029 la soglia scende
             a 70 kW. Chi si muove oggi arriva pronto, e finanzia l&apos;intervento
             con gli incentivi in vigore.
           </p>
@@ -1037,7 +1030,7 @@ export default function HomePage({ blogPosts }: { blogPosts: BlogPost[] }) {
       <section className="relative overflow-hidden bg-navy">
         <div className="tech-grid-dark pointer-events-none absolute inset-0 opacity-60" aria-hidden />
         <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_60%_at_50%_0%,rgba(0,196,204,0.10),transparent)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_60%_at_50%_0%,rgba(0,126,120,0.10),transparent)]"
           aria-hidden
         />
         <div className="relative mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-28">

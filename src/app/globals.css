@@ -5,7 +5,7 @@
 /* ─── DESIGN TOKENS ─────────────────────────────────────────────────────────
    Philosophy: White & light gray = 80% of page.
    Navy #0A1628 = dark sections only (max 2-3 per page).
-   Teal #00C4CC = accent only — lines, icons, stats, one CTA button per section.
+   Teal #007E78 = accent only — lines, icons, stats, one CTA button per section.
 ──────────────────────────────────────────────────────────────────────────── */
 :root {
   --background: #ffffff;
@@ -18,10 +18,10 @@
   --brand-radial: #0E1F3A;       /* radial highlight in dark sections */
 
   /* Teal accent — NOT a background color */
-  --brand-teal: #00C4CC;
-  --brand-teal-dark: #009BA3;
-  --brand-teal-light: #33D9E0;
-  --brand-teal-glow: rgba(0, 196, 204, 0.10);
+  --brand-teal: #007E78;
+  --brand-teal-dark: #007E78;
+  --brand-teal-light: #007E78;
+  --brand-teal-glow: rgba(0, 126, 120, 0.10);
 
   /* Surfaces */
   --brand-surface: #F7F9FA;       /* light section bg */
@@ -31,9 +31,9 @@
   --brand-stone: #374151;         /* body text */
 
   /* Grid */
-  --grid-line: rgba(0, 196, 204, 0.06);
-  --grid-line-dark: rgba(0, 196, 204, 0.08);
-  --brand-soft: rgba(0, 196, 204, 0.08);
+  --grid-line: rgba(0, 126, 120, 0.06);
+  --grid-line-dark: rgba(0, 126, 120, 0.08);
+  --brand-soft: rgba(0, 126, 120, 0.08);
 }
 
 body {
@@ -50,7 +50,7 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: var(--brand-navy); }
 
 ::selection {
-  background: rgba(0, 196, 204, 0.14);
+  background: rgba(0, 126, 120, 0.14);
   color: var(--brand-navy);
 }
 
@@ -226,7 +226,7 @@ html { scroll-behavior: smooth; }
     background: rgba(10, 22, 40, 0.78);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 196, 204, 0.2);
+    border: 1px solid rgba(0, 126, 120, 0.2);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
     border-radius: 1rem;
   }
@@ -256,7 +256,7 @@ html { scroll-behavior: smooth; }
   }
   .product-card-icon {
     @apply flex items-center justify-center w-9 h-9 rounded-sm flex-shrink-0;
-    background: rgba(0, 196, 204, 0.1);
+    background: rgba(0, 126, 120, 0.1);
     color: var(--brand-teal);
   }
 }
@@ -340,9 +340,13 @@ html { scroll-behavior: smooth; }
 }
 .bus-sheen { background-size: 60% 100%; background-repeat: no-repeat; animation: busSheen 2.4s linear infinite; }
 
+@keyframes tourProgress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.tour-progress { transform-origin: left; animation: tourProgress linear forwards; }
+
 @media (prefers-reduced-motion: reduce) {
   .kenburns, .kenburns-soft, .float-card, .hero-rise { animation: none !important; }
   .trace-march, .trace-march-fast, .bus-sheen { animation: none !important; }
+  .tour-progress { animation: none !important; transform: scaleX(1); }
 }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }

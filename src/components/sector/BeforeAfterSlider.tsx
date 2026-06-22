@@ -128,7 +128,7 @@ export function BeforeAfterSlider({
           sizes="(max-width: 1024px) 100vw, 50vw"
           draggable={false}
         />
-        <span className="pointer-events-none absolute right-4 top-4 z-[1] flex items-center gap-1.5 rounded-full bg-navy/55 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-brand-bright backdrop-blur-sm">
+        <span className="pointer-events-none absolute right-4 top-4 z-[1] flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-brand shadow-sm backdrop-blur-sm">
           <span className="relative flex size-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-70" />
             <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />

@@ -17,7 +17,7 @@ import { sharedAssistance, sharedComparison, sharedFinance } from "./shared";
 
 export const buildingSectorConfig: SectorConfig = {
   slug: "building",
-  metaTitle: "Edifici e Uffici — Direzionali smart e a norma | QuickConnext Building",
+  metaTitle: "Edifici e Uffici · Direzionali smart e a norma | QuickConnext Building",
   metaDescription:
     "Comfort, accessi, energia e sicurezza per uffici e direzionali. La piattaforma BACS conforme alla direttiva 2026, con protocolli aperti.",
   heroImage: "/images/edifici-lobby.png",

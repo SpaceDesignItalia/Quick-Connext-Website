@@ -194,7 +194,7 @@ export function RoomExplorer({
           </motion.div>
 
           {/* live badge */}
-          <span className="pointer-events-none absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-full bg-navy/55 px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-brand-bright backdrop-blur-sm">
+          <span className="pointer-events-none absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-brand shadow-sm backdrop-blur-sm">
             <span className="relative flex size-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-70" />
               <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
@@ -228,6 +228,20 @@ export function RoomExplorer({
             </AnimatePresence>
           </div>
         </div>
+      </div>
+
+      {/* auto-tour progress — the tour advancing, frozen while you inspect */}
+      <div className="mt-2.5 h-[3px] w-full overflow-hidden rounded-full bg-white/10">
+        {booted && active && (
+          <div
+            key={focus}
+            className="tour-progress h-full rounded-full bg-brand-bright"
+            style={{
+              animationDuration: "3600ms",
+              animationPlayState: paused ? "paused" : "running",
+            }}
+          />
+        )}
       </div>
 
       {/* tour navigation — chip strip */}

@@ -295,7 +295,7 @@ export function HotelCommandCenter() {
     >
       <div className="tech-grid-dark absolute inset-0 opacity-50" aria-hidden />
       <div
-        className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(0,196,204,0.10),transparent)]"
+        className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(0,126,120,0.10),transparent)]"
         aria-hidden
       />
       <div className="relative mx-auto max-w-7xl px-5 py-[60px] sm:px-8">
@@ -317,7 +317,7 @@ export function HotelCommandCenter() {
         </div>
 
         {/* Console */}
-        <div className="mt-12 overflow-hidden rounded-3xl border border-white/10 bg-[#081020]/90 shadow-[0_40px_120px_-30px_rgba(0,196,204,0.25)] backdrop-blur">
+        <div className="mt-12 overflow-hidden rounded-3xl border border-white/10 bg-[#081020]/90 shadow-[0_40px_120px_-30px_rgba(0,126,120,0.25)] backdrop-blur">
           {/* Title bar */}
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-5 py-3.5 sm:px-6">
             <div className="flex items-center gap-3">
