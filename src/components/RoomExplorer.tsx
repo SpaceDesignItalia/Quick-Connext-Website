@@ -177,7 +177,7 @@ export function RoomExplorer({
                       )}
                     />
                     {!isActive && (
-                      <span className="absolute size-7 animate-ping rounded-full bg-brand-bright/40" />
+                      <span className="absolute size-7 live-ring rounded-full bg-brand-bright/40" />
                     )}
                     <span
                       className={cn(
@@ -196,7 +196,6 @@ export function RoomExplorer({
           {/* live badge */}
           <span className="pointer-events-none absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-brand shadow-sm backdrop-blur-sm">
             <span className="relative flex size-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-70" />
               <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
             </span>
             Esplora la camera

@@ -136,7 +136,7 @@ function SceneNav({ items }: { items: SceneNavItem[] }) {
           >
             {item.live && (
               <span className="relative flex size-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-60" />
+                <span className="absolute inline-flex h-full w-full live-ring rounded-full bg-brand-bright" />
                 <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
               </span>
             )}
@@ -267,7 +267,6 @@ function NotificationCard({
       <div className="min-w-0">
         <div className="flex items-center gap-2">
           <span className="relative flex size-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-60" />
             <span className="relative inline-flex size-2 rounded-full bg-brand-bright" />
           </span>
           <p
@@ -421,7 +420,6 @@ function SceneVideo({
         />
         <span className="pointer-events-none absolute right-4 top-4 z-[1] flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-brand shadow-sm backdrop-blur-sm">
           <span className="relative flex size-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-70" />
             <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
           </span>
           Con QuickConnext
@@ -607,7 +605,6 @@ function HeroDemoCard({
     >
       <div className="flex items-start gap-2.5">
         <span className="relative mt-1 flex size-2 shrink-0">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-60" />
           <span className="relative inline-flex size-2 rounded-full bg-brand-bright" />
         </span>
         <p className="text-[13px] font-bold leading-snug text-foreground sm:text-sm">{title}</p>
@@ -647,7 +644,7 @@ function HeroLiveCard({
       <div className="flex items-center justify-between">
         <span className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-brand">
           <span className="relative flex size-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-60" />
+            <span className="absolute inline-flex h-full w-full live-ring rounded-full bg-brand-bright" />
             <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
           </span>
           QuickConnext OS
@@ -959,7 +956,6 @@ function BuildingShowcase({
                   Edificio connesso
                 </span>
                 <span className="relative flex size-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-60" />
                   <span className="relative inline-flex size-2 rounded-full bg-brand-bright" />
                 </span>
               </div>

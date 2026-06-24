@@ -153,7 +153,6 @@ export function SystemSchema({ className }: { className?: string }) {
           </span>
           <span className="flex items-center gap-1.5 rounded-full border border-brand-bright/25 bg-brand-bright/[0.08] px-2.5 py-1 font-mono text-[9.5px] font-semibold uppercase tracking-[0.16em] text-brand-bright">
             <span className="relative flex size-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-70" />
               <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
             </span>
             KNX-IP
@@ -375,7 +374,7 @@ export function SystemSchema({ className }: { className?: string }) {
         {/* narration console — lo schema si racconta */}
         <div className="mt-5 flex items-center gap-2.5 rounded-xl border border-white/10 bg-black/25 px-3 py-2.5">
           <span className="relative flex size-2 shrink-0">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-60" />
+            <span className="absolute inline-flex h-full w-full live-ring rounded-full bg-brand-bright" />
             <span className="relative inline-flex size-2 rounded-full bg-brand-bright" />
           </span>
           <div className="min-w-0 flex-1 overflow-hidden">

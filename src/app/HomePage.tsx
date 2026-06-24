@@ -268,7 +268,6 @@ function PlatformCompare() {
         </div>
         <span className="pointer-events-none absolute right-3 top-3 flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-brand shadow-sm backdrop-blur-sm sm:right-4 sm:top-4">
           <span className="relative flex size-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-70" />
             <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
           </span>
           Con QuickConnext
@@ -695,7 +694,6 @@ function RegulationPanel() {
 
         <p className="mt-8 inline-flex items-center gap-2 rounded-full border border-brand-bright/25 bg-brand-bright/[0.07] px-3 py-1.5 text-[11.5px] font-semibold text-brand-bright">
           <span className="relative flex size-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-bright opacity-70" />
             <span className="relative inline-flex size-1.5 rounded-full bg-brand-bright" />
           </span>
           Oggi sei qui: la Classe B è già legge
