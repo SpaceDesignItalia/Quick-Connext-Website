@@ -27,7 +27,7 @@ const geistMonoLocal = localFont({
 
 export const metadata: Metadata = {
   icons: {
-    icon: "/logo.png",
+    icon: "/logo-brand.png",
   },
   title: "QuickConnext Building · Una piattaforma per tutto l'edificio",
   description:

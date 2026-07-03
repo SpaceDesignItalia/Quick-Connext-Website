@@ -2,38 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── DESIGN TOKENS ─────────────────────────────────────────────────────────
-   Philosophy: White & light gray = 80% of page.
-   Navy #0A1628 = dark sections only (max 2-3 per page).
-   Teal #007E78 = accent only — lines, icons, stats, one CTA button per section.
+/* ─── DESIGN TOKENS · PIÙ SVILUPPO ──────────────────────────────────────────
+   Brand identity (company profile "Impianti Integrati"):
+   Warm paper/cream = 80% of page.
+   Deep brand navy #0F1E30 = dark sections only (max 2-3 per page).
+   Terracotta #B05A33 = the working accent — labels, icons, stats, links, CTA.
+   Gold/brass #C2A36B = decorative blueprint line-work on dark sections only.
 ──────────────────────────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #0A1628;
+  --background: #FAF7F0;          /* warm paper */
+  --foreground: #16273D;          /* deep navy ink — serif headings on paper */
 
-  /* Navy */
-  --brand-dark: #0A1628;
-  --brand-navy: #0A1628;
-  --brand-navy-light: #1E2D4A;
-  --brand-radial: #0E1F3A;       /* radial highlight in dark sections */
+  /* Navy — dark sections */
+  --brand-dark: #0F1E30;
+  --brand-navy: #0F1E30;
+  --brand-navy-light: #1E3047;
+  --brand-radial: #16283E;        /* radial highlight in dark sections */
 
-  /* Teal accent — NOT a background color */
-  --brand-teal: #007E78;
-  --brand-teal-dark: #007E78;
-  --brand-teal-light: #007E78;
-  --brand-teal-glow: rgba(0, 126, 120, 0.10);
+  /* Terracotta accent (token still named "teal" for class compatibility) */
+  --brand-teal: #B05A33;
+  --brand-teal-dark: #8F4526;
+  --brand-teal-light: #C77A4F;
+  --brand-teal-glow: rgba(176, 90, 51, 0.10);
 
-  /* Surfaces */
-  --brand-surface: #F7F9FA;       /* light section bg */
-  --brand-surface-deep: #EEF1F4; /* muted / card bg */
-  --brand-ivory-deep: #F7F9FA;   /* kept for legacy class names */
-  --brand-line: #E5E7EB;          /* hairlines */
-  --brand-stone: #374151;         /* body text */
+  /* Gold / brass — decorative line-work on dark sections */
+  --brand-gold: #C2A36B;
+  --brand-gold-soft: rgba(194, 163, 107, 0.14);
+
+  /* Surfaces — warm cream */
+  --brand-surface: #F1EBDD;       /* light section bg */
+  --brand-surface-deep: #E8E0CF; /* muted / card bg */
+  --brand-ivory-deep: #F1EBDD;   /* kept for legacy class names */
+  --brand-line: #E2D9C8;          /* warm hairlines */
+  --brand-stone: #43403A;         /* warm charcoal body text */
 
   /* Grid */
-  --grid-line: rgba(0, 126, 120, 0.06);
-  --grid-line-dark: rgba(0, 126, 120, 0.08);
-  --brand-soft: rgba(0, 126, 120, 0.08);
+  --grid-line: rgba(22, 39, 61, 0.05);
+  --grid-line-dark: rgba(194, 163, 107, 0.07);
+  --brand-soft: rgba(176, 90, 51, 0.08);
 }
 
 body {
@@ -50,7 +56,7 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: var(--brand-navy); }
 
 ::selection {
-  background: rgba(0, 126, 120, 0.14);
+  background: rgba(176, 90, 51, 0.16);
   color: var(--brand-navy);
 }
 
@@ -226,7 +232,7 @@ html { scroll-behavior: smooth; }
     background: rgba(10, 22, 40, 0.78);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 126, 120, 0.2);
+    border: 1px solid rgba(176, 90, 51, 0.2);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
     border-radius: 1rem;
   }
@@ -256,7 +262,7 @@ html { scroll-behavior: smooth; }
   }
   .product-card-icon {
     @apply flex items-center justify-center w-9 h-9 rounded-sm flex-shrink-0;
-    background: rgba(0, 126, 120, 0.1);
+    background: rgba(176, 90, 51, 0.1);
     color: var(--brand-teal);
   }
 }
@@ -363,14 +369,14 @@ html { scroll-behavior: smooth; }
 
 /* ─── QUICKCONNEXT HOME OVERRIDES ────────────────────────────────────────── */
 :root {
-  --qc-petrol: oklch(0.46 0.062 197);
-  --qc-petrol-deep: oklch(0.34 0.05 199);
-  --qc-petrol-soft: oklch(0.6 0.07 192);
-  --qc-ink: #0A1628;
-  --qc-paper: oklch(0.995 0.004 185);
-  --qc-paper-2: oklch(0.97 0.012 188);
-  --qc-line: #E5E7EB;
-  --qc-muted: #374151;
+  --qc-petrol: #B05A33;
+  --qc-petrol-deep: #8F4526;
+  --qc-petrol-soft: #C77A4F;
+  --qc-ink: #16273D;
+  --qc-paper: #FAF7F0;
+  --qc-paper-2: #F1EBDD;
+  --qc-line: #E2D9C8;
+  --qc-muted: #43403A;
   --qc-accent: var(--brand-teal);
   --qc-accent-strong: var(--brand-teal-dark);
 }
@@ -416,8 +422,8 @@ html { scroll-behavior: smooth; }
     border: 1px solid var(--qc-line);
     border-radius: 1rem;
     box-shadow:
-      0 1px 2px oklch(0.46 0.062 197 / 0.04),
-      0 12px 32px oklch(0.46 0.062 197 / 0.06);
+      0 1px 2px rgba(22, 39, 61, 0.04),
+      0 12px 32px rgba(22, 39, 61, 0.07);
   }
   .qc-btn {
     display: inline-flex;

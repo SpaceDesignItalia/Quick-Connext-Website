@@ -141,7 +141,7 @@ export function SystemSchema({ className }: { className?: string }) {
     >
       <div className="tech-grid-dark pointer-events-none absolute inset-0 opacity-50" aria-hidden />
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_0%,rgba(0,126,120,0.16),transparent)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_0%,rgba(176, 90, 51,0.16),transparent)]"
         aria-hidden
       />
 
@@ -174,9 +174,9 @@ export function SystemSchema({ className }: { className?: string }) {
                     className="absolute inset-0 rounded-xl"
                     animate={{
                       boxShadow: [
-                        "0 0 0px 0px rgba(0,126,120,0.0)",
-                        "0 0 24px 2px rgba(0,126,120,0.55)",
-                        "0 0 0px 0px rgba(0,126,120,0.0)",
+                        "0 0 0px 0px rgba(176, 90, 51,0.0)",
+                        "0 0 24px 2px rgba(176, 90, 51,0.55)",
+                        "0 0 0px 0px rgba(176, 90, 51,0.0)",
                       ],
                     }}
                     transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
@@ -221,13 +221,13 @@ export function SystemSchema({ className }: { className?: string }) {
                 preserveAspectRatio="none"
                 aria-hidden
               >
-                <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(0,126,120,0.22)" strokeWidth="3" />
+                <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(176, 90, 51,0.22)" strokeWidth="3" />
                 <line
                   x1="0"
                   y1="50"
                   x2="100"
                   y2="50"
-                  stroke="rgba(0,126,120,0.85)"
+                  stroke="rgba(176, 90, 51,0.85)"
                   strokeWidth="3"
                   strokeDasharray="6 10"
                   className={booted ? "trace-march" : undefined}
@@ -237,7 +237,7 @@ export function SystemSchema({ className }: { className?: string }) {
                 <motion.span
                   key={`pulse-${focus}-${tick}`}
                   aria-hidden
-                  className="absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-teal-light shadow-[0_0_10px_2px_rgba(0,126,120,0.8)]"
+                  className="absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-teal-light shadow-[0_0_10px_2px_rgba(176, 90, 51,0.8)]"
                   initial={{ left: "50%", opacity: 0 }}
                   animate={{ left: `${pulseX}%`, opacity: [0, 1, 1, 0.6] }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
@@ -267,7 +267,7 @@ export function SystemSchema({ className }: { className?: string }) {
                       className={cn(
                         "flex w-full cursor-default flex-col items-center gap-1 rounded-xl border px-1 py-2 text-center transition-all duration-300",
                         isFocus
-                          ? "border-brand-bright/70 bg-brand-bright/[0.14] shadow-[0_0_22px_-4px_rgba(0,126,120,0.7)] scale-[1.05]"
+                          ? "border-brand-bright/70 bg-brand-bright/[0.14] shadow-[0_0_22px_-4px_rgba(176, 90, 51,0.7)] scale-[1.05]"
                           : "border-white/10 bg-white/[0.04]",
                       )}
                     >
@@ -314,13 +314,13 @@ export function SystemSchema({ className }: { className?: string }) {
                 preserveAspectRatio="none"
                 aria-hidden
               >
-                <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(0,126,120,0.18)" strokeWidth="2.5" />
+                <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(176, 90, 51,0.18)" strokeWidth="2.5" />
                 <line
                   x1="0"
                   y1="50"
                   x2="100"
                   y2="50"
-                  stroke="rgba(0,126,120,0.5)"
+                  stroke="rgba(176, 90, 51,0.5)"
                   strokeWidth="2.5"
                   strokeDasharray="3 7"
                   className={booted ? "trace-march" : undefined}

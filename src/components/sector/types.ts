@@ -136,6 +136,18 @@ export interface SectorConfig {
   gridPosition?: "before" | "after";
   stats: Array<{ value: string; label: string }>;
   statsSection?: SectionHeading;
+  /**
+   * Optional grouping of the stats into named pillars (e.g. Efficienza,
+   * Ospitalità…). When present, the stats section renders pillar cards with
+   * context text instead of the flat StatGrid.
+   */
+  statGroups?: Array<{
+    icon: LucideIcon;
+    title: string;
+    stat: { value: string; label: string };
+    desc: string;
+    secondary?: { value: string; label: string };
+  }>;
   comparison: ComparisonRow[];
   comparisonSection?: SectionHeading;
   comparisonTraditionalLabel?: string;

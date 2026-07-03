@@ -58,7 +58,7 @@ export default function Footer() {
     <footer className="relative overflow-hidden border-t border-white/10 bg-navy text-white/65">
       <div className="tech-grid-dark pointer-events-none absolute inset-0 opacity-40" aria-hidden />
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_0%,rgba(0,126,120,0.08),transparent)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_0%,rgba(176, 90, 51,0.08),transparent)]"
         aria-hidden
       />
 
@@ -71,11 +71,12 @@ export default function Footer() {
               className="group block w-fit shrink-0 transition-opacity hover:opacity-90"
             >
               <Image
-                src="/logo-lungo.png"
+                src="/logo-lungo-brand.png"
                 alt="Quick Connext Building"
                 width={1024}
                 height={903}
                 className="h-20 w-auto object-contain sm:h-24"
+                unoptimized
               />
             </Link>
 

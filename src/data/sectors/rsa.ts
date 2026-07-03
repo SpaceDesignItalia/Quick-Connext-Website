@@ -15,6 +15,13 @@ import {
 import type { SectorConfig } from "@/components/sector/types";
 import { sharedAssistance, sharedComparison, sharedFinance } from "./shared";
 
+/* ⚠️ TESTI NON DOCUMENTATI — il verticale RSA / Sanitario NON è presente nei
+ * documenti forniti dal cliente (lo ZIP copre Hotel, Industria/logistica,
+ * Terziario direzionale e Retail/GDO). I contenuti qui sotto sono ESTRAPOLATI
+ * applicando le capacità generali del prodotto (clima, qualità aria/CO₂,
+ * sicurezza, manutenzione predittiva) al contesto sanitario; alcune voci
+ * (es. "chiamata infermieri") non compaiono nei documenti. Da validare con
+ * materiale ufficiale del cliente prima della pubblicazione. */
 export const rsaSectorConfig: SectorConfig = {
   slug: "rsa",
   metaTitle: "RSA e Sanitario · Ambienti di cura connessi | QuickConnext Building",
@@ -26,11 +33,8 @@ export const rsaSectorConfig: SectorConfig = {
   heroAccent: "sicuri e accoglienti.",
   heroSubtitle:
     "Comfort costante, aria sana, sicurezza h24 e risposta rapida alle chiamate. Tecnologia discreta al servizio del benessere di ospiti, pazienti e personale.",
-  heroCards: [
-    { icon: Thermometer, title: "Reparto B", detail: "Clima ottimale · 23°" },
-    { icon: Wind, title: "Qualità aria", detail: "CO₂ nella norma" },
-    { icon: BellRing, title: "Chiamata", detail: "Risposta < 2 min" },
-  ],
+  hideSceneNav: true,
+  heroCards: [],
   introLabel: "La piattaforma per la sanità",
   introTitle: "Il benessere delle persone, gestito con cura.",
   introText:
@@ -81,7 +85,7 @@ export const rsaSectorConfig: SectorConfig = {
         "Rilevazione antincendio e fughe gas",
         "Notifiche immediate al personale",
       ],
-      image: "/images/sector-rsa.png",
+      image: "/images/rsa-security.png",
       cards: [
         { icon: BellRing, title: "Stanza 22", detail: "Chiamata gestita", status: "Risposta 1m 40s", position: "left-4 top-6 sm:-left-6 sm:top-12" },
         { icon: Flame, title: "Antincendio", detail: "Sensori operativi", position: "bottom-8 right-4 sm:-right-6 sm:bottom-10" },

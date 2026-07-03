@@ -23,10 +23,12 @@ import {
   ShieldCheck,
   Gauge,
   Wrench,
-  ArrowUpRight,
-  Calendar,
+  Search,
+  PencilRuler,
   ChevronLeft,
   ChevronRight,
+  ArrowUpRight,
+  Calendar,
   BadgeCheck,
   Timer,
   Headset,
@@ -43,6 +45,7 @@ import {
   BadgeEuro,
   PiggyBank,
   TrendingUp,
+  Users,
 } from "lucide-react";
 import type { BlogPost } from "@/types/blog";
 import { CountUp } from "@/components/sector/SectorPage";
@@ -251,7 +254,7 @@ function PlatformCompare() {
         >
           <div className="flex items-center gap-2.5 rounded-2xl border-2 border-brand/40 bg-white px-3 py-2 shadow-card sm:px-4 sm:py-2.5">
             <Image
-              src="/logo.png"
+              src="/logo-brand.png"
               alt=""
               width={28}
               height={28}
@@ -417,11 +420,8 @@ function SectorHero() {
             <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/35 to-navy/5" />
             <div className="absolute inset-0 bg-gradient-to-tr from-brand/25 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-            {/* top — index + sector icon */}
-            <div className="absolute inset-x-0 top-0 flex items-center justify-between p-3 sm:p-5">
-              <span className="font-mono text-[10px] font-semibold tracking-[0.22em] text-white/55 sm:text-[11px]">
-                0{i + 1}
-              </span>
+            {/* top — sector icon */}
+            <div className="absolute inset-x-0 top-0 flex items-center justify-end p-3 sm:p-5">
               <span className="flex size-8 items-center justify-center rounded-full border border-white/15 bg-white/10 text-brand-bright backdrop-blur-sm sm:size-10">
                 <Icon className="size-4 sm:size-5" />
               </span>
@@ -467,57 +467,6 @@ function SectorHero() {
   );
 }
 
-// ─── StatGrid ─────────────────────────────────────────────────────────────────
-
-function StatGrid({
-  stats,
-  tone = "light",
-  columns,
-}: {
-  stats: Array<{ value: string; label: string }>;
-  tone?: "light" | "dark";
-  columns?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "grid gap-px overflow-hidden rounded-3xl",
-        tone === "light" ? "bg-border" : "bg-white/10",
-        columns ?? "grid-cols-2 lg:grid-cols-4",
-      )}
-    >
-      {stats.map((s, i) => (
-        <Reveal
-          key={s.label}
-          delay={i}
-          className={cn(
-            "group flex flex-col gap-2 p-6 transition-colors duration-300 sm:p-8",
-            tone === "light"
-              ? "bg-background hover:bg-surface"
-              : "bg-navy hover:bg-[#0E1F3A]",
-          )}
-        >
-          <CountUp
-            value={s.value}
-            className={cn(
-              "origin-left font-display text-3xl font-extrabold tracking-tight transition-transform duration-300 group-hover:scale-105 sm:text-4xl",
-              tone === "light" ? "text-brand" : "text-brand-bright",
-            )}
-          />
-          <span
-            className={cn(
-              "text-sm leading-snug",
-              tone === "light" ? "text-muted-foreground" : "text-navy-muted",
-            )}
-          >
-            {s.label}
-          </span>
-        </Reveal>
-      ))}
-    </div>
-  );
-}
-
 // ─── CtaBand ──────────────────────────────────────────────────────────────────
 
 function CtaBand({
@@ -540,7 +489,7 @@ function CtaBand({
         sizes="100vw"
       />
       <div className="absolute inset-0 bg-navy/85" />
-      <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(0,126,120,0.08),transparent)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(176, 90, 51,0.08),transparent)]" />
       <div className="relative mx-auto max-w-3xl px-5 py-24 text-center sm:px-8 sm:py-28">
         <Reveal>
           <SectionLabel tone="dark" className="justify-center">
@@ -617,7 +566,7 @@ function RegulationPanel() {
     <div className="relative overflow-hidden rounded-3xl bg-navy p-6 shadow-card sm:p-9">
       <div className="tech-grid-dark pointer-events-none absolute inset-0 opacity-50" aria-hidden />
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_70%_at_50%_0%,rgba(0,126,120,0.13),transparent)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_70%_at_50%_0%,rgba(176, 90, 51,0.13),transparent)]"
         aria-hidden
       />
       <div className="relative">
@@ -744,35 +693,58 @@ const domains = [
   { icon: Wrench, title: "Manutenzione", desc: "Diagnostica e analisi predittiva per evitare i guasti." },
 ];
 
-const stats = [
-  { value: "−35%", label: "consumi energetici" },
-  { value: "+30%", label: "soddisfazione di ospiti e utenti" },
-  { value: "−45%", label: "guasti non pianificati" },
-  { value: "−60%", label: "incidenti di sicurezza" },
-  { value: "+2", label: "classi energetiche APE" },
-  { value: "+15%", label: "valore dell'immobile" },
+const statPillars = [
+  {
+    icon: Gauge,
+    title: "Efficienza",
+    stat: { value: "−35%", label: "consumi energetici" },
+    desc: "Il clima segue la presenza e le luci si spengono negli ambienti vuoti: i consumi si riducono zona per zona.",
+    secondary: { value: "+2", label: "classi energetiche APE" },
+  },
+  {
+    icon: Users,
+    title: "Comfort",
+    stat: { value: "+30%", label: "soddisfazione di ospiti e utenti" },
+    desc: "Comfort costante e personalizzato in ogni ambiente: più recensioni positive e utenti che tornano.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Sicurezza",
+    stat: { value: "−60%", label: "incidenti di sicurezza" },
+    desc: "Videosorveglianza, allarmi e antincendio in un'unica supervisione; la diagnostica risolve i guasti prima che diventino disservizi.",
+    secondary: { value: "−45%", label: "guasti non pianificati" },
+  },
+  {
+    icon: TrendingUp,
+    title: "Redditività",
+    stat: { value: "+15%", label: "valore dell'immobile" },
+    desc: "L'investimento si ripaga con i risparmi energetici realmente generati, e l'edificio è già conforme alla normativa BACS.",
+  },
+] as const;
+
+const statCredentials = [
   { value: "+100M€", label: "progetti gestiti" },
-  { value: "95%", label: "tasso approvazione pratiche" },
-];
+  { value: "95%", label: "tasso di approvazione delle pratiche" },
+] as const;
 
 const processSteps = [
   {
-    n: "01",
+    icon: Search,
     title: "Sopralluogo e analisi",
     desc: "Studiamo la tua struttura, gli impianti esistenti e i consumi reali.",
   },
   {
-    n: "02",
+    icon: PencilRuler,
     title: "Progetto su misura",
     desc: "Impianto e interfaccia software disegnati sulle esigenze della tua attività.",
   },
   {
-    n: "03",
+    icon: Wrench,
     title: "Installazione chiavi in mano",
     desc: "Personale interno per hardware, cablaggio e configurazione, senza fermare l'attività.",
   },
   {
-    n: "04",
+    icon: Headset,
     title: "Gestione e assistenza",
     desc: "Controllo da remoto, manutenzione preventiva e supporto 24/7 con intervento in 24 ore.",
   },
@@ -785,10 +757,51 @@ const trustChips = [
   { icon: ShieldCheck, label: "ISO 27001 · 27017 · 27018" },
 ];
 
+const HOME_BLOG_POSTS: BlogPost[] = [
+  {
+    id: 1,
+    slug: "direttiva-bacs-2026",
+    title: "Direttiva BACS 2026: cosa cambia per il tuo edificio",
+    excerpt:
+      "La normativa europea impone sistemi di automazione negli edifici non residenziali. Ecco come prepararsi in tempo e quali scadenze tenere d'occhio.",
+    category: "Normativa",
+    categoryIds: [],
+    date: "12 giu 2026",
+    readTime: "5 min",
+    image: IMAGES.sectorEdifici,
+  },
+  {
+    id: 2,
+    slug: "risparmio-energetico-hotel",
+    title: "Come un hotel ha ridotto i consumi del 28% con il BACS",
+    excerpt:
+      "Clima, illuminazione e accessi integrati in un'unica piattaforma: il caso di una struttura ricettiva da 120 camere in Lombardia.",
+    category: "Casi studio",
+    categoryIds: [],
+    date: "28 mag 2026",
+    readTime: "7 min",
+    image: IMAGES.heroHotel,
+  },
+  {
+    id: 3,
+    slug: "vendor-lock-in",
+    title: "Vendor lock-in: perché l'open protocol fa la differenza",
+    excerpt:
+      "BACnet, Modbus, KNX: scegliere protocolli aperti significa libertà di scelta, manutenzione semplificata e investimenti protetti nel tempo.",
+    category: "Tecnologia",
+    categoryIds: [],
+    date: "15 mag 2026",
+    readTime: "4 min",
+    image: IMAGES.sectorIndustria,
+  },
+];
+
 
 // ─── HomePage ─────────────────────────────────────────────────────────────────
 
-export default function HomePage({ blogPosts }: { blogPosts: BlogPost[] }) {
+export default function HomePage({ blogPosts = [] }: { blogPosts?: BlogPost[] }) {
+  const displayPosts =
+    blogPosts.length > 0 ? blogPosts.slice(0, 3) : HOME_BLOG_POSTS;
   return (
     <main className="bg-background">
       <Header />
@@ -850,10 +863,10 @@ export default function HomePage({ blogPosts }: { blogPosts: BlogPost[] }) {
           />
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             {processSteps.map((s, i) => (
-              <Reveal key={s.n} delay={i}>
+              <Reveal key={s.title} delay={i}>
                 <div className="relative">
-                  <div className="relative flex size-14 items-center justify-center rounded-2xl border border-brand/30 bg-background font-display text-lg font-extrabold text-brand shadow-soft">
-                    {s.n}
+                  <div className="relative flex size-14 items-center justify-center rounded-2xl border border-brand/30 bg-background text-brand shadow-soft">
+                    <s.icon className="size-6" strokeWidth={1.75} />
                   </div>
                   <h3 className="mt-5 font-display text-xl font-bold text-foreground">
                     {s.title}
@@ -1028,7 +1041,7 @@ export default function HomePage({ blogPosts }: { blogPosts: BlogPost[] }) {
       <section className="relative overflow-hidden bg-navy">
         <div className="tech-grid-dark pointer-events-none absolute inset-0 opacity-60" aria-hidden />
         <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_60%_at_50%_0%,rgba(0,126,120,0.10),transparent)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_60%_at_50%_0%,rgba(176, 90, 51,0.10),transparent)]"
           aria-hidden
         />
         <div className="relative mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-28">
@@ -1041,81 +1054,124 @@ export default function HomePage({ blogPosts }: { blogPosts: BlogPost[] }) {
               I risultati medi dei progetti QuickConnext Building.
             </p>
           </Reveal>
-          <div className="mt-12">
-            <StatGrid stats={stats} tone="dark" />
-          </div>
-        </div>
-      </section>
-
-      {blogPosts.length > 0 && (
-        <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
-          <Reveal className="max-w-2xl">
-            <SectionLabel>Insights &amp; novità</SectionLabel>
-            <h2 className="mt-6 text-balance font-display text-4xl font-extrabold leading-[1.05] text-foreground sm:text-5xl">
-              Dal nostro blog.
-            </h2>
-            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-              Normativa, tecnologia e casi reali per chi gestisce edifici
-              intelligenti.
-            </p>
-          </Reveal>
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
-            {blogPosts.map((post, i) => (
-              <Reveal key={post.slug} delay={i} className="h-full">
-                <Link
-                  href={`/blog/${post.slug}`}
-                  aria-label={`Leggi l'articolo: ${post.title}`}
-                  className="group flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-border bg-background ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:border-brand/40 hover:shadow-card"
-                >
-                  <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-muted/40 via-background to-brand/5">
-                    {post.image ? (
-                      <Image
-                        src={post.image}
-                        alt={post.title}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="font-display text-3xl font-bold text-brand/15 select-none">
-                          QC
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex flex-1 flex-col p-5">
-                    <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1">
-                      <span className="font-mono text-[9.5px] font-semibold uppercase tracking-[0.16em] text-brand">
-                        {post.category}
-                      </span>
-                      <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                        <Calendar className="size-3" />
-                        {post.date}
-                      </span>
-                    </div>
-                    <h3 className="font-display text-[16px] font-bold leading-snug text-foreground transition-colors group-hover:text-brand">
-                      {post.title}
-                    </h3>
-                    <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground line-clamp-3">
-                      {post.excerpt}
-                    </p>
-                    <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-[13px] font-semibold text-brand transition-all group-hover:gap-2.5">
-                      Leggi l&apos;articolo
-                      <ArrowRight className="size-3.5" />
+          {/* Pilastri con contesto: ogni numero risponde a un "perché" dichiarato */}
+          <div className="mt-12 grid gap-4 sm:grid-cols-2">
+            {statPillars.map((g, i) => (
+              <Reveal
+                key={g.title}
+                delay={i}
+                className="flex flex-col rounded-3xl border border-white/10 bg-white/[0.04] p-7 transition-colors hover:bg-white/[0.06] sm:p-8"
+              >
+                <div className="flex items-center gap-2.5">
+                  <g.icon className="size-4 text-brand-gold" strokeWidth={2.25} />
+                  <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-gold">
+                    {g.title}
+                  </span>
+                </div>
+                <div className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <CountUp
+                    value={g.stat.value}
+                    className="font-display text-5xl font-extrabold tracking-tight text-brand-bright"
+                  />
+                  <span className="text-base font-semibold text-navy-foreground">
+                    {g.stat.label}
+                  </span>
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-navy-muted">{g.desc}</p>
+                {"secondary" in g && g.secondary && (
+                  <div className="mt-auto flex items-baseline gap-2 pt-5">
+                    <span className="font-display text-xl font-extrabold text-navy-foreground">
+                      {g.secondary.value}
                     </span>
+                    <span className="text-sm text-navy-muted">{g.secondary.label}</span>
                   </div>
-                </Link>
+                )}
               </Reveal>
             ))}
           </div>
-          <Reveal className="mt-10 flex justify-center">
-            <ButtonLink href="/blog" variant="outline" size="lg">
-              Vedi tutti gli articoli <ArrowRight className="size-4" />
-            </ButtonLink>
+          {/* Referenze aziendali: fuori dai risultati di prodotto, come riga di fiducia */}
+          <Reveal className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 border-t border-white/10 pt-8">
+            {statCredentials.map((c) => (
+              <div key={c.label} className="flex items-baseline gap-2.5">
+                <span className="font-display text-2xl font-extrabold tracking-tight text-navy-foreground">
+                  {c.value}
+                </span>
+                <span className="text-sm text-navy-muted">{c.label}</span>
+              </div>
+            ))}
           </Reveal>
-        </section>
-      )}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
+        <Reveal className="max-w-2xl">
+          <SectionLabel>Insights &amp; novità</SectionLabel>
+          <h2 className="mt-6 text-balance font-display text-4xl font-extrabold leading-[1.05] text-foreground sm:text-5xl">
+            Dal nostro blog.
+          </h2>
+          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+            Normativa, tecnologia e casi reali per chi gestisce edifici
+            intelligenti.
+          </p>
+        </Reveal>
+        <div className="mt-12 grid items-stretch gap-6 lg:grid-cols-3 lg:gap-8">
+          {displayPosts.map((post, i) => (
+            <Reveal key={post.slug} delay={i} className="h-full">
+              <article
+                aria-label={post.title}
+                className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-border bg-background ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:border-brand/40 hover:shadow-card"
+              >
+                <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-muted/40 via-background to-brand/5">
+                  {post.image ? (
+                    <Image
+                      src={post.image}
+                      alt=""
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 1024px) 100vw, 33vw"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="font-display text-3xl font-bold text-brand/15 select-none">
+                        QC
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-1 flex-col p-6 sm:p-7">
+                  <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-brand">
+                      {post.category}
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <Calendar className="size-3.5" />
+                      {post.date}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      · {post.readTime}
+                    </span>
+                  </div>
+                  <h3 className="font-display text-lg font-bold leading-snug text-foreground transition-colors group-hover:text-brand sm:text-xl">
+                    {post.title}
+                  </h3>
+                  <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+                    {post.excerpt}
+                  </p>
+                  <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-brand transition-all group-hover:gap-2.5">
+                    Leggi l&apos;articolo
+                    <ArrowRight className="size-4" />
+                  </span>
+                </div>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal className="mt-10 flex justify-center">
+          <ButtonLink href="/blog" variant="outline" size="lg">
+            Vedi tutti gli articoli <ArrowRight className="size-4" />
+          </ButtonLink>
+        </Reveal>
+      </section>
 
       <CtaBand
         title="Pronto a vedere il tuo edificio connesso?"

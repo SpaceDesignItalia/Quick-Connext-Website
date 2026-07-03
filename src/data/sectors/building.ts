@@ -26,11 +26,8 @@ export const buildingSectorConfig: SectorConfig = {
   heroAccent: "sicuri e a norma.",
   heroSubtitle:
     "Comfort per chi lavora, sicurezza per chi entra, controllo totale per chi gestisce. Uffici e direzionali pronti per la direttiva BACS 2026.",
-  heroCards: [
-    { icon: Users, title: "Piano 4", detail: "142 accessi · ok" },
-    { icon: Thermometer, title: "Open space", detail: "Comfort 22°" },
-    { icon: Gauge, title: "Energia", detail: "−33% consumi" },
-  ],
+  hideSceneNav: true,
+  heroCards: [],
   introLabel: "La piattaforma per gli edifici",
   introTitle: "Un edificio che lavora per chi lo abita.",
   introText:

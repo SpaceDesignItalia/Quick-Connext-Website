@@ -17,36 +17,41 @@ const config: Config = {
           foreground: "var(--brand-stone)",
         },
         navy: {
-          DEFAULT: "#0A1628",
+          DEFAULT: "#0F1E30",
           foreground: "#FFFFFF",
           muted: "rgba(255,255,255,0.65)",
         },
         brand: {
-          DEFAULT: "#007E78",
-          bright: "#007E78",
-          /* Light surfaces */
+          DEFAULT: "#B05A33",
+          bright: "#C77A4F",
+          /* Light surfaces — warm cream */
           ivory: {
-            DEFAULT: "#F7F9FA",
-            deep: "#EEF1F4",
+            DEFAULT: "#FAF7F0",
+            deep: "#F1EBDD",
             card: "#FFFFFF",
           },
           /* Navy — headings & dark sections */
           navy: {
-            DEFAULT: "#0A1628",
-            dark: "#0A1628",
-            light: "#1E2D4A",
-            muted: "#374151",
+            DEFAULT: "#0F1E30",
+            dark: "#0F1E30",
+            light: "#1E3047",
+            muted: "#5A6472",
           },
-          /* Teal accent */
+          /* Terracotta accent (token named "teal" for class compatibility) */
           teal: {
-            DEFAULT: "#007E78",
-            dark: "#007E78",
-            light: "#007E78",
-            glow: "rgba(0,126,120,0.10)",
+            DEFAULT: "#B05A33",
+            dark: "#8F4526",
+            light: "#C77A4F",
+            glow: "rgba(176, 90, 51, 0.10)",
           },
-          stone: "#374151",
-          line: "#E5E7EB",
-          grid: "rgba(0,126,120,0.06)",
+          /* Gold / brass — decorative line-work on dark sections */
+          gold: {
+            DEFAULT: "#C2A36B",
+            soft: "rgba(194, 163, 107, 0.14)",
+          },
+          stone: "#43403A",
+          line: "#E2D9C8",
+          grid: "rgba(176, 90, 51, 0.06)",
         },
       },
       fontFamily: {

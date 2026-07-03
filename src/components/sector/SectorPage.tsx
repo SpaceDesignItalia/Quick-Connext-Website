@@ -18,7 +18,7 @@ import {
   type Variants,
 } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
-import { ArrowRight, Check, ChevronDown, Minus, Sparkles, X } from "lucide-react";
+import { ArrowRight, Check, Minus, Sparkles, TrendingUp, X } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { LiveArchitecture } from "@/components/LiveArchitecture";
@@ -461,7 +461,7 @@ function StatPauseBand({
     <section className="relative overflow-hidden bg-[#040810]">
       <div className="tech-grid-dark absolute inset-0 opacity-60" aria-hidden />
       <div
-        className="absolute inset-0 bg-[radial-gradient(55%_70%_at_50%_50%,rgba(0,126,120,0.10),transparent)]"
+        className="absolute inset-0 bg-[radial-gradient(55%_70%_at_50%_50%,rgba(176, 90, 51,0.10),transparent)]"
         aria-hidden
       />
       <div className={cn("relative mx-auto max-w-7xl px-5 text-center sm:px-8", SECTION_PY)}>
@@ -601,7 +601,7 @@ function HeroDemoCard({
       initial={{ opacity: 0, y: 24, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="glass-card min-w-[200px] max-w-[340px] rounded-2xl border-2 border-brand/30 p-5 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.5),0_0_0_1px_rgba(0,126,120,0.15)] sm:min-w-[280px] sm:p-6"
+      className="glass-card min-w-[200px] max-w-[340px] rounded-2xl border-2 border-brand/30 p-5 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.5),0_0_0_1px_rgba(176, 90, 51,0.15)] sm:min-w-[280px] sm:p-6"
     >
       <div className="flex items-start gap-2.5">
         <span className="relative mt-1 flex size-2 shrink-0">
@@ -639,7 +639,7 @@ function HeroLiveCard({
       initial={{ opacity: 0, y: 24, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="glass-card w-[340px] max-w-[86vw] rounded-2xl border-2 border-brand/30 p-5 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.5),0_0_0_1px_rgba(0,126,120,0.15)]"
+      className="glass-card w-[340px] max-w-[86vw] rounded-2xl border-2 border-brand/30 p-5 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.5),0_0_0_1px_rgba(176, 90, 51,0.15)]"
     >
       <div className="flex items-center justify-between">
         <span className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-brand">
@@ -730,7 +730,7 @@ function CinematicHero({ config }: { config: SectorConfig }) {
             "linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.35) 55%, rgba(4,8,16,0.88) 100%)",
         }}
       />
-      <div className="absolute inset-0 bg-[radial-gradient(70%_50%_at_30%_35%,rgba(0,126,120,0.10),transparent)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(70%_50%_at_30%_35%,rgba(176, 90, 51,0.10),transparent)]" />
 
       <div className="relative mx-auto flex min-h-[88vh] max-w-7xl flex-col px-5 pb-10 pt-36 sm:min-h-[92vh] sm:px-8 sm:pb-14 sm:pt-44">
         <div className="max-w-4xl">
@@ -832,27 +832,6 @@ function CinematicHero({ config }: { config: SectorConfig }) {
             ))}
           </div>
         )}
-
-        {/* Scroll cue — invites the descent into the long cinematic page */}
-        <motion.a
-          href="#scopri"
-          aria-label="Scopri la soluzione"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4, duration: 0.8 }}
-          className="group absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1.5 lg:flex"
-        >
-          <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/45 transition-colors group-hover:text-white/80">
-            Esplora
-          </span>
-          <motion.span
-            animate={{ y: [0, 6, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            className="text-white/55 transition-colors group-hover:text-brand-bright"
-          >
-            <ChevronDown className="size-5" />
-          </motion.span>
-        </motion.a>
       </div>
     </section>
   );
@@ -894,10 +873,6 @@ function GridSection({ grid }: { grid: NonNullable<SectorConfig["grid"]> }) {
             <div className="group relative h-full overflow-hidden rounded-3xl border border-border bg-background p-7 transition-all duration-500 hover:-translate-y-1.5 hover:border-brand/30 hover:shadow-card">
               {/* accent line sweeps in on hover */}
               <span className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-gradient-to-r from-brand to-brand-bright transition-transform duration-500 group-hover:scale-x-100" />
-              {/* chapter index as a serif watermark */}
-              <span className="pointer-events-none absolute -right-1 -top-4 font-display text-[5.5rem] font-black leading-none text-brand/[0.06] transition-colors duration-500 group-hover:text-brand/[0.11]">
-                {String(i + 1).padStart(2, "0")}
-              </span>
               <span className="relative flex size-12 items-center justify-center rounded-2xl bg-brand/10 text-brand transition-all duration-500 group-hover:bg-brand group-hover:text-white">
                 {createElement(f.icon, { className: "size-6" })}
               </span>
@@ -994,7 +969,7 @@ function CtaBand({
     <section className="relative min-h-[420px] overflow-hidden">
       <Image src={image} alt="" aria-hidden fill className="object-cover" sizes="100vw" />
       <div className="absolute inset-0 bg-navy/85" />
-      <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(0,126,120,0.08),transparent)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(176, 90, 51,0.08),transparent)]" />
       <div className="relative mx-auto max-w-3xl px-5 py-24 text-center sm:px-8 sm:py-28">
         <Reveal>
           <SectionLabel tone="dark" className="justify-center">
@@ -1066,7 +1041,8 @@ export function SectorPage({ config }: { config: SectorConfig }) {
             className="object-cover"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-navy/92 via-navy/70 to-navy/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy/92 via-navy/74 to-navy/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/25 to-navy/55" />
           <div className="relative mx-auto max-w-7xl px-5 pb-20 pt-36 sm:px-8 sm:pb-28 sm:pt-44">
             <div className="max-w-2xl">
               <Reveal>
@@ -1140,8 +1116,6 @@ export function SectorPage({ config }: { config: SectorConfig }) {
         </section>
       )}
 
-      {config.buildingShowcase && <BuildingShowcase showcase={config.buildingShowcase} />}
-
       {gridBeforeScenes && config.grid && <GridSection grid={config.grid} />}
 
       {/* Scene features */}
@@ -1149,7 +1123,6 @@ export function SectorPage({ config }: { config: SectorConfig }) {
         const reverse = i % 2 === 1;
         const shaded = i % 2 === 1;
         const isDominant = scene.layout === "dominant";
-        const showStatPause = config.statPause?.afterSceneIndex === i;
 
         return (
           <div key={scene.title}>
@@ -1176,77 +1149,94 @@ export function SectorPage({ config }: { config: SectorConfig }) {
                       : "lg:grid-cols-2",
                   )}
                 >
-                  <Reveal className={cn("min-w-0", reverse && "lg:order-2", isDominant && "lg:py-8")}>
-                    <span className="mb-3 block font-mono text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground/45">
-                      Capitolo {String(i + 1).padStart(2, "0")}
-                      <span className="text-muted-foreground/25">
-                        {" "}
-                        / {String(config.scenes.length).padStart(2, "0")}
-                      </span>
-                    </span>
+                  <Reveal className={cn("min-w-0", reverse && "lg:order-2")}>
                     <SectionLabel>{scene.label}</SectionLabel>
-                    <h3
-                      className={cn(
-                        "mt-5 text-balance font-display font-extrabold leading-[1.1] text-foreground",
-                        isDominant ? "text-4xl sm:text-5xl" : "text-3xl sm:text-4xl",
-                      )}
-                    >
+                    <h3 className="mt-5 text-balance font-display text-3xl font-extrabold leading-[1.1] text-foreground sm:text-4xl">
                       {scene.title}
                     </h3>
-                    <p className="mt-4 text-lg leading-relaxed text-muted-foreground">{scene.desc}</p>
-                    <ul
-                      className={cn(
-                        "mt-6 grid gap-3",
-                        scene.bullets.length > 4 && "lg:grid-cols-2 lg:gap-x-6",
-                      )}
-                    >
-                      {scene.bullets.map((b) => (
-                        <li key={b} className="flex items-start gap-3">
-                          <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
-                            <Check className="size-3" />
-                          </span>
-                          <span className="text-[15px] leading-relaxed text-foreground/80">{b}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    {(() => {
+                      // "Tecnologie partner: X · Y" nel desc diventa una riga di pill separata
+                      const partnerIdx = scene.desc.indexOf("Tecnologie partner:");
+                      const mainDesc =
+                        partnerIdx > -1 ? scene.desc.slice(0, partnerIdx).trim() : scene.desc;
+                      const partners =
+                        partnerIdx > -1
+                          ? scene.desc
+                              .slice(partnerIdx + "Tecnologie partner:".length)
+                              .replace(/\.\s*$/, "")
+                              .split("·")
+                              .map((p) => p.trim())
+                              .filter(Boolean)
+                          : null;
+                      // bullet "Chiave — dettaglio" → griglia scansionabile; bullet senza chiave → badge risultato
+                      const keyed: { key: string; detail: string }[] = [];
+                      const outcomes: string[] = [];
+                      for (const b of scene.bullets) {
+                        const sep = b.indexOf(" — ");
+                        if (sep > -1) keyed.push({ key: b.slice(0, sep), detail: b.slice(sep + 3) });
+                        else outcomes.push(b);
+                      }
+                      return (
+                        <>
+                          <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
+                            {mainDesc}
+                          </p>
+                          <div className="mt-8 grid gap-x-8 gap-y-5 sm:grid-cols-2">
+                            {keyed.map(({ key, detail }) => (
+                              <div key={key} className="border-l-2 border-brand/30 pl-3.5">
+                                <p className="font-display text-[15px] font-bold leading-tight text-foreground">
+                                  {key}
+                                </p>
+                                <p className="mt-1 text-[13.5px] leading-snug text-muted-foreground">
+                                  {detail}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                          {outcomes.map((o) => (
+                            <div
+                              key={o}
+                              className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-brand/25 bg-brand/[0.07] px-4 py-2"
+                            >
+                              <TrendingUp className="size-4 shrink-0 text-brand" strokeWidth={2.5} />
+                              <span className="text-sm font-semibold text-foreground">{o}</span>
+                            </div>
+                          ))}
+                          {partners && (
+                            <div className="mt-7 flex flex-wrap items-center gap-2">
+                              <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground/60">
+                                Tecnologie partner
+                              </span>
+                              {partners.map((p) => (
+                                <span
+                                  key={p}
+                                  className="rounded-full border border-border px-2.5 py-1 text-xs font-semibold text-muted-foreground"
+                                >
+                                  {p}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </>
+                      );
+                    })()}
                   </Reveal>
-                  <Reveal delay={1} className={cn("min-w-0", reverse && "lg:order-1", isDominant && "h-full")}>
-                    {scene.visual === "live-architecture" ? (
-                      <LiveArchitecture />
-                    ) : scene.video ? (
-                      <SceneVideo
-                        src={scene.video}
-                        poster={scene.image}
-                        alt={scene.title}
-                        cards={scene.cards}
-                        size={isDominant ? "dominant" : "default"}
-                        className={isDominant ? "lg:-mr-8 xl:-mr-12" : undefined}
-                      />
-                    ) : (
-                      <SceneImage
-                        src={scene.image}
-                        beforeSrc={scene.beforeImage}
-                        alt={scene.title}
-                        cards={scene.cards}
-                        before={scene.before}
-                        scrollDelay={i}
-                        size={isDominant ? "dominant" : "default"}
-                        className={isDominant ? "lg:-mr-8 xl:-mr-12" : undefined}
-                      />
-                    )}
+                  <Reveal delay={1} className={cn("min-w-0", reverse && "lg:order-1")}>
+                    <div className="overflow-hidden rounded-3xl border border-border shadow-card">
+                      <div className="relative aspect-[4/3] sm:aspect-[5/4]">
+                        <Image
+                          src={scene.image}
+                          alt={scene.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                        />
+                      </div>
+                    </div>
                   </Reveal>
                 </div>
               </div>
             </section>
-            {showStatPause && config.statPause && (
-              <StatPauseBand {...config.statPause} />
-            )}
-            {config.systemSchema?.afterSceneIndex === i && (
-              <SystemSchemaBand schema={config.systemSchema} />
-            )}
-            {config.roomExplorer?.afterSceneIndex === i && (
-              <RoomExplorerBand section={config.roomExplorer} />
-            )}
           </div>
         );
       })}
@@ -1269,9 +1259,47 @@ export function SectorPage({ config }: { config: SectorConfig }) {
               <p className="mt-5 text-lg leading-relaxed text-navy-muted">{statsHeading.subtitle}</p>
             )}
           </Reveal>
-          <div className="mt-12">
-            <StatGrid stats={config.stats} tone="dark" />
-          </div>
+          {config.statGroups ? (
+            /* Pilastri con contesto: ogni numero risponde a un "perché" dichiarato */
+            <div className="mt-12 grid gap-4 sm:grid-cols-2">
+              {config.statGroups.map((g, i) => (
+                <Reveal
+                  key={g.title}
+                  delay={i}
+                  className="flex flex-col rounded-3xl border border-white/10 bg-white/[0.04] p-7 transition-colors hover:bg-white/[0.06] sm:p-8"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <g.icon className="size-4 text-brand-gold" strokeWidth={2.25} />
+                    <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-gold">
+                      {g.title}
+                    </span>
+                  </div>
+                  <div className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <CountUp
+                      value={g.stat.value}
+                      className="font-display text-5xl font-extrabold tracking-tight text-brand-bright"
+                    />
+                    <span className="text-base font-semibold text-navy-foreground">
+                      {g.stat.label}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm leading-relaxed text-navy-muted">{g.desc}</p>
+                  {g.secondary && (
+                    <div className="mt-auto flex items-baseline gap-2 pt-5">
+                      <span className="font-display text-xl font-extrabold text-navy-foreground">
+                        {g.secondary.value}
+                      </span>
+                      <span className="text-sm text-navy-muted">{g.secondary.label}</span>
+                    </div>
+                  )}
+                </Reveal>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-12">
+              <StatGrid stats={config.stats} tone="dark" />
+            </div>
+          )}
         </div>
       </section>
 
@@ -1291,64 +1319,8 @@ export function SectorPage({ config }: { config: SectorConfig }) {
             </p>
           )}
         </Reveal>
-        {/* Scoreboard — il verdetto in numeri, conta su allo scroll */}
-        <Reveal delay={1} className="mt-10">
-          <div className="relative grid gap-4 sm:grid-cols-2">
-            <div className="relative overflow-hidden rounded-3xl border border-brand/30 bg-brand/[0.06] p-6 sm:p-8">
-              <span className="absolute inset-x-0 top-0 h-[3px] bg-brand" />
-              <div className="flex items-center gap-2 text-brand">
-                <Sparkles className="size-4" />
-                <span className="text-sm font-bold uppercase tracking-wider">QuickConnext</span>
-              </div>
-              <div className="mt-4 flex items-baseline gap-2">
-                <CountUp
-                  value={String(config.comparison.length)}
-                  className="font-display text-6xl font-extrabold leading-none text-brand"
-                />
-                <span className="font-display text-2xl font-bold leading-none text-brand/50">
-                  / {config.comparison.length}
-                </span>
-              </div>
-              <p className="mt-2 text-sm text-muted-foreground">aspetti dove è superiore</p>
-              <div className="mt-4 h-2 overflow-hidden rounded-full bg-brand/15">
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.3, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                  className="h-full origin-left rounded-full bg-brand"
-                />
-              </div>
-            </div>
-            <div className="overflow-hidden rounded-3xl border border-border bg-surface p-6 sm:p-8">
-              <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground/70">
-                {config.comparisonTraditionalLabel ?? "Integratore tradizionale"}
-              </span>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="font-display text-6xl font-extrabold leading-none text-muted-foreground/50">
-                  0
-                </span>
-                <span className="font-display text-2xl font-bold leading-none text-muted-foreground/40">
-                  / {config.comparison.length}
-                </span>
-              </div>
-              <p className="mt-2 text-sm text-muted-foreground">
-                {config.comparison.length} aree con vincoli
-              </p>
-              <div className="mt-4 h-2 overflow-hidden rounded-full bg-border">
-                <div className="h-full w-[6%] rounded-full bg-muted-foreground/30" />
-              </div>
-            </div>
-            <div className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 sm:block">
-              <span className="flex size-12 items-center justify-center rounded-full border border-border bg-background font-display text-sm font-extrabold text-foreground shadow-card">
-                VS
-              </span>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* Verdetto — tabella compatta a tre colonne: scansione rapida, niente muro di card */}
-        <Reveal delay={1} className="mt-6 overflow-hidden rounded-2xl border border-border">
+        {/* Tabella compatta a tre colonne: scansione rapida, niente muro di card */}
+        <Reveal delay={1} className="mt-10 overflow-hidden rounded-2xl border border-border">
           <div className="hidden grid-cols-[minmax(0,190px)_1fr_1fr] gap-4 border-b border-border bg-surface px-5 py-3.5 sm:grid">
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground/60">
               Aspetto

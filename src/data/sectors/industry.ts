@@ -25,11 +25,8 @@ export const industrySectorConfig: SectorConfig = {
   heroAccent: "non si ferma mai.",
   heroSubtitle:
     "Energia, sicurezza, climatizzazione e supervisione degli impianti sotto un unico controllo. Più efficienza, meno fermi, continuità produttiva garantita.",
-  heroCards: [
-    { icon: Gauge, title: "Linea 3", detail: "Consumo −18% oggi" },
-    { icon: ShieldCheck, title: "Accessi", detail: "Reparto stampi · ok" },
-    { icon: Activity, title: "Predittiva", detail: "0 anomalie critiche" },
-  ],
+  hideSceneNav: true,
+  heroCards: [],
   introLabel: "La piattaforma per l'industria",
   introTitle: "Un solo sistema per produzione, energia e sicurezza.",
   introText:

@@ -182,7 +182,7 @@ export function LiveArchitecture({ className }: { className?: string }) {
     >
       <div className="tech-grid-dark pointer-events-none absolute inset-0 opacity-50" aria-hidden />
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_0%,rgba(0,126,120,0.16),transparent)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_0%,rgba(176, 90, 51,0.16),transparent)]"
         aria-hidden
       />
 
@@ -221,9 +221,9 @@ export function LiveArchitecture({ className }: { className?: string }) {
                   aria-hidden
                   className="absolute inset-0 rounded-xl"
                   animate={{ boxShadow: [
-                    "0 0 0px 0px rgba(0,126,120,0.0)",
-                    "0 0 22px 2px rgba(0,126,120,0.55)",
-                    "0 0 0px 0px rgba(0,126,120,0.0)",
+                    "0 0 0px 0px rgba(176, 90, 51,0.0)",
+                    "0 0 22px 2px rgba(176, 90, 51,0.55)",
+                    "0 0 0px 0px rgba(176, 90, 51,0.0)",
                   ] }}
                   transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
                 />
@@ -265,7 +265,7 @@ export function LiveArchitecture({ className }: { className?: string }) {
               y1="0"
               x2={SPINE_X}
               y2="96"
-              stroke="rgba(0,126,120,0.22)"
+              stroke="rgba(176, 90, 51,0.22)"
               strokeWidth="0.5"
             />
             <line
@@ -273,7 +273,7 @@ export function LiveArchitecture({ className }: { className?: string }) {
               y1="0"
               x2={SPINE_X}
               y2="96"
-              stroke="rgba(0,126,120,0.85)"
+              stroke="rgba(176, 90, 51,0.85)"
               strokeWidth="0.5"
               strokeDasharray="2 5"
               className={booted ? "trace-march" : undefined}
@@ -288,7 +288,7 @@ export function LiveArchitecture({ className }: { className?: string }) {
                     y1={d.y}
                     x2={d.x}
                     y2={d.y}
-                    stroke={isFocus ? "rgba(0,126,120,0.9)" : "rgba(0,126,120,0.2)"}
+                    stroke={isFocus ? "rgba(176, 90, 51,0.9)" : "rgba(176, 90, 51,0.2)"}
                     strokeWidth={isFocus ? "0.6" : "0.4"}
                   />
                   <line
@@ -296,7 +296,7 @@ export function LiveArchitecture({ className }: { className?: string }) {
                     y1={d.y}
                     x2={d.x}
                     y2={d.y}
-                    stroke={isFocus ? "rgba(0,126,120,1)" : "rgba(0,126,120,0.55)"}
+                    stroke={isFocus ? "rgba(176, 90, 51,1)" : "rgba(176, 90, 51,0.55)"}
                     strokeWidth="0.4"
                     strokeDasharray="1.5 4"
                     className={
@@ -304,7 +304,7 @@ export function LiveArchitecture({ className }: { className?: string }) {
                     }
                   />
                   {/* junction on the spine */}
-                  <circle cx={SPINE_X} cy={d.y} r={isFocus ? 1.1 : 0.7} fill={isFocus ? "#007E78" : "rgba(0,126,120,0.5)"} />
+                  <circle cx={SPINE_X} cy={d.y} r={isFocus ? 1.1 : 0.7} fill={isFocus ? "#B05A33" : "rgba(176, 90, 51,0.5)"} />
                 </g>
               );
             })}
@@ -313,7 +313,7 @@ export function LiveArchitecture({ className }: { className?: string }) {
               <motion.circle
                 key={`${focus}-${tick}`}
                 r="1.3"
-                fill="#007E78"
+                fill="#B05A33"
                 cy={focusDomain.y}
                 initial={{ cx: SPINE_X, opacity: 0 }}
                 animate={{ cx: focusDomain.x, opacity: [0, 1, 1, 0] }}
@@ -356,7 +356,7 @@ export function LiveArchitecture({ className }: { className?: string }) {
                   className={cn(
                     "flex cursor-default flex-col items-center gap-1 rounded-xl border px-2 py-2 transition-all duration-300",
                     isFocus
-                      ? "border-brand-bright/70 bg-brand-bright/[0.14] shadow-[0_0_22px_-4px_rgba(0,126,120,0.7)] scale-[1.06]"
+                      ? "border-brand-bright/70 bg-brand-bright/[0.14] shadow-[0_0_22px_-4px_rgba(176, 90, 51,0.7)] scale-[1.06]"
                       : "border-white/10 bg-white/[0.04]",
                   )}
                 >

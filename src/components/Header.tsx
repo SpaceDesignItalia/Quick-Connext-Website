@@ -99,7 +99,7 @@ function LogoMark({ compact = false }: { compact?: boolean }) {
   return (
     <Link href="/" className="group flex shrink-0 items-center">
       <Image
-        src={compact ? "/logo.png" : "/logo-navbar.png"}
+        src={compact ? "/logo-brand.png" : "/logo-navbar-brand.png"}
         alt="QuickConnext Building"
         width={compact ? 40 : 1024}
         height={compact ? 40 : 180}
@@ -110,6 +110,7 @@ function LogoMark({ compact = false }: { compact?: boolean }) {
             : "h-9 w-auto object-left sm:h-10",
         )}
         priority
+        unoptimized
       />
     </Link>
   );
