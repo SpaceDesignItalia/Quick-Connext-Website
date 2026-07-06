@@ -254,7 +254,7 @@ function PlatformCompare() {
         >
           <div className="flex items-center gap-2.5 rounded-2xl border-2 border-brand/40 bg-white px-3 py-2 shadow-card sm:px-4 sm:py-2.5">
             <Image
-              src="/logo-brand.png"
+              src="/logo-v2.png"
               alt=""
               width={28}
               height={28}

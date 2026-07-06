@@ -30,7 +30,7 @@ export default function PrivacyPolicyPage() {
           
           <h3 className="text-brand-navy font-bold text-lg mt-8 mb-2">1. Titolare del Trattamento</h3>
           <p>
-            Il Titolare del Trattamento è <strong>Più Sviluppo S.r.l.</strong>, con sede legale in Via del Lavoro, 12, 24100 Bergamo (BG), Italia. 
+            Il Titolare del Trattamento è <strong>Più Sviluppo S.r.l.</strong>, con sede legale in Via Plava 62, 10135 Torino (TO), Italia. 
             E-mail di contatto: <a href="mailto:info@quickconnext.eu" className="text-brand-teal font-semibold hover:underline">info@quickconnext.eu</a>.
           </p>
 

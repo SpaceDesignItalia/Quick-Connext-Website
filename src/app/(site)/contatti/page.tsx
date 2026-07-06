@@ -63,8 +63,8 @@ export default function ContattiPage() {
                 <li className="flex items-start gap-4">
                   <MapPin size={20} className="text-brand-teal shrink-0 mt-0.5" />
                   <div>
-                    <div className="font-bold text-white">Sede Operativa</div>
-                    <div className="text-slate-400 mt-1">Via del Lavoro, 12<br />24100 Bergamo (BG) - Italia</div>
+                    <div className="font-bold text-white">Sede legale</div>
+                    <div className="text-slate-400 mt-1">Via Plava 62<br />10135 Torino (TO) - Italia</div>
                   </div>
                 </li>
                 
@@ -72,8 +72,8 @@ export default function ContattiPage() {
                   <Phone size={20} className="text-brand-teal shrink-0 mt-0.5" />
                   <div>
                     <div className="font-bold text-white">Telefono</div>
-                    <a href="tel:+39035123456" className="text-slate-400 hover:text-brand-teal transition-colors mt-1 block">
-                      +39 035 123 456
+                    <a href="tel:+390110360421" className="text-slate-400 hover:text-brand-teal transition-colors mt-1 block">
+                      (+39) 011 036 04 21
                     </a>
                   </div>
                 </li>
@@ -88,10 +88,6 @@ export default function ContattiPage() {
                   </div>
                 </li>
               </ul>
-              
-              <div className="bg-white/5 border border-white/10 teal-accent-left pl-4 p-4 text-xs text-slate-400 mt-2 font-sans rounded-xl">
-                <strong>Nota di brand:</strong> QuickConnext Building è un prodotto esclusivo sviluppato e supportato da Più Sviluppo S.r.l.
-              </div>
             </div>
           </div>
 

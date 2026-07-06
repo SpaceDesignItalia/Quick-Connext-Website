@@ -87,7 +87,7 @@ const navLinks: NavLink[] = [
 const NAV_EASE = [0.22, 1, 0.36, 1] as const;
 
 const navShellTransition = {
-  duration: 0.38,
+  duration: 0.45,
   ease: NAV_EASE,
 };
 
@@ -198,48 +198,37 @@ export default function Header() {
         ref={headerRef}
         className="fixed inset-x-0 top-0 z-50 min-h-[72px]"
       >
-        <AnimatePresence initial={false}>
-          {compact ? (
+        {/* Unica shell sempre montata: il morph è un layout FLIP, le interruzioni
+            da scroll rapido vengono ri-targettate senza mai sparire. */}
+        <div
+          className={cn(
+            "absolute inset-x-0 top-0",
+            compact && "flex justify-center px-3 pt-3 sm:px-4",
+          )}
+        >
+          <motion.div
+            layout
+            animate={{ borderRadius: compact ? 999 : 0 }}
+            transition={navShellTransition}
+            style={{ borderRadius: 0 }}
+            className={cn(
+              "relative overflow-hidden",
+              compact
+                ? "w-full max-w-[calc(100vw-1.5rem)] border border-brand-line/70 bg-white/95 shadow-[0_10px_40px_-12px_rgba(10,22,40,0.2)] backdrop-blur-xl lg:w-auto"
+                : "h-[72px] w-full border-b border-brand-line/80 bg-white shadow-[0_1px_0_rgba(229,231,235,0.6)]",
+            )}
+          >
+            {/* Contenuto barra estesa */}
             <motion.div
-              key="nav-compact"
-              initial={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+              layout
               transition={navShellTransition}
-              className="absolute inset-x-0 top-0 flex justify-center px-3 pt-3 sm:px-4"
-            >
-              <div className="flex w-full max-w-[calc(100vw-1.5rem)] items-center justify-center lg:w-auto">
-                <div className="flex w-full items-center justify-between gap-1 rounded-full border border-brand-line/70 bg-white/95 py-2.5 pl-3 pr-2 shadow-[0_10px_40px_-12px_rgba(10,22,40,0.2)] backdrop-blur-xl sm:gap-1.5 sm:pl-4 lg:w-auto lg:justify-center lg:py-1.5 lg:pl-3 lg:pr-2.5">
-                  <span className="lg:hidden">
-                    <LogoMark />
-                  </span>
-                  <span className="hidden lg:block">
-                    <LogoMark compact />
-                  </span>
-                  <div className="hidden lg:block">
-                    <DesktopNav
-                      pathname={pathname}
-                      compact
-                      servicesOpen={servicesOpen}
-                      onOpenServices={openServices}
-                      onCloseServices={scheduleCloseServices}
-                    />
-                  </div>
-                  <MobileMenuButton
-                    isOpen={isOpen}
-                    onToggle={() => setIsOpen(!isOpen)}
-                  />
-                </div>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="nav-full"
-              initial={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
-              transition={navShellTransition}
-              className="absolute inset-x-0 top-0 h-[72px] w-full border-b border-brand-line/80 bg-white shadow-[0_1px_0_rgba(229,231,235,0.6)]"
+              aria-hidden={compact}
+              className={cn(
+                "transition-[opacity,visibility] duration-200",
+                compact
+                  ? "pointer-events-none invisible absolute inset-0 opacity-0"
+                  : "relative h-full w-full opacity-100",
+              )}
             >
               <div className="absolute left-5 top-1/2 z-10 -translate-y-1/2 sm:left-8">
                 <LogoMark />
@@ -262,8 +251,41 @@ export default function Header() {
                 />
               </div>
             </motion.div>
-          )}
-        </AnimatePresence>
+
+            {/* Contenuto pill compatta */}
+            <motion.div
+              layout
+              transition={navShellTransition}
+              aria-hidden={!compact}
+              className={cn(
+                "flex items-center justify-between gap-1 py-2.5 pl-3 pr-2 transition-[opacity,visibility] duration-200 sm:gap-1.5 sm:pl-4 lg:justify-center lg:py-1.5 lg:pl-3 lg:pr-2.5",
+                compact
+                  ? "opacity-100 lg:w-auto"
+                  : "pointer-events-none invisible absolute inset-0 opacity-0",
+              )}
+            >
+              <span className="lg:hidden">
+                <LogoMark />
+              </span>
+              <span className="hidden lg:block">
+                <LogoMark compact />
+              </span>
+              <div className="hidden lg:block">
+                <DesktopNav
+                  pathname={pathname}
+                  compact
+                  servicesOpen={servicesOpen}
+                  onOpenServices={openServices}
+                  onCloseServices={scheduleCloseServices}
+                />
+              </div>
+              <MobileMenuButton
+                isOpen={isOpen}
+                onToggle={() => setIsOpen(!isOpen)}
+              />
+            </motion.div>
+          </motion.div>
+        </div>
       </header>
 
       <AnimatePresence>

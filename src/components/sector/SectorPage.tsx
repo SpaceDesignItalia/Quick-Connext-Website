@@ -35,6 +35,24 @@ import type {
   SystemSchemaSection,
 } from "./types";
 
+/* Loghi ufficiali dei partner (vedi /public/logos/partners); i nomi senza
+   logo restano pill testuali. Chiave = nome minuscolo come appare nei desc. */
+const PARTNER_LOGOS: Record<string, { src: string; cls: string }> = {
+  vimar: { src: "/logos/partners/vimar.png", cls: "h-7" },
+  comelit: { src: "/logos/partners/comelit.svg", cls: "h-4" },
+  bticino: { src: "/logos/partners/bticino.png", cls: "h-5" },
+  abb: { src: "/logos/partners/abb.png", cls: "h-6" },
+  siemens: { src: "/logos/partners/siemens.png", cls: "h-4" },
+  "schneider electric": { src: "/logos/partners/schneider.png", cls: "h-7" },
+  schneider: { src: "/logos/partners/schneider.png", cls: "h-7" },
+  ekinex: { src: "/logos/partners/ekinex.svg", cls: "h-4" },
+  eelectron: { src: "/logos/partners/eelectron.png", cls: "h-4" },
+  finder: { src: "/logos/partners/finder.png", cls: "h-6" },
+  mdt: { src: "/logos/partners/mdt.svg", cls: "h-8" },
+  theben: { src: "/logos/partners/theben.png", cls: "h-5" },
+  zennio: { src: "/logos/partners/zennio.svg", cls: "h-5" },
+};
+
 /* Animated numeric value: "−45%" counts up from 0 when scrolled into view. */
 export function CountUp({ value, className }: { value: string; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -1207,14 +1225,35 @@ export function SectorPage({ config }: { config: SectorConfig }) {
                               <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground/60">
                                 Tecnologie partner
                               </span>
-                              {partners.map((p) => (
-                                <span
-                                  key={p}
-                                  className="rounded-full border border-border px-2.5 py-1 text-xs font-semibold text-muted-foreground"
-                                >
-                                  {p}
-                                </span>
-                              ))}
+                              {partners.map((p) => {
+                                const logo = PARTNER_LOGOS[p.toLowerCase()];
+                                return logo ? (
+                                  <span
+                                    key={p}
+                                    className="group/logo inline-flex h-10 items-center rounded-full border border-border bg-white px-4"
+                                    title={p}
+                                  >
+                                    <Image
+                                      src={logo.src}
+                                      alt={p}
+                                      width={140}
+                                      height={32}
+                                      unoptimized
+                                      className={cn(
+                                        "w-auto object-contain opacity-75 grayscale transition-all duration-300 group-hover/logo:opacity-100 group-hover/logo:grayscale-0",
+                                        logo.cls,
+                                      )}
+                                    />
+                                  </span>
+                                ) : (
+                                  <span
+                                    key={p}
+                                    className="rounded-full border border-border px-2.5 py-1 text-xs font-semibold text-muted-foreground"
+                                  >
+                                    {p}
+                                  </span>
+                                );
+                              })}
                             </div>
                           )}
                         </>
