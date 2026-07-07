@@ -62,6 +62,21 @@ body {
 
 html { scroll-behavior: smooth; }
 
+/* Focus da tastiera: anello brand coerente su tutto il sito (solo :focus-visible,
+   quindi mai al click/tap). Gli input mantengono il proprio stile di focus. */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--brand-teal);
+  outline-offset: 2px;
+}
+
+/* Elimina il ritardo di 300ms sul tap mobile senza bloccare pinch-zoom. */
+a, button, input, select, textarea, [role="button"] {
+  touch-action: manipulation;
+}
+
 /* ─── TECHNICAL GRID ─────────────────────────────────────────────────────── */
 @layer utilities {
   .tech-grid {

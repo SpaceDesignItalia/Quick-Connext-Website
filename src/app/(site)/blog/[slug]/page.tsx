@@ -18,6 +18,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${post.title} | QuickConnext Building`,
     description: post.excerpt,
+    alternates: {
+      canonical: `/blog/${slug}`,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: "article",
+      ...(post.image ? { images: [{ url: post.image }] } : {}),
+    },
   };
 }
 

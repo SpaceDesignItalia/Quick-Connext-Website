@@ -46,6 +46,16 @@ export interface SystemSchemaSection {
   subtitle?: string;
 }
 
+/** Sector-specific live panel — the product at work in that vertical.
+ *  Rendered as a full band right after the scene at `afterSceneIndex`. */
+export interface SectorLiveSection {
+  afterSceneIndex: number;
+  kind: "industry-control" | "rsa-care" | "building-day";
+  label: string;
+  title: string;
+  subtitle?: string;
+}
+
 /** Interactive "explore the room" image with cinematic zoom + text callouts. */
 export interface RoomExplorerSection {
   afterSceneIndex: number;
@@ -131,6 +141,8 @@ export interface SectorConfig {
   systemSchema?: SystemSchemaSection;
   /** Optional interactive "explore the room" visual shown after a scene. */
   roomExplorer?: RoomExplorerSection;
+  /** Optional sector-specific live panel shown after a scene. */
+  sectorLive?: SectorLiveSection;
   grid?: { label?: string; title: string; subtitle?: string; features: GridFeature[] };
   /** When "before", the grid renders before scene features (default: after). */
   gridPosition?: "before" | "after";

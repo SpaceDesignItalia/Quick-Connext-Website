@@ -143,11 +143,32 @@ export default function Header() {
     servicesCloseTimer.current = setTimeout(() => setServicesOpen(false), 140);
   }, []);
 
+  const toggleServices = useCallback(() => {
+    if (servicesCloseTimer.current) {
+      clearTimeout(servicesCloseTimer.current);
+      servicesCloseTimer.current = null;
+    }
+    setServicesOpen((v) => !v);
+  }, []);
+
   useEffect(() => {
     setIsOpen(false);
     setMobileServicesOpen(false);
     setServicesOpen(false);
   }, [pathname]);
+
+  // Esc chiude dropdown e drawer: via d'uscita da tastiera sempre disponibile.
+  useEffect(() => {
+    if (!servicesOpen && !isOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setServicesOpen(false);
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [servicesOpen, isOpen]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -241,6 +262,7 @@ export default function Header() {
                   servicesOpen={servicesOpen}
                   onOpenServices={openServices}
                   onCloseServices={scheduleCloseServices}
+                  onToggleServices={toggleServices}
                 />
               </div>
 
@@ -277,6 +299,7 @@ export default function Header() {
                   servicesOpen={servicesOpen}
                   onOpenServices={openServices}
                   onCloseServices={scheduleCloseServices}
+                  onToggleServices={toggleServices}
                 />
               </div>
               <MobileMenuButton
@@ -354,6 +377,7 @@ export default function Header() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
+              aria-hidden
               className="fixed inset-0 z-[55] bg-brand-navy-dark/40 backdrop-blur-sm lg:hidden"
             />
             <motion.div
@@ -361,6 +385,9 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Menu di navigazione"
               className="fixed inset-y-0 right-0 z-[60] flex w-[min(88vw,22rem)] flex-col overflow-y-auto border-l border-brand-line bg-white lg:hidden"
             >
               <div className="flex items-center justify-between border-b border-brand-line px-4 py-3">
@@ -368,7 +395,7 @@ export default function Header() {
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="rounded-full p-2 text-brand-navy transition-colors hover:bg-brand-ivory hover:text-brand-teal"
+                  className="flex size-11 items-center justify-center rounded-full text-brand-navy transition-colors hover:bg-brand-ivory hover:text-brand-teal"
                   aria-label="Chiudi menu"
                 >
                   <X size={22} />
@@ -455,8 +482,9 @@ function MobileMenuButton({
   return (
     <button
       onClick={onToggle}
-      className="rounded-full p-2 text-brand-navy transition-colors hover:bg-brand-ivory hover:text-brand-teal lg:hidden"
+      className="flex size-11 items-center justify-center rounded-full text-brand-navy transition-colors hover:bg-brand-ivory hover:text-brand-teal lg:hidden"
       aria-label={isOpen ? "Chiudi menu" : "Apri menu"}
+      aria-expanded={isOpen}
     >
       {isOpen ? <X size={22} /> : <Menu size={22} />}
     </button>
@@ -469,12 +497,15 @@ function DesktopNav({
   servicesOpen,
   onOpenServices,
   onCloseServices,
+  onToggleServices,
 }: {
   pathname: string;
   compact: boolean;
   servicesOpen: boolean;
   onOpenServices: () => void;
   onCloseServices: () => void;
+  /** Click/Enter/Space: il menu deve aprirsi anche senza hover (tastiera, touch). */
+  onToggleServices: () => void;
 }) {
   return (
     <nav className="flex items-center gap-0.5">
@@ -490,6 +521,7 @@ function DesktopNav({
       <div onMouseEnter={onOpenServices} onMouseLeave={onCloseServices}>
         <button
           type="button"
+          onClick={onToggleServices}
           className={cn(
             "relative flex items-center gap-1 rounded-full font-medium transition-colors",
             compact ? "px-3 py-2 text-[12.5px]" : "px-4 py-2.5 text-[13px]",

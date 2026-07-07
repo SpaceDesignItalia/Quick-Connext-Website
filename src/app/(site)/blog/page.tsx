@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Blog | QuickConnext Building",
   description:
     "Approfondimenti su building automation, conformità BACS 2026, efficienza energetica e innovazione negli edifici intelligenti.",
+  alternates: {
+    canonical: "/blog",
+  },
 };
 
 export const dynamic = "force-dynamic";

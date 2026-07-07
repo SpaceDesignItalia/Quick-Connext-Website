@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import {
   Blinds,
-  Cable,
   Camera,
   Cpu,
   KeyRound,

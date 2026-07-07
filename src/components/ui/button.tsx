@@ -15,7 +15,7 @@ type ButtonProps = {
 } & ComponentPropsWithoutRef<"button">;
 
 const base =
-  "inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 rounded-full active:scale-[0.98]";
+  "inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 rounded-full active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-teal focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
 function buttonClasses(variant: ButtonVariant, size: ButtonSize, className?: string) {
   return cn(

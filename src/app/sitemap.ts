@@ -14,13 +14,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/blog",
     "/chi-siamo",
     "/contatti",
+    "/privacy-policy",
+    "/cookie-policy",
   ];
 
   const staticEntries: MetadataRoute.Sitemap = routes.map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: route === "" ? "weekly" : "monthly",
-    priority: route === "" ? 1.0 : route === "/hotel" ? 0.9 : 0.7,
+    priority:
+      route === ""
+        ? 1.0
+        : route === "/hotel"
+          ? 0.9
+          : route.includes("policy")
+            ? 0.3
+            : 0.7,
   }));
 
   const slugs = await getAllBlogSlugs();

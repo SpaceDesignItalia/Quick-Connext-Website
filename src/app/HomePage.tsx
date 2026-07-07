@@ -803,8 +803,18 @@ export default function HomePage({ blogPosts = [] }: { blogPosts?: BlogPost[] })
   const displayPosts =
     blogPosts.length > 0 ? blogPosts.slice(0, 3) : HOME_BLOG_POSTS;
   return (
-    <main className="bg-background">
+    <div className="bg-background">
+      {/* Visibile solo al focus da tastiera: salta la navigazione */}
+      <a
+        href="#contenuto"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-brand-navy focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-white"
+      >
+        Salta al contenuto
+      </a>
       <Header />
+
+      {/* Header e Footer fuori dal main: landmark corretti per gli screen reader */}
+      <main id="contenuto">
 
       {/* HERO — the four sectors, full-bleed: the first thing the visitor sees */}
       <section className="relative h-[100svh] min-h-[34rem] overflow-hidden bg-navy pt-[4.5rem]">
@@ -1177,8 +1187,9 @@ export default function HomePage({ blogPosts = [] }: { blogPosts?: BlogPost[] })
         title="Pronto a vedere il tuo edificio connesso?"
         subtitle="Una demo gratuita sulla tua struttura: numeri e scenari reali."
       />
+      </main>
 
       <Footer />
-    </main>
+    </div>
   );
 }

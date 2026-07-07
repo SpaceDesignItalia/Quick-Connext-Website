@@ -21,16 +21,19 @@ import type { LucideIcon } from "lucide-react";
 import { ArrowRight, Check, Minus, Sparkles, TrendingUp, X } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { LiveArchitecture } from "@/components/LiveArchitecture";
 import { SystemSchema } from "@/components/SystemSchema";
 import { RoomExplorer } from "@/components/RoomExplorer";
 import { BeforeAfterSlider } from "./BeforeAfterSlider";
 import { HotelCommandCenter } from "./HotelCommandCenter";
 import { RoiCalculator } from "./RoiCalculator";
+import { IndustryControlRoom } from "./IndustryControlRoom";
+import { RsaCareBoard } from "./RsaCareBoard";
+import { BuildingDayFlow } from "./BuildingDayFlow";
 import type {
   RoomExplorerSection,
   SceneCard,
   SectorConfig,
+  SectorLiveSection,
   StatPause,
   SystemSchemaSection,
 } from "./types";
@@ -314,7 +317,12 @@ function NotificationCard({
   );
 }
 
-function SceneImage({
+/* NOTA: SceneImage, SceneVideo, StatPauseBand, SystemSchemaBand,
+   RoomExplorerBand e BuildingShowcase non sono più renderizzati dal commit
+   "cose" (e1cb991) ma restano esportati per un'eventuale riattivazione:
+   i campi corrispondenti in hotel.ts (video, statPause, systemSchema,
+   roomExplorer, buildingShowcase) sono ancora popolati. */
+export function SceneImage({
   src,
   beforeSrc,
   alt,
@@ -383,7 +391,7 @@ function SceneImage({
 /* Living scene clip — a looping, muted micro-animation that replaces the
    before/after slider when a scene provides a `video`. The source photo is the
    poster, so it degrades to the exact still if the clip can't play. */
-function SceneVideo({
+export function SceneVideo({
   src,
   poster,
   alt,
@@ -470,7 +478,7 @@ function SceneVideo({
   );
 }
 
-function StatPauseBand({
+export function StatPauseBand({
   value,
   label,
   explanation,
@@ -501,7 +509,7 @@ function StatPauseBand({
 
 /* KNX system-topology band — the real connection schema, made alive. The navy
    diagram panel stays contained on a light section (navy used sparingly). */
-function SystemSchemaBand({ schema }: { schema: SystemSchemaSection }) {
+export function SystemSchemaBand({ schema }: { schema: SystemSchemaSection }) {
   return (
     <section className="bg-surface">
       <div className={cn("mx-auto max-w-5xl px-5 sm:px-8", SECTION_PY)}>
@@ -524,7 +532,7 @@ function SystemSchemaBand({ schema }: { schema: SystemSchemaSection }) {
 
 /* Interactive "explore the room" band — a clean photo with cinematic zoom and
    code-rendered text callouts (no baked-in labels). Navy stage on light bg. */
-function RoomExplorerBand({ section }: { section: RoomExplorerSection }) {
+export function RoomExplorerBand({ section }: { section: RoomExplorerSection }) {
   return (
     <section className="bg-surface">
       <div className={cn("mx-auto max-w-5xl px-5 sm:px-8", SECTION_PY)}>
@@ -539,6 +547,36 @@ function RoomExplorerBand({ section }: { section: RoomExplorerSection }) {
         </Reveal>
         <Reveal delay={1} className="mt-10">
           <RoomExplorer image={section.image} />
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* Sector-specific live panel — the product at work in that vertical. The navy
+   panel carries the animation; the section itself stays on light paper. */
+const SECTOR_LIVE_PANELS: Record<SectorLiveSection["kind"], () => JSX.Element> = {
+  "industry-control": IndustryControlRoom,
+  "rsa-care": RsaCareBoard,
+  "building-day": BuildingDayFlow,
+};
+
+function SectorLiveBand({ section }: { section: SectorLiveSection }) {
+  const Panel = SECTOR_LIVE_PANELS[section.kind];
+  return (
+    <section className="bg-background">
+      <div className={cn("mx-auto max-w-5xl px-5 sm:px-8", SECTION_PY)}>
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <SectionLabel className="justify-center">{section.label}</SectionLabel>
+          <h2 className="mt-6 text-balance font-display text-3xl font-extrabold leading-[1.1] text-foreground sm:text-4xl">
+            {section.title}
+          </h2>
+          {section.subtitle && (
+            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">{section.subtitle}</p>
+          )}
+        </Reveal>
+        <Reveal delay={1} className="mt-10 min-w-0">
+          <Panel />
         </Reveal>
       </div>
     </section>
@@ -804,7 +842,7 @@ function CinematicHero({ config }: { config: SectorConfig }) {
 
         {(config.heroLiveEvents?.length || config.heroDemoCard) && (
           <motion.div
-            className="mt-auto pt-10 sm:absolute sm:bottom-10 sm:left-8 sm:pt-0 lg:bottom-14 lg:left-8"
+            className="mt-auto pt-10 lg:absolute lg:bottom-14 lg:left-8 lg:pt-0"
             animate={{ y: [0, -6, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           >
@@ -906,7 +944,7 @@ function GridSection({ grid }: { grid: NonNullable<SectorConfig["grid"]> }) {
 
 /* Contained 3D-render showcase — the building "opened up", every system in
    view at once. The render sits in a light viewer frame (no edge crop). */
-function BuildingShowcase({
+export function BuildingShowcase({
   showcase,
 }: {
   showcase: NonNullable<SectorConfig["buildingShowcase"]>;
@@ -1276,6 +1314,10 @@ export function SectorPage({ config }: { config: SectorConfig }) {
                 </div>
               </div>
             </section>
+
+            {config.sectorLive && config.sectorLive.afterSceneIndex === i && (
+              <SectorLiveBand section={config.sectorLive} />
+            )}
           </div>
         );
       })}
@@ -1383,7 +1425,13 @@ export function SectorPage({ config }: { config: SectorConfig }) {
                 </span>
                 <div className="flex items-start gap-2">
                   <Check className="mt-[3px] size-4 shrink-0 text-brand" strokeWidth={2.5} />
-                  <span className="text-[14px] leading-snug text-foreground/85">{row.quick}</span>
+                  <span className="min-w-0">
+                    {/* Su mobile l'intestazione di colonna è nascosta: la ripetiamo qui */}
+                    <span className="mb-0.5 block text-[10px] font-bold uppercase tracking-[0.14em] text-brand sm:hidden">
+                      QuickConnext
+                    </span>
+                    <span className="block text-[14px] leading-snug text-foreground/85">{row.quick}</span>
+                  </span>
                 </div>
                 <div className="flex items-start gap-2">
                   {partial ? (
@@ -1391,8 +1439,13 @@ export function SectorPage({ config }: { config: SectorConfig }) {
                   ) : (
                     <X className="mt-[3px] size-4 shrink-0 text-muted-foreground/40" strokeWidth={2.5} />
                   )}
-                  <span className="text-[14px] leading-snug text-muted-foreground">
-                    {row.traditional.replace(/^~/, "")}
+                  <span className="min-w-0">
+                    <span className="mb-0.5 block text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground/60 sm:hidden">
+                      {config.comparisonTraditionalLabel ?? "Integratore tradizionale"}
+                    </span>
+                    <span className="block text-[14px] leading-snug text-muted-foreground">
+                      {row.traditional.replace(/^~/, "")}
+                    </span>
                   </span>
                 </div>
               </div>
